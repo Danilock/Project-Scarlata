@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using System.Linq;
 
-namespace HealthSystem
+namespace Rewriters.HealthSystem
 {
     /// <summary>
     /// Representation of a damageable entity in game.

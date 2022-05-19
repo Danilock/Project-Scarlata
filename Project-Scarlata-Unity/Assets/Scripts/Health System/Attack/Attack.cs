@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-namespace HealthSystem.Attacks
+namespace Rewriters.HealthSystem.Attacks
 {
     /// <summary>
     /// Base class for attacks.

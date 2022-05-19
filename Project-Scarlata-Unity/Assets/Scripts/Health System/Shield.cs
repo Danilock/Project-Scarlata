@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-namespace HealthSystem
+namespace Rewriters.HealthSystem
 {
     [System.Serializable]
     public class Shield

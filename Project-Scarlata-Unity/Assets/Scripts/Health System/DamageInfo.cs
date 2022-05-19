@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HealthSystem
+namespace Rewriters.HealthSystem
 {
     /// <summary>
     /// Contains information about a damage Transmitter.

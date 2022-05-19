@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HealthSystem.Attacks
+namespace Rewriters.HealthSystem.Attacks
 {
     public class MeleeAttack : Attack
     {

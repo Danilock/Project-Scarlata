@@ -13,4 +13,9 @@ public class MoveToPosition : MonoBehaviour
     {
         _agent.PathTo(_positionToMove);
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(_positionToMove, .3f);
+    }
 }
