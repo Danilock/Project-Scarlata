@@ -1,22 +1,23 @@
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 
 public class CharacterController2D : MonoBehaviour
 {
-	[SerializeField] private float m_JumpForce = 400f;                          // Amount of force added when the player jumps.
-	[Range(0, 1)][SerializeField] private float m_CrouchSpeed = .36f;          // Amount of maxSpeed applied to crouching movement. 1 = 100%
-	[SerializeField, Range(0, 1)] private float m_SpeedMultiplier;
+	[SerializeField, FoldoutGroup("Movement Settings")] private float m_JumpForce = 400f;                          // Amount of force added when the player jumps.
+	[Range(0, 1)][SerializeField, FoldoutGroup("Movement Settings")] private float m_CrouchSpeed = .36f;          // Amount of maxSpeed applied to crouching movement. 1 = 100%
+	[SerializeField, Range(0, 1), FoldoutGroup("Movement Settings")] private float m_SpeedMultiplier;
 	public float CrouchSpeed { get { return m_CrouchSpeed; } set { m_CrouchSpeed = value; } }
-	[Range(0, .3f)][SerializeField] private float m_MovementSmoothing = .05f;   // How much to smooth out the movement
-	[SerializeField] private bool m_AirControl = false;                         // Whether or not a player can steer while jumping;
+	[Range(0, .3f)][SerializeField, FoldoutGroup("Movement Settings")] private float m_MovementSmoothing = .05f;   // How much to smooth out the movement
+	[SerializeField, FoldoutGroup("Movement Settings")] private bool m_AirControl = false;                         // Whether or not a player can steer while jumping;
 	public bool AirControl { get { return m_AirControl; } set { m_AirControl = value; } }
-	[SerializeField] private LayerMask m_WhatIsGround;                          // A mask determining what is ground to the character
-	[SerializeField] private Transform m_GroundCheck;                           // A position marking where to check if the player is grounded.
-	[SerializeField] private Transform m_CeilingCheck;                          // A position marking where to check for ceilings
+	[SerializeField, FoldoutGroup("Ground Settings")] private LayerMask m_WhatIsGround;                          // A mask determining what is ground to the character
+	[SerializeField, FoldoutGroup("Ground Settings")] private Transform m_GroundCheck;                           // A position marking where to check if the player is grounded.
+	[SerializeField, FoldoutGroup("Ceiling Settings")] private Transform m_CeilingCheck;                          // A position marking where to check for ceilings
 	[SerializeField] private Collider2D m_CrouchDisableCollider;                // A collider that will be disabled when crouching
 
-	[SerializeField] private float k_GroundedRadius = .1f; // Radius of the overlap circle to determine if grounded
+	[SerializeField, FoldoutGroup("Ground Settings")] private float k_GroundedRadius = .1f; // Radius of the overlap circle to determine if grounded
 	private bool m_Grounded;            // Whether or not the player is grounded.
 	public bool IsGrounded
 	{
@@ -32,39 +33,28 @@ public class CharacterController2D : MonoBehaviour
 	public bool FacingRight { get => m_FacingRight; set => m_FacingRight = value; }
 	private Vector3 m_Velocity = Vector3.zero;
 
-	[Header("Events")]
+	[FoldoutGroup("Events")]
 	[Space]
 
 	public UnityEvent OnLandEvent;
 
-	[System.Serializable]
+	[System.Serializable, FoldoutGroup("Events")]
 	public class BoolEvent : UnityEvent<bool> { }
 
 	public BoolEvent OnCrouchEvent;
 	private bool m_wasCrouching = false;
 
-	private bool _canMove = true;
-	public bool CanMove
-	{
-		get
-		{
-			return _canMove;
-		}
-		set
-		{
-			_canMove = value;
-		}
-	}
+	private bool CanMove = true;
 
 	public Collider2D[] Colliders { get; private set; }
 
 	private Vector3 m_lastScale;
 
-	[Header("Wall Check")]
-	[SerializeField] private LayerMask m_wallLayer;
-	[SerializeField] private float m_wallCheckSize;
-	[SerializeField] private Vector2 m_wallCheckOffset;
-	public UnityEvent OnGroundEvent;
+	
+	[SerializeField, FoldoutGroup("Wall Check")] private LayerMask m_wallLayer;
+	[SerializeField, FoldoutGroup("Wall Check")] private float m_wallCheckSize;
+	[SerializeField, FoldoutGroup("Wall Check")] private Vector2 m_wallCheckOffset;
+	[FoldoutGroup("Events")] public UnityEvent OnGroundEvent;
 
 	private void Awake()
 	{
@@ -99,15 +89,12 @@ public class CharacterController2D : MonoBehaviour
 					OnLandEvent.Invoke();
 			}
 		}
-
-		if (CollidedWithWall())
-			Debug.Log("Colliding with wall");
 	}
 
 
 	public void Move(float move, bool crouch, bool jump)
 	{
-		if (!_canMove)
+		if (!CanMove)
 			return;
 
 		//if(move == transform.localScale.x && CollidedWithWall()){
