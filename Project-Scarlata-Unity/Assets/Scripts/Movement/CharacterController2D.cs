@@ -68,7 +68,7 @@ public class CharacterController2D : MonoBehaviour
 			OnCrouchEvent = new BoolEvent();
 	}
 
-	private void Update()
+	private void FixedUpdate()
 	{
 		bool wasGrounded = m_Grounded;
 		m_Grounded = false;
@@ -86,7 +86,10 @@ public class CharacterController2D : MonoBehaviour
 				m_Grounded = true;
 				OnGroundEvent.Invoke();
 				if (!wasGrounded)
+				{
 					OnLandEvent.Invoke();
+					Debug.Log("On Land Event");
+				}
 			}
 		}
 	}
