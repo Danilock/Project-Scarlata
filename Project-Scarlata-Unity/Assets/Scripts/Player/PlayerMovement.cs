@@ -13,7 +13,7 @@ namespace Rewriters.Player
 
         private void Update()
         {
-            _ch2D.Move(_input.HorizontalAxis, false, _input.JumpWasPressedThisFrame);
+            _ch2D.Move(_input.HorizontalAxis, false, _input.JumpWasPressedThisFrame, false);
         }
     }
 }
