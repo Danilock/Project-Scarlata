@@ -1119,6 +1119,7 @@ MonoBehaviour:
       m_Calls: []
   Rigidbody: {fileID: 1762695978}
   m_FacingRight: 1
+  m_stopYvelocityOnDetectWall: 0
   m_wallLayer:
     serializedVersion: 2
     m_Bits: 55
@@ -1128,9 +1129,10 @@ MonoBehaviour:
   m_rotationDurationOnWallJump: 0.1
   _movementTimeOffAfterWallJump: 0.2
   _initialGravity: 0
-  _gravityOnceDetectingWall: 7
+  _gravityOnceDetectingWall: 1
   _isWallClimbing: 0
   _wallJumpForce: 12.7
+  m_wasOnWall: 0
   _animator: {fileID: 0}
   _body: {fileID: 1479343467}
   _YscaleOnceCrouch: 5.9573

@@ -108,6 +108,7 @@ namespace Rewriters
 		#endregion
 
 		#region Wall Check
+		[SerializeField, FoldoutGroup("Wall Check")] private bool m_stopYvelocityOnDetectWall = false;
 		[SerializeField, FoldoutGroup("Wall Check")] private LayerMask m_wallLayer;
 		[SerializeField, FoldoutGroup("Wall Check")] private Vector2 m_wallCheckOffset;
 		[SerializeField, FoldoutGroup("Wall Check")] private float m_wallCheckSize = 4f;
@@ -126,6 +127,8 @@ namespace Rewriters
 		[SerializeField, ReadOnly] private bool _isWallClimbing = false;
 
 		[SerializeField, FoldoutGroup("Wall Check"), Range(0, 20)] private float _wallJumpForce;
+
+		[SerializeField, FoldoutGroup("Wall Check"), ReadOnly] private bool m_wasOnWall = false;
 		#endregion
 
 		#region Animator
@@ -178,7 +181,10 @@ namespace Rewriters
 		private void FixedUpdate()
 		{
 			_wasGrounded = m_Grounded;
+			m_wasOnWall = m_hitWall;
+
 			m_Grounded = false;
+			m_hitWall = false;
 
 			// The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
 			// This can be done using layers instead but Sample Assets will not overwrite your project settings.
@@ -213,7 +219,14 @@ namespace Rewriters
 			}
 
 			if (m_hitWall)
+			{
 				m_isInAirDueToWallJump = false;
+
+                if (!m_wasOnWall && m_stopYvelocityOnDetectWall)
+                {
+					Rigidbody.velocity = new Vector2(Rigidbody.velocity.x, 0f);
+                }
+			}
 		}
 
 		private void Update()
@@ -292,8 +305,6 @@ namespace Rewriters
 					{
 						m_wasCrouching = true;
 						OnCrouchEvent.Invoke(true);
-
-						_body.transform.DOScaleY(_YscaleOnceCrouch, .3f);
 					}
 
 					// Reduce the speed by the crouchSpeed multiplier
@@ -305,8 +316,6 @@ namespace Rewriters
 				}
 				else
 				{
-					_body.transform.DOScaleY(_bodyStartSize.y, _duration);
-
 					// Enable the collider when not crouching
 					if (m_CrouchDisableCollider != null)
 						m_CrouchDisableCollider.enabled = true;
