@@ -21,10 +21,10 @@ namespace Rewriters
 			{
 				if (m_FacingRight)
 				{
-					return -_wallJumpForce;
+					return -_wallJumpForce.x;
 				}
 
-				return _wallJumpForce;
+				return _wallJumpForce.x;
 			}
 		}
 
@@ -115,6 +115,8 @@ namespace Rewriters
 		[SerializeField, FoldoutGroup("Wall Check")] private Vector2 m_wallCheckOffset;
 		[SerializeField, FoldoutGroup("Wall Check")] private float m_wallCheckSize = 4f;
 		[SerializeField, FoldoutGroup("Wall Check")] private bool m_hitWall;
+		[SerializeField, FoldoutGroup("Wall Check")] private bool m_hitNormalWall;
+		[SerializeField, FoldoutGroup("Wall Check")] private LayerMask m_normalWallLayer;
 
 		[SerializeField, FoldoutGroup("Wall Check")]
 		private float m_rotationDurationOnWallJump = .1f;
@@ -128,7 +130,7 @@ namespace Rewriters
 
 		[SerializeField, ReadOnly] private bool _isWallClimbing = false;
 
-		[SerializeField, FoldoutGroup("Wall Check"), Range(0, 20)] private float _wallJumpForce;
+		[SerializeField, FoldoutGroup("Wall Check")] private Vector2 _wallJumpForce;
 
 		[SerializeField, FoldoutGroup("Wall Check"), ReadOnly] private bool m_wasOnWall = false;
 		#endregion
@@ -160,7 +162,11 @@ namespace Rewriters
 
 		#region Unity Methods
 
-		private void Awake()
+		#region Character
+		[SerializeField, FoldoutGroup("Character")] private Character _character;
+        #endregion
+
+        private void Awake()
 		{
 			Rigidbody = GetComponent<Rigidbody2D>();
 
@@ -208,12 +214,20 @@ namespace Rewriters
 					{
 						m_speed = _initialSpeed;
 						OnLandEvent.Invoke();
+
 						//_animator.SetBool(_hashJump, false);
 					}
 				}
 			}
 
+			//Here we apply the apex jump
+			if (Colliders.Length == 0 && _wasGrounded)
+			{
+				Debug.Log("Empty");
+			}
+
 			m_hitWall = Physics2D.Linecast(CalculateWallCheckStartPosition(), CalculateWallCheckEndPosition(), m_wallLayer);
+			m_hitNormalWall = Physics2D.Linecast(CalculateWallCheckStartPosition(), CalculateWallCheckEndPosition(), m_normalWallLayer);
 
 			if (!m_hitWall)
 			{
@@ -243,15 +257,30 @@ namespace Rewriters
 
 				_isWallClimbing = true;
 
+				_character.SetCharacterState(CharacterStates.WallClimbing);
+
 				if (_inputManager.JumpWasPressedThisFrame && !m_isInAirDueToWallJump)
 				{
-					Jump(new Vector2(CalculateJumpForceDirection, _wallJumpForce));
+					Jump(new Vector2(CalculateJumpForceDirection, _wallJumpForce.y));
 					Flip(m_rotationDurationOnWallJump);
 					m_isInAirDueToWallJump = true;
 					StartCoroutine(HandleWallJump());
 					_isWallClimbing = false;
 				}
 			}
+
+			if(Mathf.Abs(Rigidbody.velocity.x) > 0.01 && m_Grounded)
+            {
+				_character.SetCharacterState(CharacterStates.Walking);
+            }
+			else if(Rigidbody.velocity.x == 0f && m_Grounded)
+            {
+				_character.SetCharacterState(CharacterStates.Idle);
+            }
+			else if(Mathf.Abs(Rigidbody.velocity.y) > 0f && !m_Grounded && !_isWallClimbing)
+            {
+				_character.SetCharacterState(CharacterStates.Jumping);
+            }
 
 			//_animator.SetBool(_hashGrounded, m_Grounded);
 			//_animator.SetFloat(_hashYvelocity, Rigidbody.velocity.y);
@@ -332,7 +361,7 @@ namespace Rewriters
 				if (_isWallClimbing && ((m_FacingRight && move > 0) || (!m_FacingRight && move < 0)))
 					return;
 
-				if (Mathf.Abs(move) > 0)
+				if (Mathf.Abs(move) > 0 && !m_hitNormalWall)
 				{
 					// Move the character by finding the target velocity
 					Vector3 targetVelocity = new Vector2((move * 10f * m_speed), Rigidbody.velocity.y);
@@ -377,6 +406,8 @@ namespace Rewriters
 			_canMove = false;
 			yield return new WaitForSeconds(_movementTimeOffAfterWallJump);
 			_canMove = true;
+
+			_character.SetCharacterState(CharacterStates.Jumping);
 		}
 
 		private IEnumerator HandleSoftJump()
@@ -422,6 +453,8 @@ namespace Rewriters
 
 			Rigidbody.velocity = new Vector2(_ignoreXForceOnJump ? 0f : Rigidbody.velocity.x, 0f);
 			Rigidbody.AddForce(new Vector2(_ignoreXForceOnJump ? 0f : force.x, force.y), ForceMode2D.Impulse);
+			
+			_character.SetCharacterState(CharacterStates.Jumping);
 
 			StartCoroutine(HandleSpeedOnAir());
 		}

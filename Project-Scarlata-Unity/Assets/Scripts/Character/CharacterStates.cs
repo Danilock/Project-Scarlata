@@ -10,6 +10,7 @@ namespace Rewriters
         Walking,
         Patroling,
         Attacking,
+        Jumping,
         Dead,
         WallClimbing
     }
