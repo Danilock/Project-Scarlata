@@ -1089,11 +1089,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6805279182c32b14e9e0bd2a42a006b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _canReceiveMoveImput: 1
   m_JumpForce: 25
   m_isInAirDueToWallJump: 0
   m_CrouchSpeed: 0.45
-  m_SpeedMultiplier: 1
+  m_speed: 1
+  m_speedWhenNotGrounded: 0.5
+  _timeToWaitToSetAirSpeedAfterJump: 0.1
   _sprintSpeed: 1
   m_MovementSmoothing: 0
   m_AirControl: 1
@@ -1119,7 +1120,7 @@ MonoBehaviour:
       m_Calls: []
   Rigidbody: {fileID: 1762695978}
   m_FacingRight: 1
-  m_stopYvelocityOnDetectWall: 0
+  m_stopYvelocityOnDetectWall: 1
   m_wallLayer:
     serializedVersion: 2
     m_Bits: 55

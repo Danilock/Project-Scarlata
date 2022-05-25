@@ -12,7 +12,6 @@ namespace Rewriters
 	{
 		#region Movement and Jump Fields
 
-		[SerializeField, FoldoutGroup("Movement and Jump Fields")] private bool _canReceiveMoveImput;
 		[SerializeField, FoldoutGroup("Movement and Jump Fields")] private float m_JumpForce = 400f;                            // Amount of force added when the player jumps.
 		[SerializeField] private bool m_isInAirDueToWallJump;
 		private Vector3 _lastScale;
@@ -31,7 +30,10 @@ namespace Rewriters
 
 		private bool _wasGrounded = false;
 		[Range(0, 1)][SerializeField, FoldoutGroup("Movement and Jump Fields")] private float m_CrouchSpeed = .36f;          // Amount of maxSpeed applied to crouching movement. 1 = 100%
-		[SerializeField, Range(0, 1), FoldoutGroup("Movement and Jump Fields")] private float m_SpeedMultiplier;
+		[SerializeField, Range(0, 1), FoldoutGroup("Movement and Jump Fields")] private float m_speed = 1f;
+		private float _initialSpeed;
+		[SerializeField, Range(0, 1), FoldoutGroup("Movement and Jump Fields")] private float m_speedWhenNotGrounded;
+		[SerializeField, Range(0, 1), FoldoutGroup("Movement and Jump Fields")] private float _timeToWaitToSetAirSpeedAfterJump = .2f;
 		private float _initialSpeedMultiplier;
 
 		[SerializeField, Range(1, 100), FoldoutGroup("Movement and Jump Fields")]
@@ -173,9 +175,10 @@ namespace Rewriters
 
 			_bodyStartSize = _body.transform.localScale;
 			_initialGravity = Rigidbody.gravityScale;
-			_initialSpeedMultiplier = m_SpeedMultiplier;
+			_initialSpeedMultiplier = m_speed;
 			_inputManager = GetComponent<PlayerInput>();
 			_lastScale = transform.localScale;
+			_initialSpeed = m_speed;
 		}
 
 		private void FixedUpdate()
@@ -195,7 +198,7 @@ namespace Rewriters
 
 			for (int i = 0; i < Colliders.Length; i++)
 			{
-				if (Colliders[i].gameObject != gameObject)
+				if (Colliders[i].gameObject != this.gameObject)
 				{
 					m_Grounded = true;
 					m_isInAirDueToWallJump = false;
@@ -203,8 +206,8 @@ namespace Rewriters
 					OnGroundEvent.Invoke();
 					if (!_wasGrounded)
 					{
+						m_speed = _initialSpeed;
 						OnLandEvent.Invoke();
-
 						//_animator.SetBool(_hashJump, false);
 					}
 				}
@@ -242,8 +245,7 @@ namespace Rewriters
 
 				if (_inputManager.JumpWasPressedThisFrame && !m_isInAirDueToWallJump)
 				{
-					Rigidbody.velocity = new Vector2(0f, 0f);
-					Rigidbody.AddForce(new Vector2(CalculateJumpForceDirection, _wallJumpForce), ForceMode2D.Impulse);
+					Jump(new Vector2(CalculateJumpForceDirection, _wallJumpForce));
 					Flip(m_rotationDurationOnWallJump);
 					m_isInAirDueToWallJump = true;
 					StartCoroutine(HandleWallJump());
@@ -332,14 +334,16 @@ namespace Rewriters
 
 				if (Mathf.Abs(move) > 0)
 				{
-					m_SpeedMultiplier = sprint && m_Grounded ? _initialSpeedMultiplier * _sprintSpeed : _initialSpeedMultiplier;
-
 					// Move the character by finding the target velocity
-					Vector3 targetVelocity = new Vector2((move * 10f * m_SpeedMultiplier), Rigidbody.velocity.y);
+					Vector3 targetVelocity = new Vector2((move * 10f * m_speed), Rigidbody.velocity.y);
 					// And then smoothing it out and applying it to the character
 					Rigidbody.velocity = Vector3.SmoothDamp(Rigidbody.velocity, targetVelocity, ref m_Velocity,
 						m_MovementSmoothing);
 				}
+                else if(move == 0f && m_Grounded)
+                {
+					Rigidbody.velocity = new Vector2(0f, Rigidbody.velocity.y);
+                }
 
 				//_animator.SetFloat(_hashSpeed, Mathf.Abs(move));
 				//_animator.SetBool(_hashSprint, sprint && move != 0);
@@ -390,6 +394,13 @@ namespace Rewriters
 			}
 
 			_jumpCoroutineStarted = false;
+
+			yield return new WaitForSeconds(.1f);
+
+			if(m_hitWall)
+				Rigidbody.velocity = new Vector2(Rigidbody.velocity.x, 0f);
+
+
 		}
 
 		private void Flip(float flipDuration)
@@ -411,7 +422,16 @@ namespace Rewriters
 
 			Rigidbody.velocity = new Vector2(_ignoreXForceOnJump ? 0f : Rigidbody.velocity.x, 0f);
 			Rigidbody.AddForce(new Vector2(_ignoreXForceOnJump ? 0f : force.x, force.y), ForceMode2D.Impulse);
+
+			StartCoroutine(HandleSpeedOnAir());
 		}
+
+		private IEnumerator HandleSpeedOnAir()
+        {
+			yield return new WaitForSeconds(_timeToWaitToSetAirSpeedAfterJump);
+
+			m_speed = m_speedWhenNotGrounded;
+        }
 
 		public bool IsMoving()
 		{
