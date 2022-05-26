@@ -34,6 +34,9 @@ namespace Rewriters
 		private float _initialSpeed;
 		[SerializeField, Range(0, 1), FoldoutGroup("Movement and Jump Fields")] private float m_speedWhenNotGrounded;
 		[SerializeField, Range(0, 1), FoldoutGroup("Movement and Jump Fields")] private float _timeToWaitToSetAirSpeedAfterJump = .2f;
+
+		private Coroutine _apexJumpCoroutine;
+		private bool _canDoApexJump;
 		private float _initialSpeedMultiplier;
 
 		[SerializeField, Range(1, 100), FoldoutGroup("Movement and Jump Fields")]
@@ -46,6 +49,8 @@ namespace Rewriters
 		[SerializeField, FoldoutGroup("Movement and Jump Fields")] private Transform m_GroundCheck;                         // A position marking where to check if the player is grounded.
 		[SerializeField, FoldoutGroup("Movement and Jump Fields")] private Transform m_CeilingCheck;                            // A position marking where to check for ceilings
 		[SerializeField, FoldoutGroup("Movement and Jump Fields")] private Collider2D m_CrouchDisableCollider;              // A collider that will be disabled when crouching
+
+		[SerializeField, FoldoutGroup("Apex Jump")] private float _apexJumpTime = .3f;
 
 		[SerializeField, FoldoutGroup("Movement and Jump Fields")]
 		private float _jumpDeadTime = .2f;
@@ -221,9 +226,9 @@ namespace Rewriters
 			}
 
 			//Here we apply the apex jump
-			if (Colliders.Length == 0 && _wasGrounded)
+			if (Colliders.Length == 0 && _wasGrounded && _character.CurrentCharacterState != CharacterStates.Jumping)
 			{
-				Debug.Log("Empty");
+				_apexJumpCoroutine = StartCoroutine(HandleApexJump_CO());
 			}
 
 			m_hitWall = Physics2D.Linecast(CalculateWallCheckStartPosition(), CalculateWallCheckEndPosition(), m_wallLayer);
@@ -269,17 +274,13 @@ namespace Rewriters
 				}
 			}
 
-			if(Mathf.Abs(Rigidbody.velocity.x) > 0.01 && m_Grounded)
+			if (Mathf.Abs(Rigidbody.velocity.x) > 0.01 && m_Grounded && Rigidbody.velocity.y == 0f)
             {
 				_character.SetCharacterState(CharacterStates.Walking);
             }
-			else if(Rigidbody.velocity.x == 0f && m_Grounded)
+			else if(Rigidbody.velocity.x == 0f && m_Grounded && Rigidbody.velocity.y == 0f)
             {
 				_character.SetCharacterState(CharacterStates.Idle);
-            }
-			else if(Mathf.Abs(Rigidbody.velocity.y) > 0f && !m_Grounded && !_isWallClimbing)
-            {
-				_character.SetCharacterState(CharacterStates.Jumping);
             }
 
 			//_animator.SetBool(_hashGrounded, m_Grounded);
@@ -311,10 +312,6 @@ namespace Rewriters
 					return;
 				}
 			}
-			//if(move == transform.localScale.x && CollidedWithWall()){
-			//Debug.Log("Wall");
-			//return;
-			//}
 
 			// If crouching, check to see if the character can stand up
 			if (!crouch)
@@ -392,7 +389,7 @@ namespace Rewriters
 				}
 			}
 			// If the player should jump...
-			if (m_Grounded && jump && !m_isInAirDueToWallJump && !_jumpCoroutineStarted)
+			if ((m_Grounded || _canDoApexJump) && jump && !m_isInAirDueToWallJump && !_jumpCoroutineStarted)
 			{
 				// Add a vertical force to the player.
 				m_Grounded = false;
@@ -409,6 +406,13 @@ namespace Rewriters
 
 			_character.SetCharacterState(CharacterStates.Jumping);
 		}
+
+		private IEnumerator HandleApexJump_CO()
+        {
+			_canDoApexJump = true;
+			yield return new WaitForSeconds(_apexJumpTime);
+			_canDoApexJump = false;
+        }
 
 		private IEnumerator HandleSoftJump()
 		{
@@ -465,26 +469,6 @@ namespace Rewriters
 
 			m_speed = m_speedWhenNotGrounded;
         }
-
-		public bool IsMoving()
-		{
-			return
-			Mathf.Abs(m_Velocity.x) > .1f ||
-			Mathf.Abs(m_Velocity.y) > .1f;
-		}
-
-		///<Summary>
-		///Totally grounded means the player is in the floor and with zero velocity in y axis
-		///</Summary> 
-		public bool IsTotallyGrounded()
-		{
-			if (m_Grounded && Mathf.Abs(Rigidbody.velocity.y) < .1f)
-				return true;
-			else if (m_Grounded && Mathf.Abs(Rigidbody.velocity.y) > .1f)
-				return true;
-
-			return false;
-		}
 		#endregion
 
 		private void OnDrawGizmos()
