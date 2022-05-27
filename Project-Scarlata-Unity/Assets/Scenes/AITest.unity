@@ -149,8 +149,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 211410107}
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.34, y: 1.24, z: 2.2277772}
+  m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: -1.22, y: 1.24, z: 2.2277772}
   m_LocalScale: {x: 4.1055, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1523169574}
@@ -1533,10 +1533,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 193532759
+  m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 04dee3c405de900429b6105ee7f2f16a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1597,6 +1597,7 @@ GameObject:
   - component: {fileID: 1762695982}
   - component: {fileID: 1762695981}
   - component: {fileID: 1762695983}
+  - component: {fileID: 1762695984}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -1622,6 +1623,7 @@ MonoBehaviour:
   m_speed: 0.8
   m_speedWhenNotGrounded: 0.6
   _timeToWaitToSetAirSpeedAfterJump: 0.1
+  _jumpOnGroundWaitTime: 0.2
   _sprintSpeed: 1
   m_MovementSmoothing: 0
   m_AirControl: 1
@@ -1631,7 +1633,7 @@ MonoBehaviour:
   m_GroundCheck: {fileID: 1835811311}
   m_CeilingCheck: {fileID: 1311026660}
   m_CrouchDisableCollider: {fileID: 0}
-  _apexJumpTime: 0.2
+  _apexJumpTime: 0.3
   _jumpDeadTime: 0
   _softJumpMultiplier: 1.5
   _ignoreXForceOnJump: 0
@@ -1653,13 +1655,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   m_wallCheckOffset: {x: 0, y: 0}
-  m_wallCheckSize: 0.72
+  m_wallCheckSize: 0.57
   m_hitWall: 0
   m_hitNormalWall: 0
   m_normalWallLayer:
     serializedVersion: 2
     m_Bits: 1
-  m_rotationDurationOnWallJump: 0.1
+  m_rotationDurationOnWallJump: 0
   _movementTimeOffAfterWallJump: 0.5
   _initialGravity: 5
   _gravityOnceDetectingWall: 1
@@ -1766,6 +1768,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentCharacterState: 0
+  Rigidbody: {fileID: 0}
+--- !u!95 &1762695984
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762695976}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 708a0d1115a67964b95d92957fcaa749, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1835811310
 GameObject:
   m_ObjectHideFlags: 0

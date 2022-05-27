@@ -34,9 +34,10 @@ namespace Rewriters
 		private float _initialSpeed;
 		[SerializeField, Range(0, 1), FoldoutGroup("Movement and Jump Fields")] private float m_speedWhenNotGrounded;
 		[SerializeField, Range(0, 1), FoldoutGroup("Movement and Jump Fields")] private float _timeToWaitToSetAirSpeedAfterJump = .2f;
+		[SerializeField, Range(0, 10), FoldoutGroup("Movement and Jump Fields")] private float _jumpOnGroundWaitTime = .2f;
 
-		private Coroutine _apexJumpCoroutine;
-		private bool _canDoApexJump;
+		private Coroutine _apexJumpCoroutine, _jumpBeforeGettingGroundedCoroutine;
+		private bool _canDoApexJump, _canDoJumpOnGrounded;
 		private float _initialSpeedMultiplier;
 
 		[SerializeField, Range(1, 100), FoldoutGroup("Movement and Jump Fields")]
@@ -220,7 +221,11 @@ namespace Rewriters
 						m_speed = _initialSpeed;
 						OnLandEvent.Invoke();
 
-						//_animator.SetBool(_hashJump, false);
+                        if (_canDoJumpOnGrounded && Mathf.Sign(Rigidbody.velocity.y) < 0)
+                        {
+							Move(_inputManager.HorizontalAxis, false, true, false);
+                        }
+						_animator.SetBool(_hashJump, false);
 					}
 				}
 			}
@@ -257,8 +262,8 @@ namespace Rewriters
 			{
 				Rigidbody.gravityScale = _gravityOnceDetectingWall;
 
-				//_animator.SetBool(_hashJump, false);
-				//_animator.SetFloat(_hashWallClimbDirection, m_FacingRight ? 1 : -1);
+				_animator.SetBool(_hashJump, false);
+				_animator.SetFloat(_hashWallClimbDirection, m_FacingRight ? 1 : -1);
 
 				_isWallClimbing = true;
 
@@ -283,10 +288,10 @@ namespace Rewriters
 				_character.SetCharacterState(CharacterStates.Idle);
             }
 
-			//_animator.SetBool(_hashGrounded, m_Grounded);
-			//_animator.SetFloat(_hashYvelocity, Rigidbody.velocity.y);
-			//_animator.SetFloat(_hashXvelocity, Rigidbody.velocity.x);
-			//_animator.SetBool(_hashWallClimb, m_hitWall && !m_Grounded);
+			_animator.SetBool(_hashGrounded, m_Grounded);
+			_animator.SetFloat(_hashYvelocity, Rigidbody.velocity.y);
+			_animator.SetFloat(_hashXvelocity, Rigidbody.velocity.x);
+			_animator.SetBool(_hashWallClimb, m_hitWall && !m_Grounded);
 			//_animator.SetBool(_hashWasGrounded, _wasGrounded);
 		}
 		#endregion
@@ -299,16 +304,35 @@ namespace Rewriters
 			//if (m_isInAirDueToWallJump)
 			//return;
 
-			if (m_Grounded && m_hitWall)
+
+			// If the player should jump...
+			if ((m_Grounded || _canDoApexJump) && jump && !m_isInAirDueToWallJump && !_jumpCoroutineStarted)
+			{
+				// Add a vertical force to the player.
+				m_Grounded = false;
+				_jumpCoroutineStarted = true;
+				StartCoroutine(HandleJump_CO());
+			}
+			else if (jump && !m_Grounded)
+			{
+				if (_jumpBeforeGettingGroundedCoroutine != null)
+				{
+					StopCoroutine(_jumpBeforeGettingGroundedCoroutine);
+				}
+
+				_jumpBeforeGettingGroundedCoroutine = StartCoroutine(HandleOnGroundeJump_CO());
+			}
+
+			if (m_Grounded && m_hitNormalWall)
 			{
 				if (m_FacingRight && move > 0)
 				{
-					//_animator.SetFloat(_hashSpeed, 0f);
+					_animator.SetFloat(_hashSpeed, 0f);
 					return;
 				}
 				else if (!m_FacingRight && move < 0)
 				{
-					//_animator.SetFloat(_hashSpeed, 0f);
+					_animator.SetFloat(_hashSpeed, 0f);
 					return;
 				}
 			}
@@ -371,7 +395,7 @@ namespace Rewriters
 					Rigidbody.velocity = new Vector2(0f, Rigidbody.velocity.y);
                 }
 
-				//_animator.SetFloat(_hashSpeed, Mathf.Abs(move));
+				_animator.SetFloat(_hashSpeed, Mathf.Abs(move));
 				//_animator.SetBool(_hashSprint, sprint && move != 0);
 
 				// If the input is moving the player right and the player is facing left...
@@ -387,14 +411,6 @@ namespace Rewriters
 
 					Flip(.3f);
 				}
-			}
-			// If the player should jump...
-			if ((m_Grounded || _canDoApexJump) && jump && !m_isInAirDueToWallJump && !_jumpCoroutineStarted)
-			{
-				// Add a vertical force to the player.
-				m_Grounded = false;
-				_jumpCoroutineStarted = true;
-				StartCoroutine(HandleSoftJump());
 			}
 		}
 
@@ -414,7 +430,7 @@ namespace Rewriters
 			_canDoApexJump = false;
         }
 
-		private IEnumerator HandleSoftJump()
+		private IEnumerator HandleJump_CO()
 		{
 			yield return new WaitForSeconds(_jumpDeadTime);
 			//_animator.SetBool(_hashJump, true);
@@ -438,6 +454,13 @@ namespace Rewriters
 
 		}
 
+		private IEnumerator HandleOnGroundeJump_CO()
+        {
+			_canDoJumpOnGrounded = true;
+			yield return new WaitForSeconds(_jumpOnGroundWaitTime);
+			_canDoJumpOnGrounded = false;
+        }
+
 		private void Flip(float flipDuration)
 		{
 			m_FacingRight = !m_FacingRight;
@@ -453,6 +476,8 @@ namespace Rewriters
 		#region  Public Methods
 		public void Jump(Vector2 force)
 		{
+			_animator.SetBool(_hashJump, true);
+
 			Rigidbody.velocity = Vector2.zero;
 
 			Rigidbody.velocity = new Vector2(_ignoreXForceOnJump ? 0f : Rigidbody.velocity.x, 0f);
