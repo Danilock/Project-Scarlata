@@ -13,6 +13,8 @@ namespace Rewriters.AbilitySystem
 
         private IEnumerator _handleAbilityUsage;
 
+        private static readonly int Hash_Ability = Animator.StringToHash("Ability");
+
         public void TriggerAbility()
         {
             if (CurrentAbilityState != AbilityStates.ReadyToUse)
@@ -34,7 +36,14 @@ namespace Rewriters.AbilitySystem
 
             Ability.Activate(this);
             CurrentAbilityState = AbilityStates.Cooldown;
+            Owner.Animator.SetTrigger(Hash_Ability);
 
+            if(Ability.HasCooldown){
+                StartCoroutine(HandleCooldown_CO());
+            }
+        }
+
+        private IEnumerator HandleCooldown_CO(){
             yield return new WaitForSeconds(Ability.Cooldown);
 
             CurrentAbilityState = AbilityStates.ReadyToUse;
@@ -44,12 +53,25 @@ namespace Rewriters.AbilitySystem
         {
             return Ability.AllowedCharacterStates.Contains(Owner.CurrentCharacterState);
         }
+
+        public void SetAbilityState(AbilityStates newState){
+            CurrentAbilityState = newState;
+        }
+        
+        public void SetAbilityState(int newState){
+            CurrentAbilityState = (AbilityStates) newState;
+        }
+
+        public void CheckIfCharacterIsGroundedOnceAbilityFinishes(){
+            if(Owner.Ch2D.IsGrounded)
+                CurrentAbilityState = AbilityStates.ReadyToUse;
+        }
     }
 
     public enum AbilityStates
     {
-        ReadyToUse,
-        Casting,
-        Cooldown
+        ReadyToUse = 0,
+        Casting = 1,
+        Cooldown = 2
     }
 }

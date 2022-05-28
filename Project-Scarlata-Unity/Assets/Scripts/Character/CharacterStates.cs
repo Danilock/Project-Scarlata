@@ -12,6 +12,8 @@ namespace Rewriters
         Attacking,
         Jumping,
         Dead,
-        WallClimbing
+        WallClimbing,
+        UsingSpell,
+        Dashing
     }
 }

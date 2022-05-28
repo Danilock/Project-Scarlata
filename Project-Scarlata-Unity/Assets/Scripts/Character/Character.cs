@@ -10,10 +10,15 @@ namespace Rewriters
         [SerializeField, ReadOnly] private CharacterStates _currentCharacterState = CharacterStates.Idle;
         
         public Rigidbody2D Rigidbody;
+        public Animator Animator;
+
+        public CharacterController2D Ch2D;
 
         private void Awake()
         {
-            Rigidbody = GetComponent<Rigidbody2D>();   
+            Rigidbody = GetComponent<Rigidbody2D>();
+            Animator = GetComponent<Animator>();
+            Ch2D = GetComponent<CharacterController2D>();
         }
 
         public CharacterStates CurrentCharacterState

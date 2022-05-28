@@ -28,6 +28,15 @@ namespace Rewriters
 			}
 		}
 
+
+		private float _direction
+		{
+			get
+			{
+				return m_FacingRight ? 1 : -1f;
+			}
+		}
+
 		private bool _wasGrounded = false;
 		[Range(0, 1)][SerializeField, FoldoutGroup("Movement and Jump Fields")] private float m_CrouchSpeed = .36f;          // Amount of maxSpeed applied to crouching movement. 1 = 100%
 		[SerializeField, Range(0, 1), FoldoutGroup("Movement and Jump Fields")] private float m_speed = 1f;
@@ -139,6 +148,8 @@ namespace Rewriters
 		[SerializeField, FoldoutGroup("Wall Check")] private Vector2 _wallJumpForce;
 
 		[SerializeField, FoldoutGroup("Wall Check"), ReadOnly] private bool m_wasOnWall = false;
+
+		private Coroutine _wallJumpCoroutine;
 		#endregion
 
 		#region Animator
@@ -171,7 +182,6 @@ namespace Rewriters
 		#region Character
 		[SerializeField, FoldoutGroup("Character")] private Character _character;
         #endregion
-
         private void Awake()
 		{
 			Rigidbody = GetComponent<Rigidbody2D>();
@@ -216,16 +226,21 @@ namespace Rewriters
 					m_isInAirDueToWallJump = false;
 					_isWallClimbing = false;
 					OnGroundEvent.Invoke();
-					if (!_wasGrounded)
+					if (!_wasGrounded && Mathf.Sign(Rigidbody.velocity.y) < 0)
 					{
-						m_speed = _initialSpeed;
 						OnLandEvent.Invoke();
 
-                        if (_canDoJumpOnGrounded && Mathf.Sign(Rigidbody.velocity.y) < 0)
+                        if (_canDoJumpOnGrounded)
                         {
-							Move(_inputManager.HorizontalAxis, false, true, false);
+							Move(_inputManager.Move.x, false, true, false);
                         }
+						
 						_animator.SetBool(_hashJump, false);
+					}
+
+					if(!_wasGrounded)
+					{
+						m_speed = _initialSpeed;
 					}
 				}
 			}
@@ -239,7 +254,7 @@ namespace Rewriters
 			m_hitWall = Physics2D.Linecast(CalculateWallCheckStartPosition(), CalculateWallCheckEndPosition(), m_wallLayer);
 			m_hitNormalWall = Physics2D.Linecast(CalculateWallCheckStartPosition(), CalculateWallCheckEndPosition(), m_normalWallLayer);
 
-			if (!m_hitWall)
+			if (!m_hitWall && m_wasOnWall && _character.CurrentCharacterState != CharacterStates.Dashing)
 			{
 				Rigidbody.gravityScale = _initialGravity;
 				_isWallClimbing = false;
@@ -269,15 +284,22 @@ namespace Rewriters
 
 				_character.SetCharacterState(CharacterStates.WallClimbing);
 
-				if (_inputManager.JumpWasPressedThisFrame && !m_isInAirDueToWallJump)
+				if (_inputManager.Jump && !m_isInAirDueToWallJump)
 				{
+
+					if (_wallJumpCoroutine != null)
+						StopCoroutine(_wallJumpCoroutine);
+
 					Jump(new Vector2(CalculateJumpForceDirection, _wallJumpForce.y));
 					Flip(m_rotationDurationOnWallJump);
 					m_isInAirDueToWallJump = true;
-					StartCoroutine(HandleWallJump());
+					_wallJumpCoroutine = StartCoroutine(HandleWallJump());
 					_isWallClimbing = false;
 				}
 			}
+
+			if(m_isInAirDueToWallJump && _character.CurrentCharacterState == CharacterStates.WallClimbing)
+				_character.SetCharacterState(CharacterStates.Jumping);
 
 			if (Mathf.Abs(Rigidbody.velocity.x) > 0.01 && m_Grounded && Rigidbody.velocity.y == 0f)
             {
@@ -286,6 +308,11 @@ namespace Rewriters
 			else if(Rigidbody.velocity.x == 0f && m_Grounded && Rigidbody.velocity.y == 0f)
             {
 				_character.SetCharacterState(CharacterStates.Idle);
+            }
+
+			if(m_Grounded && Rigidbody.velocity.y == 0f)
+            {
+				_animator.SetBool(_hashJump, false);
             }
 
 			_animator.SetBool(_hashGrounded, m_Grounded);
@@ -402,14 +429,14 @@ namespace Rewriters
 				if (move > 0 && !m_FacingRight)
 				{
 					// ... flip the player.
-					Flip(.3f);
+					Flip(_character.CurrentCharacterState == CharacterStates.WallClimbing ? 0f : .3f);
 				}
 				// Otherwise if the input is moving the player left and the player is facing right...
 				else if (move < 0 && m_FacingRight)
 				{
 					// ... flip the player.
 
-					Flip(.3f);
+					Flip(_character.CurrentCharacterState == CharacterStates.WallClimbing ? 0f : .3f);
 				}
 			}
 		}
@@ -419,8 +446,6 @@ namespace Rewriters
 			_canMove = false;
 			yield return new WaitForSeconds(_movementTimeOffAfterWallJump);
 			_canMove = true;
-
-			_character.SetCharacterState(CharacterStates.Jumping);
 		}
 
 		private IEnumerator HandleApexJump_CO()
@@ -435,7 +460,7 @@ namespace Rewriters
 			yield return new WaitForSeconds(_jumpDeadTime);
 			//_animator.SetBool(_hashJump, true);
 
-			if (_inputManager.JumpWasPressedThisFrame)
+			if (_inputManager.Jump)
 			{
 				Jump(new Vector2(Rigidbody.velocity.x, m_JumpForce));
 			}
@@ -461,7 +486,7 @@ namespace Rewriters
 			_canDoJumpOnGrounded = false;
         }
 
-		private void Flip(float flipDuration)
+		public void Flip(float flipDuration)
 		{
 			m_FacingRight = !m_FacingRight;
 
@@ -477,7 +502,6 @@ namespace Rewriters
 		public void Jump(Vector2 force)
 		{
 			_animator.SetBool(_hashJump, true);
-
 			Rigidbody.velocity = Vector2.zero;
 
 			Rigidbody.velocity = new Vector2(_ignoreXForceOnJump ? 0f : Rigidbody.velocity.x, 0f);

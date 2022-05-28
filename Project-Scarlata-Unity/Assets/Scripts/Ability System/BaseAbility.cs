@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 namespace Rewriters.AbilitySystem
 {
@@ -9,10 +10,11 @@ namespace Rewriters.AbilitySystem
     /// </summary>
     public abstract class BaseAbility : ScriptableObject
     {
-        public float Cooldown = 1f;
-        public float CastingTime = 0f;
+        [FoldoutGroup("Cooldown And Casting Time")]public bool HasCooldown = true;
+        [FoldoutGroup("Cooldown And Casting Time")] public float Cooldown = 1f;
+        [FoldoutGroup("Cooldown And Casting Time")] public float CastingTime = 0f;
 
-        public List<CharacterStates> AllowedCharacterStates = new List<CharacterStates>() { CharacterStates.Idle };
+        [FoldoutGroup("Allowed States")] public List<CharacterStates> AllowedCharacterStates = new List<CharacterStates>() { CharacterStates.Idle };
 
         public abstract void Activate(AbilityHolder holder);
     }

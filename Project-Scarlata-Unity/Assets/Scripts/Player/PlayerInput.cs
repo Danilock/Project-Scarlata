@@ -6,15 +6,19 @@ namespace Rewriters.Player
 {
     public class PlayerInput : MonoBehaviour
     {
-        public float HorizontalAxis;
+        public Vector2 Move;
 
-        public bool JumpWasPressedThisFrame;
+        public bool Jump;
+
+        public bool Dash;
 
         private void Update()
         {
-            HorizontalAxis = Input.GetAxisRaw("Horizontal");
+            Move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
-            JumpWasPressedThisFrame = Input.GetButtonDown("Jump");
+            Jump = Input.GetButtonDown("Jump");
+
+            Dash = Input.GetButtonDown("Dash");
         }
     }
 }

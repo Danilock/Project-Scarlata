@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Rewriters.AbilitySystem;
 
 namespace Rewriters.Player
 {
@@ -13,7 +14,7 @@ namespace Rewriters.Player
 
         private void Update()
         {
-            _ch2D.Move(_input.HorizontalAxis, false, _input.JumpWasPressedThisFrame, false);
+            _ch2D.Move(_input.Move.x, false, _input.Jump, false);
         }
     }
 }
