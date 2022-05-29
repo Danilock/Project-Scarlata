@@ -146,6 +146,12 @@ namespace Rewriters
 
 		[SerializeField, FoldoutGroup("Wall Check"), ReadOnly] private bool m_wasOnWall = false;
 
+		public bool IsInAirDueToWallJump
+        {
+			get => m_isInAirDueToWallJump;
+			set => m_isInAirDueToWallJump = value;
+		}
+
 		private Coroutine _wallJumpCoroutine;
 		#endregion
 

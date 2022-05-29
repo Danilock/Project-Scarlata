@@ -24,6 +24,7 @@ namespace Rewriters.AbilitySystem
         {
             //Preveting the character controller movement while dashing.
             holder.Owner.GetComponent<CharacterController2D>().CanMove = false;
+            holder.Owner.GetComponent<CharacterController2D>().IsInAirDueToWallJump = false;
 
             //Tells the animator set the dash.
             holder.Owner.Animator.SetBool("Dash", true);
@@ -95,7 +96,8 @@ namespace Rewriters.AbilitySystem
             holder.CheckIfCharacterIsGroundedOnceAbilityFinishes();
 
             //We stop the character in the air to prevent continous forces.
-            ch2D.Rigidbody.velocity = Vector2.zero;
+            if (!ch2D.IsInAirDueToWallJump)
+                ch2D.Rigidbody.velocity = Vector2.zero;
         }
 
         /// <summary>

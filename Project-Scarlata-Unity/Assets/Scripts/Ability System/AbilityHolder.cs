@@ -13,6 +13,8 @@ namespace Rewriters.AbilitySystem
 
         private IEnumerator _handleAbilityUsage;
 
+        [SerializeField] private float _secondsToEnableAbilityIfCharacterIsGrounded = .3f;
+
         private static readonly int Hash_Ability = Animator.StringToHash("Ability");
 
         public void TriggerAbility()
@@ -62,8 +64,13 @@ namespace Rewriters.AbilitySystem
             CurrentAbilityState = (AbilityStates) newState;
         }
 
-        public void CheckIfCharacterIsGroundedOnceAbilityFinishes(){
-            if(Owner.Ch2D.IsGrounded)
+        public void CheckIfCharacterIsGroundedOnceAbilityFinishes() => StartCoroutine(EnableAbilityAfterGettingGrounded());
+
+        private IEnumerator EnableAbilityAfterGettingGrounded()
+        {
+            yield return new WaitForSeconds(_secondsToEnableAbilityIfCharacterIsGrounded);
+
+            if (Owner.Ch2D.IsGrounded)
                 CurrentAbilityState = AbilityStates.ReadyToUse;
         }
     }
