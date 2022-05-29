@@ -31,8 +31,6 @@ namespace ObjectPooling
 
             _currentIndex = (_currentIndex + 1) % Instances.Count;
 
-            Debug.Log($"Index: {_currentIndex} -- Object Name: {objectObtainedInPool.name}");
-
             return objectObtainedInPool;
         }
     }

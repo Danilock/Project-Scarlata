@@ -178,7 +178,7 @@ namespace Rewriters
             get
             {
 				Vector2 actualPosition = _normalWallSizeCheckOffset;
-				actualPosition.x = m_FacingRight ? 0.3f : -.3f;
+				actualPosition.x *= m_FacingRight ? 1f : -1f;
 
 				Vector2 normalPosition = (Vector2)transform.position + actualPosition;
 
