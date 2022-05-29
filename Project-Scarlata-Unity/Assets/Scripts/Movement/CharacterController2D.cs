@@ -57,7 +57,6 @@ namespace Rewriters
 		public bool AirControl { get { return m_AirControl; } set { m_AirControl = value; } }
 		[SerializeField, FoldoutGroup("Movement and Jump Fields")] private LayerMask m_WhatIsGround;                            // A mask determining what is ground to the character
 		[SerializeField, FoldoutGroup("Movement and Jump Fields")] private Transform m_GroundCheck;                         // A position marking where to check if the player is grounded.
-		[SerializeField, FoldoutGroup("Movement and Jump Fields")] private Transform m_CeilingCheck;                            // A position marking where to check for ceilings
 		[SerializeField, FoldoutGroup("Movement and Jump Fields")] private Collider2D m_CrouchDisableCollider;              // A collider that will be disabled when crouching
 
 		[SerializeField, FoldoutGroup("Apex Jump")] private float _apexJumpTime = .3f;
@@ -187,6 +186,13 @@ namespace Rewriters
         }
 		#endregion
 
+		#region Ceilling Check
+		[SerializeField, FoldoutGroup("Ceiling")] private float _ceilingCheckSize;
+		[SerializeField, FoldoutGroup("Ceiling")] private Transform m_CeilingCheck;                            // A position marking where to check for ceilings
+		[SerializeField, FoldoutGroup("Ceiling")] private LayerMask _ceilingMask;
+		[SerializeField, FoldoutGroup("Ceiling"), ReadOnly] private bool _hitCeiling = false;
+		#endregion
+
 		#region Unity Methods
 
 		#region Character
@@ -261,6 +267,7 @@ namespace Rewriters
 
 			m_hitWall = Physics2D.Linecast(CalculateWallCheckStartPosition(), CalculateWallCheckEndPosition(), m_wallLayer);
 			m_hitNormalWall = Physics2D.BoxCast(CalculateNormalWallPosition, _normalWallSizeCheckSize, 0f, Vector2.zero, .1f, m_normalWallLayer);
+			_hitCeiling = Physics2D.CircleCast(m_CeilingCheck.position, _ceilingCheckSize, Vector2.zero, .1f, _ceilingMask);
 
 			if (!m_hitWall && m_wasOnWall && _character.CurrentCharacterState != CharacterStates.Dashing)
 			{
@@ -336,26 +343,29 @@ namespace Rewriters
 			if (!_canMove)
 				return;
 
-			//if (m_isInAirDueToWallJump)
-			//return;
+            //if (m_isInAirDueToWallJump)
+            //return;
 
 
-			// If the player should jump...
-			if ((m_Grounded || _canDoApexJump) && jump && !m_isInAirDueToWallJump && !_jumpCoroutineStarted)
-			{
-				// Add a vertical force to the player.
-				m_Grounded = false;
-				_jumpCoroutineStarted = true;
-				StartCoroutine(HandleJump_CO());
-			}
-			else if (jump && !m_Grounded)
-			{
-				if (_jumpBeforeGettingGroundedCoroutine != null)
+            // If the player should jump...
+            if (!_hitCeiling)
+            {
+				if ((m_Grounded || _canDoApexJump) && jump && !m_isInAirDueToWallJump && !_jumpCoroutineStarted)
 				{
-					StopCoroutine(_jumpBeforeGettingGroundedCoroutine);
+					// Add a vertical force to the player.
+					m_Grounded = false;
+					_jumpCoroutineStarted = true;
+					StartCoroutine(HandleJump_CO());
 				}
+				else if (jump && !m_Grounded)
+				{
+					if (_jumpBeforeGettingGroundedCoroutine != null)
+					{
+						StopCoroutine(_jumpBeforeGettingGroundedCoroutine);
+					}
 
-				_jumpBeforeGettingGroundedCoroutine = StartCoroutine(HandleOnGroundeJump_CO());
+					_jumpBeforeGettingGroundedCoroutine = StartCoroutine(HandleOnGroundeJump_CO());
+				}
 			}
 
 			if (m_Grounded && m_hitNormalWall)
@@ -540,6 +550,9 @@ namespace Rewriters
 
 			Gizmos.color = Color.black;
 			Gizmos.DrawWireCube(CalculateNormalWallPosition, _normalWallSizeCheckSize);
+
+			Gizmos.color = Color.yellow;
+			Gizmos.DrawWireSphere(m_CeilingCheck.position, _ceilingCheckSize);
 		}
 
 		private Vector2 CalculateWallCheckEndPosition()

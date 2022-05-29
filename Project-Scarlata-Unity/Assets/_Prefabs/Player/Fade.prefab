@@ -116,6 +116,6 @@ MonoBehaviour:
   _objectToDesactivate: {fileID: 0}
   _desactivationMethod: 1
   _waitForSecondsBeforeDesactivate: 1
-  _seconds: 0.6
+  _seconds: 0.3
   _tags: []
   _avoidBeingDisabledOnFirstStart: 1
