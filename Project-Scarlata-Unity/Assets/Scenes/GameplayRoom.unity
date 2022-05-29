@@ -286,27 +286,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &273205703 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1819791583791166696, guid: ac084845a6d66b340bde3473b6164348, type: 3}
-  m_PrefabInstance: {fileID: 497451757}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &273205706
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 273205703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee158225ee1e59f4791627785501d950, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shaderTypes: 0
-  normalStrength: 5
-  normalSmoothing: 1
-  computingNormal: 0
 --- !u!1 &357209836
 GameObject:
   m_ObjectHideFlags: 0
@@ -728,57 +707,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1819791583791166702, guid: ac084845a6d66b340bde3473b6164348, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: c6937ae6adbea944e854e8b1ffc88030, type: 2}
     - target: {fileID: 1819791584579965610, guid: ac084845a6d66b340bde3473b6164348, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 1819791584579965611, guid: ac084845a6d66b340bde3473b6164348, type: 3}
-      propertyPath: m_FacingRight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1819791584579965611, guid: ac084845a6d66b340bde3473b6164348, type: 3}
-      propertyPath: _stuckCheckSize.x
-      value: 0.56
-      objectReference: {fileID: 0}
-    - target: {fileID: 1819791584579965611, guid: ac084845a6d66b340bde3473b6164348, type: 3}
-      propertyPath: _stuckCheckSize.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1819791584579965611, guid: ac084845a6d66b340bde3473b6164348, type: 3}
-      propertyPath: _stuckCheckOffset.x
-      value: 0.28
-      objectReference: {fileID: 0}
-    - target: {fileID: 1819791584579965611, guid: ac084845a6d66b340bde3473b6164348, type: 3}
-      propertyPath: _stuckCheckOffset.y
-      value: -0.26
-      objectReference: {fileID: 0}
-    - target: {fileID: 1819791584579965611, guid: ac084845a6d66b340bde3473b6164348, type: 3}
-      propertyPath: _positionToPlacePlayer.x
-      value: 0.57
-      objectReference: {fileID: 0}
-    - target: {fileID: 1819791584579965611, guid: ac084845a6d66b340bde3473b6164348, type: 3}
-      propertyPath: _positionToPlacePlayer.y
-      value: 0.23
-      objectReference: {fileID: 0}
-    - target: {fileID: 1819791584579965611, guid: ac084845a6d66b340bde3473b6164348, type: 3}
-      propertyPath: _normalWallSizeCheckSize.x
-      value: 0.61
-      objectReference: {fileID: 0}
-    - target: {fileID: 1819791584579965611, guid: ac084845a6d66b340bde3473b6164348, type: 3}
-      propertyPath: _normalWallSizeCheckSize.y
-      value: 0.37
-      objectReference: {fileID: 0}
-    - target: {fileID: 1819791584579965611, guid: ac084845a6d66b340bde3473b6164348, type: 3}
-      propertyPath: _stuckCheckLayerMask.m_Bits
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1819791584579965611, guid: ac084845a6d66b340bde3473b6164348, type: 3}
-      propertyPath: _normalWallSizeCheckOffset.x
-      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 1819791584579965614, guid: ac084845a6d66b340bde3473b6164348, type: 3}
       propertyPath: m_RootOrder
