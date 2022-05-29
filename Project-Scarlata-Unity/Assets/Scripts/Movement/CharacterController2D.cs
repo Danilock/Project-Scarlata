@@ -129,9 +129,7 @@ namespace Rewriters
 		[SerializeField, FoldoutGroup("Wall Check")] private LayerMask m_wallLayer;
 		[SerializeField, FoldoutGroup("Wall Check")] private Vector2 m_wallCheckOffset;
 		[SerializeField, FoldoutGroup("Wall Check")] private float m_wallCheckSize = 4f;
-		[SerializeField, FoldoutGroup("Wall Check")] private bool m_hitWall;
-		[SerializeField, FoldoutGroup("Wall Check")] private bool m_hitNormalWall;
-		[SerializeField, FoldoutGroup("Wall Check")] private LayerMask m_normalWallLayer;
+		[SerializeField, FoldoutGroup("Normal Wall")] private bool m_hitWall;
 
 		[SerializeField, FoldoutGroup("Wall Check")]
 		private float m_rotationDurationOnWallJump = .1f;
@@ -166,16 +164,28 @@ namespace Rewriters
 		private static readonly int _hashWasGrounded = Animator.StringToHash("WasGrounded");
 		#endregion
 
-		#region Body
+        private PlayerInput _inputManager;
 
-		[FoldoutGroup("Body"), SerializeField] private Transform _body;
-		[FoldoutGroup("Body"), SerializeField] private float _YscaleOnceCrouch = 5.9573f;
-		[FoldoutGroup("Body"), SerializeField] private float _duration = .3f;
-		private Vector3 _bodyStartSize;
+		#region Normal Wall
+		[SerializeField, FoldoutGroup("Normal Wall")] private Vector2 _normalWallSizeCheckSize;
+		[SerializeField, FoldoutGroup("Normal Wall")] private Vector2 _normalWallSizeCheckOffset;
 
+		[SerializeField, FoldoutGroup("Normal Wall")] private bool m_hitNormalWall;
+		[SerializeField, FoldoutGroup("Normal Wall")] private LayerMask m_normalWallLayer;
+
+		private Vector2 CalculateNormalWallPosition
+        {
+            get
+            {
+				Vector2 actualPosition = _normalWallSizeCheckOffset;
+				actualPosition.x = m_FacingRight ? 0.3f : -.3f;
+
+				Vector2 normalPosition = (Vector2)transform.position + actualPosition;
+
+				return normalPosition;
+            }
+        }
 		#endregion
-
-		private PlayerInput _inputManager;
 
 		#region Unity Methods
 
@@ -194,8 +204,6 @@ namespace Rewriters
 
 			if (_animator == null)
 				_animator = GetComponent<Animator>();
-
-			_bodyStartSize = _body.transform.localScale;
 			_initialGravity = Rigidbody.gravityScale;
 			_initialSpeedMultiplier = m_speed;
 			_inputManager = GetComponent<PlayerInput>();
@@ -252,7 +260,7 @@ namespace Rewriters
 			}
 
 			m_hitWall = Physics2D.Linecast(CalculateWallCheckStartPosition(), CalculateWallCheckEndPosition(), m_wallLayer);
-			m_hitNormalWall = Physics2D.Linecast(CalculateWallCheckStartPosition(), CalculateWallCheckEndPosition(), m_normalWallLayer);
+			m_hitNormalWall = Physics2D.BoxCast(CalculateNormalWallPosition, _normalWallSizeCheckSize, 0f, Vector2.zero, .1f, m_normalWallLayer);
 
 			if (!m_hitWall && m_wasOnWall && _character.CurrentCharacterState != CharacterStates.Dashing)
 			{
@@ -417,7 +425,7 @@ namespace Rewriters
 					Rigidbody.velocity = Vector3.SmoothDamp(Rigidbody.velocity, targetVelocity, ref m_Velocity,
 						m_MovementSmoothing);
 				}
-                else if(move == 0f && m_Grounded)
+                else if(move == 0f && !m_isInAirDueToWallJump)
                 {
 					Rigidbody.velocity = new Vector2(0f, Rigidbody.velocity.y);
                 }
@@ -529,6 +537,9 @@ namespace Rewriters
 
 			Gizmos.color = Color.red;
 			Gizmos.DrawLine(CalculateWallCheckStartPosition(), CalculateWallCheckEndPosition());
+
+			Gizmos.color = Color.black;
+			Gizmos.DrawWireCube(CalculateNormalWallPosition, _normalWallSizeCheckSize);
 		}
 
 		private Vector2 CalculateWallCheckEndPosition()

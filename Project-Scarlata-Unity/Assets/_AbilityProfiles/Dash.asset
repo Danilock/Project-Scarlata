@@ -19,7 +19,10 @@ MonoBehaviour:
   Force: 800
   ForceMode: 1
   Duration: 0.25
-  _dashReduction: 1.5
-  _startPosition: {x: 7.7862196, y: 4.923146}
-  _endPosition: {x: 3.9462178, y: 4.923146}
-  _distance: 3.8400018
+  DashReduction: 1.5
+  FadePoolName: Player_Fade
+  AmountOfFades: 3
+  GeneralAlphaEffectAmount:
+  - 0.3
+  - 0.6
+  - 1

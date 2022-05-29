@@ -11,6 +11,8 @@ namespace Rewriters.Player
 
         [SerializeField] private AbilityHolder _dashHolder;
 
+        [SerializeField] private List<AbilityHolder> _playerAbilities;
+
         private void Awake()
         {
             _input = GetComponent<PlayerInput>();
@@ -23,6 +25,21 @@ namespace Rewriters.Player
             {
                 _dashHolder.TriggerAbility();
             }
+        }
+
+        /// <summary>
+        /// Sets an state of the given ability.
+        /// </summary>
+        /// <param name="abilty">Ability to change.</param>
+        /// <param name="state">State to set to this ability.</param>
+        public void SetPlayerAbilityState(BaseAbility abilty, AbilityStates state)
+        {
+            AbilityHolder holder = _playerAbilities.Find(x => x.Ability == abilty);
+
+            if (holder == null)
+                return;
+
+            holder.SetAbilityState(state);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using Rewriters.Player;
+using ObjectPooling;
 
 namespace Rewriters.AbilitySystem
 {
@@ -12,7 +13,13 @@ namespace Rewriters.AbilitySystem
         [SerializeField, FoldoutGroup("Force")] protected float Force;
         [SerializeField, FoldoutGroup("Force")] protected ForceMode2D ForceMode;
         [SerializeField] protected float Duration;
-        [SerializeField] private float _dashReduction = 2f;
+        [SerializeField, Tooltip("Force reduced while doing a diagonal dash.")] protected float DashReduction = 1.5f;
+
+        [SerializeField, FoldoutGroup("Fade")] protected string FadePoolName = "Player_Fade";
+        [SerializeField, FoldoutGroup("Fade")] protected int AmountOfFades = 4;
+        [SerializeField, FoldoutGroup("Fade")] protected float[] GeneralAlphaEffectAmount;
+        private int _lastAmountOfFades;
+
         public override void Activate(AbilityHolder holder)
         {
             //Preveting the character controller movement while dashing.
@@ -28,10 +35,34 @@ namespace Rewriters.AbilitySystem
         protected void ApplyDashToCharacter(AbilityHolder holder){
             //Starging a coroutine that will stop the character for few seconds.
             holder.Owner.StartCoroutine(StopCharacterGravityForFewSeconds(holder, Duration));
-            
+
+            //InstantiateEffects
+            holder.Owner.StartCoroutine(InstantiateFadeEffect(holder));
+
             //Adding dash force.
             holder.Owner.Rigidbody.AddForce(CalculateDirectionOfDash(holder), 0f);
         }
+
+        private IEnumerator InstantiateFadeEffect(AbilityHolder holder)
+        {
+            int i = 0;
+
+            while(i < AmountOfFades)
+            {
+                GameObject gm = ObjectPooler.Instance.GetObjectFromPool(FadePoolName);
+
+                gm.transform.localScale = holder.transform.localScale;
+                gm.transform.position = holder.transform.position;
+
+                Material mat = gm.GetComponent<SpriteRenderer>().material;
+                mat.SetFloat("_Alpha", GeneralAlphaEffectAmount[i]);
+
+                yield return new WaitForSeconds(Duration / AmountOfFades);
+
+                i++;
+            }
+        }
+
         /// <summary>
         /// Stops Y gravity of this character for few seconds.
         /// </summary>
@@ -67,6 +98,11 @@ namespace Rewriters.AbilitySystem
             ch2D.Rigidbody.velocity = Vector2.zero;
         }
 
+        /// <summary>
+        /// Calculates the direction depending on player's horizontal input.
+        /// </summary>
+        /// <param name="holder"></param>
+        /// <returns></returns>
         private Vector2 CalculateDirectionOfDash(AbilityHolder holder){
             Vector2 move = holder.GetComponent<PlayerInput>().Move;
 
@@ -87,8 +123,8 @@ namespace Rewriters.AbilitySystem
                 return new Vector2(0f, move.y * Force);
             }
 
-            endDirection.x = (move.x * Force) / _dashReduction;
-            endDirection.y = (move.y * Force) / _dashReduction;
+            endDirection.x = (move.x * Force) / DashReduction;
+            endDirection.y = (move.y * Force) / DashReduction;
 
             return endDirection;
         }

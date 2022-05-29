@@ -159,9 +159,10 @@ GameObject:
   - component: {fileID: 1819791584579965613}
   - component: {fileID: 1819791584579965618}
   - component: {fileID: 1819791584579965619}
+  - component: {fileID: 1762695977}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -252,7 +253,7 @@ MonoBehaviour:
   _jumpDeadTime: 0
   _softJumpMultiplier: 1.5
   _ignoreXForceOnJump: 0
-  k_GroundedRadius: 0.1
+  k_GroundedRadius: 0.15
   m_Grounded: 1
   OnLandEvent:
     m_PersistentCalls:
@@ -313,7 +314,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Move: {x: 0, y: 0}
-  JumpWasPressedThisFrame: 0
+  Jump: 0
+  Dash: 0
 --- !u!114 &1819791584579965615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -328,7 +330,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ch2D: {fileID: 1819791584579965611}
   _input: {fileID: 1819791584579965612}
-  _dashHolder: {fileID: 1819791584579965619}
 --- !u!114 &1819791584579965613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,3 +380,19 @@ MonoBehaviour:
   Owner: {fileID: 1819791584579965613}
   Ability: {fileID: 11400000, guid: 19e6e59ed9649814fa5eb9432e1f7355, type: 2}
   CurrentAbilityState: 0
+--- !u!114 &1762695977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819791584579965610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 886e94cbfbce80e489d37584a2c26774, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _input: {fileID: 1819791584579965612}
+  _dashHolder: {fileID: 1819791584579965619}
+  _playerAbilities:
+  - {fileID: 1819791584579965619}
