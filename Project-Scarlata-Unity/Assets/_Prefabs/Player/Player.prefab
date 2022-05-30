@@ -123,7 +123,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1819791584025535585}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.78, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1819791584579965614}
@@ -153,7 +153,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1819791584516802668}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.576, z: 0}
+  m_LocalPosition: {x: 0.053, y: -0.53, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1819791584579965614}
@@ -248,13 +248,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 55
   m_GroundCheck: {fileID: 1819791584516802669}
-  m_CeilingCheck: {fileID: 1819791584025535590}
   m_CrouchDisableCollider: {fileID: 0}
   _apexJumpTime: 0.3
   _jumpDeadTime: 0
   _softJumpMultiplier: 1.5
   _ignoreXForceOnJump: 0
-  k_GroundedRadius: 0.15
+  k_GroundedRadius: 0.09
   m_Grounded: 1
   OnLandEvent:
     m_PersistentCalls:
@@ -293,13 +292,19 @@ MonoBehaviour:
   _isWallClimbing: 0
   _wallJumpForce: {x: 10, y: 15}
   m_wasOnWall: 0
-  _animator: {fileID: 0}
-  _normalWallSizeCheckSize: {x: 0.61, y: 0.37}
+  _animator: {fileID: 1819791584579965618}
+  _normalWallSizeCheckSize: {x: 0.61, y: 0.85}
   _normalWallSizeCheckOffset: {x: 0.3, y: 0}
   m_hitNormalWall: 0
   m_normalWallLayer:
     serializedVersion: 2
     m_Bits: 1
+  _ceilingCheckSize: 0.1
+  m_CeilingCheck: {fileID: 1819791584025535590}
+  _ceilingMask:
+    serializedVersion: 2
+    m_Bits: 1
+  _hitCeiling: 0
   _character: {fileID: 1819791584579965613}
 --- !u!114 &1819791584579965612
 MonoBehaviour:
@@ -380,6 +385,7 @@ MonoBehaviour:
   Owner: {fileID: 1819791584579965613}
   Ability: {fileID: 11400000, guid: 19e6e59ed9649814fa5eb9432e1f7355, type: 2}
   CurrentAbilityState: 0
+  _secondsToEnableAbilityIfCharacterIsGrounded: 0.3
 --- !u!114 &1762695977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -409,6 +415,6 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.02296257, y: 0.009841174}
-  m_Size: {x: 0.46063614, y: 0.98031765}
+  m_Offset: {x: 0.0686121, y: 0.009841174}
+  m_Size: {x: 0.5519352, y: 0.98031765}
   m_Direction: 0
