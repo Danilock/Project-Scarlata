@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Rewriters.AbilitySystem
 {
@@ -16,6 +17,8 @@ namespace Rewriters.AbilitySystem
         [SerializeField] private float _secondsToEnableAbilityIfCharacterIsGrounded = .3f;
 
         private static readonly int Hash_Ability = Animator.StringToHash("Ability");
+
+        public UnityEvent OnTriggerAbility;
 
         public void TriggerAbility()
         {
@@ -39,6 +42,7 @@ namespace Rewriters.AbilitySystem
             Ability.Activate(this);
             CurrentAbilityState = AbilityStates.Cooldown;
             Owner.Animator.SetTrigger(Hash_Ability);
+            OnTriggerAbility?.Invoke();
 
             if(Ability.HasCooldown){
                 StartCoroutine(HandleCooldown_CO());
