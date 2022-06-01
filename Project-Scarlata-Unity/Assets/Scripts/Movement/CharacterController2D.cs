@@ -199,11 +199,11 @@ namespace Rewriters
 		[SerializeField, FoldoutGroup("Ceiling"), ReadOnly] private bool _hitCeiling = false;
 		#endregion
 
-		#region Unity Methods
-
 		#region Character
 		[SerializeField, FoldoutGroup("Character")] private Character _character;
-        #endregion
+		#endregion
+
+        #region Unity Methods
         private void Awake()
 		{
 			Rigidbody = GetComponent<Rigidbody2D>();
@@ -246,7 +246,7 @@ namespace Rewriters
 					m_isInAirDueToWallJump = false;
 					_isWallClimbing = false;
 					OnGroundEvent.Invoke();
-					if (!_wasGrounded && Mathf.Sign(Rigidbody.velocity.y) < 0)
+					if (!_wasGrounded && (Rigidbody.velocity.y < 0 || Rigidbody.velocity.y == 0f))
 					{
 						OnLandEvent.Invoke();
 

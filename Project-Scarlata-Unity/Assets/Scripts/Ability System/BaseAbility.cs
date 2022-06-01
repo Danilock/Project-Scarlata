@@ -16,6 +16,8 @@ namespace Rewriters.AbilitySystem
 
         [FoldoutGroup("Allowed States")] public List<CharacterStates> AllowedCharacterStates = new List<CharacterStates>() { CharacterStates.Idle };
 
+        public virtual void OnAbilityUpdate(AbilityHolder holder) { }
+
         public abstract void Activate(AbilityHolder holder);
     }
 }

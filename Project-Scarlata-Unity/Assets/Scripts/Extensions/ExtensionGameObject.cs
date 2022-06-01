@@ -8,4 +8,9 @@ public static class ExtensionGameObject
     {
         return tags.Contains(obj.tag);
     }
+    
+    public static bool CompareTag(this Collider2D obj, string[] tags)
+    {
+        return tags.Contains(obj.tag);
+    }
 }

@@ -93,8 +93,6 @@ namespace Rewriters.AbilitySystem
             //Set animation to false/
             holder.Owner.Animator.SetBool("Dash", false);
 
-            holder.CheckIfCharacterIsGroundedOnceAbilityFinishes();
-
             //We stop the character in the air to prevent continous forces.
             if (!ch2D.IsInAirDueToWallJump)
                 ch2D.Rigidbody.velocity = Vector2.zero;

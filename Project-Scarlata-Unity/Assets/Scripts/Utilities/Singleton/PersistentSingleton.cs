@@ -14,6 +14,8 @@ public class PersistentSingleton<T> : MonoBehaviour where T : Component
     public static T Instance => _instance;
     protected static T _instance;
 
+    [SerializeField] protected bool LiveAcrossScenes = false; 
+
     protected virtual void Awake()
     {
         if(_instance != null && _instance != this)
@@ -21,6 +23,9 @@ public class PersistentSingleton<T> : MonoBehaviour where T : Component
         else
         {
             _instance = this as T;
+
+            if(LiveAcrossScenes)
+                DontDestroyOnLoad(this.gameObject);
         }
     }
 }
@@ -41,6 +46,10 @@ public class PersistantSerializedSingleton<T> : SerializedMonoBehaviour where T 
     }
 }
 
+/// <summary>
+/// Singleton which only lives in one single scene.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class SceneSingleton<T> : MonoBehaviour where T : Component
 {
     public static T Instance => _instance;
