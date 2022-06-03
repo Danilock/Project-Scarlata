@@ -146,7 +146,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanBePickedUp: 1
   OnPickObject: 2
-  CollisionType: 0
+  CollisionTypeValue: 0
+  Tags:
+  - Player
   SecondsDisabled: 2
   Renderer: {fileID: 0}
   Collider: {fileID: 0}

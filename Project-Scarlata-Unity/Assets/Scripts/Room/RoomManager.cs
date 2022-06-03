@@ -1,16 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
+using System.Linq;
 
 namespace Rewriters.Rooms
 {
     public class RoomManager : PersistentSingleton<RoomManager>
     {
+        [SerializeField] private List<Room> _allRoomsInScene;
         public Room CurrentActiveRoom;
 
         private void Start()
         {
-            CurrentActiveRoom.EnableRoom();
+            DisableAllRooms();
+
+            ActivateRoom(_allRoomsInScene[0]);
         }
 
         public void ActivateRoom(Room roomToActivate)
@@ -32,6 +37,20 @@ namespace Rewriters.Rooms
             yield return new WaitForSecondsRealtime(.3f);
 
             Time.timeScale = 1f;
+        }
+
+        private void DisableAllRooms()
+        {
+            foreach(Room currentRoom in _allRoomsInScene)
+            {
+                currentRoom.DisableRoom();
+            }
+        }
+
+        [Button("Find All Rooms")]
+        public void FindAllRooms()
+        {
+            _allRoomsInScene = FindObjectsOfType<Room>().ToList();
         }
     }
 }

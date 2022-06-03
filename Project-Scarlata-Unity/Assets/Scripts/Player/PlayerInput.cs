@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Rewriters.Player
 {
-    public class PlayerInput : MonoBehaviour
+    public class PlayerInput : PersistentSingleton<PlayerInput>
     {
         public Vector2 Move;
 

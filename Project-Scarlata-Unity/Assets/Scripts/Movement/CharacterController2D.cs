@@ -203,8 +203,8 @@ namespace Rewriters
 		[SerializeField, FoldoutGroup("Character")] private Character _character;
 		#endregion
 
-        #region Unity Methods
-        private void Awake()
+		#region Unity Methods
+		private void Awake()
 		{
 			Rigidbody = GetComponent<Rigidbody2D>();
 
@@ -437,6 +437,7 @@ namespace Rewriters
 				{
 					// Move the character by finding the target velocity
 					Vector3 targetVelocity = new Vector2((move * 10f * m_speed), Rigidbody.velocity.y);
+
 					// And then smoothing it out and applying it to the character
 					Rigidbody.velocity = Vector3.SmoothDamp(Rigidbody.velocity, targetVelocity, ref m_Velocity,
 						m_MovementSmoothing);

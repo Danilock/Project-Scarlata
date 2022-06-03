@@ -15,7 +15,9 @@ namespace Rewriters.Items
         [ReadOnly, SerializeField] protected bool CanBePickedUp = true;
 
         [SerializeField, FoldoutGroup("Pickeable Settings")] protected OptionsOncePicked OnPickObject = OptionsOncePicked.DisableOnPick;
-        [SerializeField, FoldoutGroup("Pickeable Settings")] protected CollisionType CollisionType = CollisionType.OnTriggerEnter;
+        [SerializeField, FoldoutGroup("Pickeable Settings")] protected CollisionType CollisionTypeValue = CollisionType.OnTriggerEnter;
+        [SerializeField, FoldoutGroup("Pickeable Settings"), ShowIf("@this.CollisionTypeValue == CollisionType.OnTriggerEnter || this.CollisionTypeValue == CollisionType.OnCollisionEnter")] 
+        protected string[] Tags;
         
         [ShowIf("OnPickObject", OptionsOncePicked.DisableForFewSeconds), FoldoutGroup("Pickeable Settings"), SerializeField] 
         protected float SecondsDisabled = 1f;
@@ -25,7 +27,7 @@ namespace Rewriters.Items
         [ReadOnly, FoldoutGroup("Dependencies"),SerializeField] protected Rigidbody2D Rigidbody;
 
         #region Unity Methods
-        private void Awake()
+        protected virtual void Awake()
         {
             Renderer = GetComponent<SpriteRenderer>();
             Collider = GetComponent<Collider2D>();
@@ -37,7 +39,7 @@ namespace Rewriters.Items
         /// Picks an object.
         /// </summary>
         /// <param name="owner">The owner that picked up this object.</param>
-        public void Pick(GameObject owner)
+        public virtual void Pick(GameObject owner)
         {
             if (!CanBePickedUp)
                 return;
@@ -57,7 +59,7 @@ namespace Rewriters.Items
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
-            if (CollisionType != CollisionType.OnCollisionEnter && collision.gameObject.CompareTag("Player"))
+            if (CollisionTypeValue != CollisionType.OnCollisionEnter && collision.gameObject.CompareTag(Tags))
                 return;
 
             Pick(collision.gameObject);
@@ -65,7 +67,7 @@ namespace Rewriters.Items
 
         protected virtual void OnTriggerEnter2D(Collider2D collider)
         {
-            if (CollisionType != CollisionType.OnTriggerEnter && collider.gameObject.CompareTag("Player"))
+            if (CollisionTypeValue != CollisionType.OnTriggerEnter && collider.gameObject.CompareTag(Tags))
                 return;
 
             Pick(collider.gameObject);
