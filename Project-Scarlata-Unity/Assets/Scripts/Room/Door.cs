@@ -36,6 +36,9 @@ namespace Rewriters.Rooms
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
+            if (!collision.CompareTag("Player"))
+                return;
+
             RoomManager.Instance.ActivateRoom(_roomToEnable);
         }
     }

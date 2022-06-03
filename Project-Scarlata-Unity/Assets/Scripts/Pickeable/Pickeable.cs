@@ -26,6 +26,8 @@ namespace Rewriters.Items
         [ReadOnly, FoldoutGroup("Dependencies"),SerializeField] protected Collider2D Collider;
         [ReadOnly, FoldoutGroup("Dependencies"),SerializeField] protected Rigidbody2D Rigidbody;
 
+        protected GameObject Owner;
+
         #region Unity Methods
         protected virtual void Awake()
         {
@@ -44,6 +46,8 @@ namespace Rewriters.Items
             if (!CanBePickedUp)
                 return;
 
+            Owner = owner;
+
             OnPick(owner);
 
             //Decides what to do once the object is picked up(Disable for ever, Disable for few seconds or destroy it).
@@ -59,7 +63,7 @@ namespace Rewriters.Items
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
-            if (CollisionTypeValue != CollisionType.OnCollisionEnter && collision.gameObject.CompareTag(Tags))
+            if (CollisionTypeValue != CollisionType.OnCollisionEnter || !collision.gameObject.CompareTag(Tags))
                 return;
 
             Pick(collision.gameObject);
@@ -67,7 +71,7 @@ namespace Rewriters.Items
 
         protected virtual void OnTriggerEnter2D(Collider2D collider)
         {
-            if (CollisionTypeValue != CollisionType.OnTriggerEnter && collider.gameObject.CompareTag(Tags))
+            if (CollisionTypeValue != CollisionType.OnTriggerEnter || !collider.gameObject.CompareTag(Tags))
                 return;
 
             Pick(collider.gameObject);
