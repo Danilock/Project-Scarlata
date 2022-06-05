@@ -26,7 +26,7 @@ namespace Rewriters.Items
         [ReadOnly, FoldoutGroup("Dependencies"),SerializeField] protected Collider2D Collider;
         [ReadOnly, FoldoutGroup("Dependencies"),SerializeField] protected Rigidbody2D Rigidbody;
 
-        protected GameObject Owner;
+        protected Character Owner;
 
         #region Unity Methods
         protected virtual void Awake()
@@ -41,7 +41,7 @@ namespace Rewriters.Items
         /// Picks an object.
         /// </summary>
         /// <param name="owner">The owner that picked up this object.</param>
-        public virtual void Pick(GameObject owner)
+        public virtual void Pick(Character owner)
         {
             if (!CanBePickedUp)
                 return;
@@ -59,14 +59,14 @@ namespace Rewriters.Items
             }
         }
 
-        protected abstract void OnPick(GameObject owner);
+        protected abstract void OnPick(Character owner);
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
             if (CollisionTypeValue != CollisionType.OnCollisionEnter || !collision.gameObject.CompareTag(Tags))
                 return;
 
-            Pick(collision.gameObject);
+            Pick(collision.gameObject.GetComponent<Character>());
         }
 
         protected virtual void OnTriggerEnter2D(Collider2D collider)
@@ -74,7 +74,7 @@ namespace Rewriters.Items
             if (CollisionTypeValue != CollisionType.OnTriggerEnter || !collider.gameObject.CompareTag(Tags))
                 return;
 
-            Pick(collider.gameObject);
+            Pick(collider.gameObject.GetComponent<Character>());
         }
 
         /// <summary>

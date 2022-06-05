@@ -14,6 +14,7 @@ namespace Rewriters
         Dead,
         WallClimbing,
         UsingSpell,
-        Dashing
+        Dashing,
+        InBubbles
     }
 }

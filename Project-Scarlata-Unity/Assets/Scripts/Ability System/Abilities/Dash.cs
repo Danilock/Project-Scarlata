@@ -96,6 +96,11 @@ namespace Rewriters.AbilitySystem
             //We stop the character in the air to prevent continous forces.
             if (!ch2D.IsInAirDueToWallJump)
                 ch2D.Rigidbody.velocity = Vector2.zero;
+
+            yield return new WaitForSeconds(.5f);
+
+            if (ch2D.IsGrounded)
+                holder.SetAbilityState(AbilityStates.ReadyToUse);
         }
 
         /// <summary>
