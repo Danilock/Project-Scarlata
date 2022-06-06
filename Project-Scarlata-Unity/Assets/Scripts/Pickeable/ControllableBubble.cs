@@ -20,7 +20,7 @@ namespace Rewriters.Items
         [SerializeField, FoldoutGroup("Bubble Settings")] private float _playerRotationSpeedInsideBubble;
         [SerializeField, FoldoutGroup("Bubble Settings")] private Vector2 _playerScaleOnBubble;
 
-        [SerializeField, FoldoutGroup("Cinemachine Impulse")] private CinemachineImpulseSource _impulseSource;
+        [SerializeField, FoldoutGroup("Cinemachine Impulse")] private CinemachineImpulseSource _impulseSource; 
 
         private Coroutine _stopBubbleAfterSeconds;
 
