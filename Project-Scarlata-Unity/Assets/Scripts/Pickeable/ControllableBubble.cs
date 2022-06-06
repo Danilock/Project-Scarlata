@@ -4,16 +4,23 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using Rewriters.Player;
 using DG.Tweening;
+using Cinemachine;
 
 namespace Rewriters.Items
 {
     [RequireComponent(typeof(Rigidbody2D))]
     public class ControllableBubble : Pickeable
     {
-        [SerializeField, ReadOnly] private Vector2 _initialPosition;
+        [SerializeField, ReadOnly, FoldoutGroup("Bubble Settings")] private Vector2 _initialPosition;
         [SerializeField] private ControllableBubbleStates _currentState = ControllableBubbleStates.Idle;
-        [SerializeField] private float _bubbleLifeTime = 2f;
-        [SerializeField] private float _jumpForce = 25f;
+        public ControllableBubbleStates CurrentState => _currentState;
+        [SerializeField, FoldoutGroup("Bubble Settings")] private float _bubbleLifeTime = 2f;
+        [SerializeField, FoldoutGroup("Bubble Settings")] private float _jumpForce = 25f;
+                                                       
+        [SerializeField, FoldoutGroup("Bubble Settings")] private float _playerRotationSpeedInsideBubble;
+        [SerializeField, FoldoutGroup("Bubble Settings")] private Vector2 _playerScaleOnBubble;
+
+        [SerializeField, FoldoutGroup("Cinemachine Impulse")] private CinemachineImpulseSource _impulseSource;
 
         private Coroutine _stopBubbleAfterSeconds;
 
@@ -52,12 +59,16 @@ namespace Rewriters.Items
 
                 ReanudatePlayerPhysics(true);
             }
+
+            Owner.transform.Rotate(new Vector3(0f, 0f, _playerRotationSpeedInsideBubble * Time.deltaTime));
         }
 
         private IEnumerator HandleBubbleBeforeStart_CO()
         {
             yield return new WaitForSeconds(1f);
             Rigidbody.velocity = PlayerInput.Instance.Move * 10f;
+
+            _impulseSource.GenerateImpulse();
 
             _stopBubbleAfterSeconds = StartCoroutine(StopBubbleAfterSeconds_CO());
         }
@@ -86,6 +97,8 @@ namespace Rewriters.Items
 
             Owner.transform.SetParent(this.transform);
             Owner.transform.position = transform.position;
+
+            Owner.transform.SetScale(_playerScaleOnBubble.x, _playerScaleOnBubble.y, 0f);
         }
 
         private void ResetBubble()
@@ -121,6 +134,10 @@ namespace Rewriters.Items
 
             Owner.transform.SetParent(null);
 
+            Owner.transform.ResetRotation();
+
+            Owner.transform.SetScale(1f, 1f, 1f);
+
             if (jump)
             {
                 Owner.Rigidbody.velocity = Vector2.zero;
@@ -134,19 +151,18 @@ namespace Rewriters.Items
             {
                 if (_stopBubbleAfterSeconds != null)
                     StopCoroutine(_stopBubbleAfterSeconds);
-                
-                ReanudatePlayerPhysics(false);
 
                 ControllableBubble ctrBubble = collision.gameObject.GetComponent<ControllableBubble>();
 
-                if(ctrBubble != null)
+                if(ctrBubble != null && ctrBubble.CurrentState == ControllableBubbleStates.Idle)
                 {
                     ctrBubble.Pick(Owner);
 
-                    if (_stopBubbleAfterSeconds != null)
-                        StopCoroutine(_stopBubbleAfterSeconds);
-
-                    ResetBubble();
+                    this.ResetBubble();
+                }
+                else if(ctrBubble == null)
+                {
+                    ReanudatePlayerPhysics(false);
                 }
             }
 
