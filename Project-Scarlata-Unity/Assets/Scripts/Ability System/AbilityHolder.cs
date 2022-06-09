@@ -18,6 +18,8 @@ namespace Rewriters.AbilitySystem
 
         public UnityEvent OnTriggerAbility;
 
+
+        [ContextMenu("Trigger Ability")]
         public void TriggerAbility()
         {
             if (CurrentAbilityState != AbilityStates.ReadyToUse)
