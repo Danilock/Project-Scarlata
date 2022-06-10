@@ -18,7 +18,8 @@ namespace Rewriters.AbilitySystem
         [SerializeField, FoldoutGroup("Fade")] protected string FadePoolName = "Player_Fade";
         [SerializeField, FoldoutGroup("Fade")] protected int AmountOfFades = 4;
         [SerializeField, FoldoutGroup("Fade")] protected float[] GeneralAlphaEffectAmount;
-        private int _lastAmountOfFades;
+
+        private Coroutine _CharacterGravityCoroutine;
 
         public override void Activate(AbilityHolder holder)
         {
@@ -34,8 +35,11 @@ namespace Rewriters.AbilitySystem
         }
 
         protected void ApplyDashToCharacter(AbilityHolder holder){
+            if (_CharacterGravityCoroutine != null)
+                holder.Owner.StopCoroutine(_CharacterGravityCoroutine);
+
             //Starging a coroutine that will stop the character for few seconds.
-            holder.Owner.StartCoroutine(StopCharacterGravityForFewSeconds(holder, Duration));
+            _CharacterGravityCoroutine = holder.Owner.StartCoroutine(StopCharacterGravityForFewSeconds(holder, Duration));
 
             //InstantiateEffects
             holder.Owner.StartCoroutine(InstantiateFadeEffect(holder));
@@ -71,8 +75,7 @@ namespace Rewriters.AbilitySystem
         /// <param name="seconds"></param>
         /// <returns></returns>
         protected IEnumerator StopCharacterGravityForFewSeconds(AbilityHolder holder, float seconds){
-            
-            float previousGravityScale = holder.Owner.Rigidbody.gravityScale;
+
             CharacterController2D ch2D = holder.Owner.GetComponent<CharacterController2D>();
 
             holder.Owner.Rigidbody.gravityScale = 0f;
@@ -85,7 +88,7 @@ namespace Rewriters.AbilitySystem
             // If the character isn't wall climbing we set the Gravity as how it should be.
             // Note: In this condition, we should add all states that will change RGB's Gravity.
             if(holder.Owner.CurrentCharacterState != CharacterStates.WallClimbing)
-                holder.Owner.Rigidbody.gravityScale = previousGravityScale;
+                holder.Owner.Rigidbody.gravityScale = 5f;
             
             //Allowing the character to move again
             ch2D.CanMove = true;
