@@ -16,6 +16,7 @@ namespace Rewriters.Items
         public ControllableBubbleStates CurrentState => _currentState;
         [SerializeField, FoldoutGroup("Bubble Settings")] private float _bubbleLifeTime = 2f;
         [SerializeField, FoldoutGroup("Bubble Settings")] private float _jumpForce = 25f;
+        [SerializeField, FoldoutGroup("Bubble Settings")] private float _secondsToStartMovingAfterPicked = 1f;
                                                        
         [SerializeField, FoldoutGroup("Bubble Settings")] private float _playerRotationSpeedInsideBubble;
         [SerializeField, FoldoutGroup("Bubble Settings")] private Vector2 _playerScaleOnBubble;
@@ -29,6 +30,7 @@ namespace Rewriters.Items
             base.Awake();
 
             _initialPosition = transform.position;
+            _currentState = ControllableBubbleStates.Idle;
         }
 
         protected override void OnPick(Character owner)
@@ -40,7 +42,7 @@ namespace Rewriters.Items
 
             Rigidbody.bodyType = RigidbodyType2D.Dynamic;
 
-            _currentState = ControllableBubbleStates.OnUse;
+            _currentState = ControllableBubbleStates.WaitingToStartMoving;
 
             owner.GetComponent<Character>().SetCharacterState(CharacterStates.InBubbles);
 
@@ -65,7 +67,9 @@ namespace Rewriters.Items
 
         private IEnumerator HandleBubbleBeforeStart_CO()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(_secondsToStartMovingAfterPicked);
+            _currentState = ControllableBubbleStates.OnUse;
+
             Rigidbody.velocity = PlayerInput.Instance.Move * 10f;
 
             _impulseSource.GenerateImpulse();
@@ -83,7 +87,7 @@ namespace Rewriters.Items
         private void StopPlayerPhysics()
         {
             CharacterController2D ch2D = Owner.GetComponent<CharacterController2D>();
-            ch2D.enabled = false;
+            ch2D.CanMove = false;
 
             Rigidbody2D playerRGB = Owner.GetComponent<Rigidbody2D>();
             playerRGB.bodyType = RigidbodyType2D.Kinematic;
@@ -98,7 +102,8 @@ namespace Rewriters.Items
             Owner.transform.SetParent(this.transform);
             Owner.transform.position = transform.position;
 
-            Owner.transform.SetScale(_playerScaleOnBubble.x, _playerScaleOnBubble.y, 0f);
+            Owner.transform.localScale = new Vector3(.5f * (ch2D.FacingRight ? 1f : -1f), .5f, 0f);
+            Owner.transform.DOPunchScale(new Vector3(_playerScaleOnBubble.x, _playerScaleOnBubble.y, 0f), _secondsToStartMovingAfterPicked, 10, 1f);
         }
 
         private void ResetBubble()
@@ -118,7 +123,7 @@ namespace Rewriters.Items
             ResetBubble();
 
             CharacterController2D ch2D = Owner.GetComponent<CharacterController2D>();
-            ch2D.enabled = true;
+            ch2D.CanMove = true;
 
             Rigidbody2D playerRGB = Owner.GetComponent<Rigidbody2D>();
             playerRGB.bodyType = RigidbodyType2D.Dynamic;
@@ -136,7 +141,7 @@ namespace Rewriters.Items
 
             Owner.transform.ResetRotation();
 
-            Owner.transform.SetScale(1f, 1f, 1f);
+            Owner.transform.localScale = new Vector3(1f * (ch2D.FacingRight ? 1f : -1f), 1f, 0f);
 
             if (jump)
             {
@@ -173,6 +178,7 @@ namespace Rewriters.Items
     public enum ControllableBubbleStates
     {
         OnUse,
+        WaitingToStartMoving,
         Returning,
         Idle
     }

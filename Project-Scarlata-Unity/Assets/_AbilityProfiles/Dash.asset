@@ -18,7 +18,7 @@ MonoBehaviour:
   AllowedCharacterStates: 000000000100000004000000
   Force: 800
   ForceMode: 1
-  Duration: 0.25
+  Duration: 0.3
   DashReduction: 1.5
   FadePoolName: Player_Fade
   AmountOfFades: 3

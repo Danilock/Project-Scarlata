@@ -454,14 +454,14 @@ namespace Rewriters
 				if (move > 0 && !m_FacingRight)
 				{
 					// ... flip the player.
-					Flip(_character.CurrentCharacterState == CharacterStates.WallClimbing ? 0f : .3f);
+					Flip(0f);
 				}
 				// Otherwise if the input is moving the player left and the player is facing right...
 				else if (move < 0 && m_FacingRight)
 				{
 					// ... flip the player.
 
-					Flip(_character.CurrentCharacterState == CharacterStates.WallClimbing ? 0f : .3f);
+					Flip(0f);
 				}
 			}
 		}
