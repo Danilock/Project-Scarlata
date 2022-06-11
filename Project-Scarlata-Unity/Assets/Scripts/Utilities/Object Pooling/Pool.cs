@@ -9,7 +9,7 @@ namespace ObjectPooling
     [Serializable, InlineProperty(LabelWidth = 90)]
     public class Pool
     {
-        private int _currentIndex = 0;
+        [SerializeField] private int _currentIndex = 0;
 
         #region Public Fields
         

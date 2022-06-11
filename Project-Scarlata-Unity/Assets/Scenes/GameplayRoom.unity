@@ -1170,6 +1170,10 @@ PrefabInstance:
       value: 0.69
       objectReference: {fileID: 0}
     - target: {fileID: 1819791584579965611, guid: ac084845a6d66b340bde3473b6164348, type: 3}
+      propertyPath: _landingPosition
+      value: 
+      objectReference: {fileID: 1244404498}
+    - target: {fileID: 1819791584579965611, guid: ac084845a6d66b340bde3473b6164348, type: 3}
       propertyPath: _cornerCheckSize.x
       value: 0.41
       objectReference: {fileID: 0}
@@ -2573,6 +2577,36 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8698382858624439750, guid: a5596158797a8c94083b8f51cb0e59a4, type: 3}
   m_PrefabInstance: {fileID: 1088948992}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1244404497
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1244404498}
+  m_Layer: 6
+  m_Name: Land Effect Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1244404498
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1244404497}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.64, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2016139603}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1264107414
 GameObject:
   m_ObjectHideFlags: 0
@@ -3782,6 +3816,53 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1819791584579965614, guid: ac084845a6d66b340bde3473b6164348, type: 3}
   m_PrefabInstance: {fileID: 497451757}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2030011172 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1819791584579965610, guid: ac084845a6d66b340bde3473b6164348, type: 3}
+  m_PrefabInstance: {fileID: 497451757}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2030011173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030011172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_RawSignal: {fileID: 11400000, guid: 46965f9cbaf525742a6da4c2172a99cd, type: 2}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 10
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 1000
+    m_PropagationSpeed: 343
 --- !u!1 &2061535720
 GameObject:
   m_ObjectHideFlags: 0

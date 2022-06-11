@@ -48,6 +48,7 @@ MonoBehaviour:
     SerializedBytes: 
     ReferencedUnityObjects:
     - {fileID: 2594247248129134623, guid: 4d6596f1db3a2d047b58a798aebef4d1, type: 3}
+    - {fileID: 77323410591085085, guid: 0beabd2cbff745f4fb7e10cc46d471ba, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -66,7 +67,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 1
+      Data: 2
     - Name: 
       Entry: 7
       Data: 
@@ -85,6 +86,40 @@ MonoBehaviour:
     - Name: Instances
       Entry: 7
       Data: 3|System.Collections.Generic.List`1[[UnityEngine.GameObject, UnityEngine.CoreModule]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: LandEffect_Light
+    - Name: $v
+      Entry: 7
+      Data: 4|ObjectPooling.Pool, Assembly-CSharp
+    - Name: ObjectToInstantiate
+      Entry: 10
+      Data: 1
+    - Name: Amount
+      Entry: 3
+      Data: 7
+    - Name: Instances
+      Entry: 7
+      Data: 5|System.Collections.Generic.List`1[[UnityEngine.GameObject, UnityEngine.CoreModule]],
         mscorlib
     - Name: 
       Entry: 12

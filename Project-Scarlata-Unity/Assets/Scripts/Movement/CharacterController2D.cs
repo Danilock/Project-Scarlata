@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using Rewriters.Player;
+using ObjectPooling;
 
 namespace Rewriters
 {
@@ -171,8 +172,14 @@ namespace Rewriters
 
         private PlayerInput _inputManager;
 
-		#region Normal Wall
-		[SerializeField, FoldoutGroup("Normal Wall")] private Vector2 _normalWallSizeCheckSize;
+		#region Landing Effect
+		[SerializeField, FoldoutGroup("Land Effect")] private Transform _landingPosition;
+		[SerializeField, FoldoutGroup("Land Effect")] private string _lightEffectPoolName = "LandEffect_Light";
+		[SerializeField, FoldoutGroup("Land Effect")] private string _darkEffectPoolName = "LandEffect_Dark";
+        #endregion
+
+        #region Normal Wall
+        [SerializeField, FoldoutGroup("Normal Wall")] private Vector2 _normalWallSizeCheckSize;
 		[SerializeField, FoldoutGroup("Normal Wall")] private Vector2 _normalWallSizeCheckOffset;
 
 		[SerializeField, FoldoutGroup("Normal Wall")] private bool m_hitNormalWall;
@@ -222,8 +229,16 @@ namespace Rewriters
 			_lastScale = transform.localScale;
 			_initialSpeed = m_speed;
 		}
+        private void OnEnable()
+        {
+			//OnLandEvent.AddListener(InstantiateLandEffect);
+        }
 
-		private void FixedUpdate()
+        private void OnDisable()
+        {
+			//OnLandEvent.RemoveListener(InstantiateLandEffect);
+        }
+        private void FixedUpdate()
 		{
 			_wasGrounded = m_Grounded;
 			m_wasOnWall = m_hitWall;
@@ -250,7 +265,7 @@ namespace Rewriters
 					{
 						OnLandEvent.Invoke();
 
-                        if (_canDoJumpOnGrounded)
+						if (_canDoJumpOnGrounded)
                         {
 							Move(_inputManager.Move.x, false, true, false);
                         }
@@ -261,6 +276,7 @@ namespace Rewriters
 					if(!_wasGrounded)
 					{
 						m_speed = _initialSpeed;
+						InstantiateLandEffect();
 					}
 				}
 			}
@@ -544,6 +560,12 @@ namespace Rewriters
 			m_speed = m_speedWhenNotGrounded;
         }
 		#endregion
+
+		private void InstantiateLandEffect()
+        {
+			var landEffect = ObjectPooler.Instance.GetObjectFromPool(_lightEffectPoolName);
+			landEffect.transform.position = _landingPosition.position;
+		}
 
 		private void OnDrawGizmos()
 		{
