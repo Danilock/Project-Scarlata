@@ -20,7 +20,7 @@ namespace Rewriters.AbilitySystem
 
 
         [ContextMenu("Trigger Ability")]
-        public void TriggerAbility()
+        public virtual void TriggerAbility()
         {
             if (CurrentAbilityState != AbilityStates.ReadyToUse)
                 return;
@@ -33,12 +33,12 @@ namespace Rewriters.AbilitySystem
             StartCoroutine(_handleAbilityUsage);
         }
 
-        private void Update()
+        protected virtual void Update()
         {
            Ability.OnAbilityUpdate(this);
         }
 
-        private IEnumerator HandleAbilityUsage_CO()
+        protected virtual IEnumerator HandleAbilityUsage_CO()
         {
             CurrentAbilityState = AbilityStates.Casting;
 
@@ -54,22 +54,22 @@ namespace Rewriters.AbilitySystem
             }
         }
 
-        private IEnumerator HandleCooldown_CO(){
+        protected virtual IEnumerator HandleCooldown_CO(){
             yield return new WaitForSeconds(Ability.Cooldown);
 
             CurrentAbilityState = AbilityStates.ReadyToUse;
         }
 
-        public bool CharacterIsOnAllowedState()
+        public virtual bool CharacterIsOnAllowedState()
         {
             return Ability.AllowedCharacterStates.Contains(Owner.CurrentCharacterState);
         }
 
-        public void SetAbilityState(AbilityStates newState){
+        public virtual void SetAbilityState(AbilityStates newState){
             CurrentAbilityState = newState;
         }
         
-        public void SetAbilityState(int newState){
+        public virtual void SetAbilityState(int newState){
             CurrentAbilityState = (AbilityStates) newState;
         }
     }

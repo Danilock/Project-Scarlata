@@ -1,5 +1,108 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1078947488
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1078947490}
+  - component: {fileID: 1078947489}
+  m_Layer: 6
+  m_Name: DashImpulse
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1078947490
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1078947488}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1819791584579965614}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1078947489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1078947488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_RawSignal: {fileID: 11400000, guid: 46965f9cbaf525742a6da4c2172a99cd, type: 2}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 10
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 1000
+    m_PropagationSpeed: 343
+--- !u!1 &1244404497
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1244404498}
+  m_Layer: 6
+  m_Name: Land Effect Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1244404498
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1244404497}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.64, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1819791584579965614}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1819791583791166696
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,6 +280,8 @@ GameObject:
   - component: {fileID: 1819791584579965619}
   - component: {fileID: 1762695977}
   - component: {fileID: 1478351172}
+  - component: {fileID: 2030011173}
+  - component: {fileID: 1932446870547322379}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -198,6 +303,8 @@ Transform:
   - {fileID: 1819791583791166697}
   - {fileID: 1819791584516802669}
   - {fileID: 1819791584025535590}
+  - {fileID: 1078947490}
+  - {fileID: 1244404498}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -220,7 +327,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &1819791584579965611
 MonoBehaviour:
@@ -283,7 +390,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   m_wallCheckOffset: {x: 0, y: 0}
-  m_wallCheckSize: 0.57
+  m_wallCheckSize: 0.69
   m_hitWall: 0
   m_rotationDurationOnWallJump: 0
   _movementTimeOffAfterWallJump: 0.225
@@ -293,6 +400,9 @@ MonoBehaviour:
   _wallJumpForce: {x: 10, y: 15}
   m_wasOnWall: 0
   _animator: {fileID: 1819791584579965618}
+  _landingPosition: {fileID: 1244404498}
+  _lightEffectPoolName: LandEffect_Light
+  _darkEffectPoolName: LandEffect_Dark
   _normalWallSizeCheckSize: {x: 0.61, y: 0.85}
   _normalWallSizeCheckOffset: {x: 0.3, y: 0}
   m_hitNormalWall: 0
@@ -318,9 +428,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6eef61910c57a84987156aab3e6d5ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LiveAcrossScenes: 0
   Move: {x: 0, y: 0}
   Jump: 0
   Dash: 0
+  Transform: 0
 --- !u!114 &1819791584579965615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,7 +497,21 @@ MonoBehaviour:
   Owner: {fileID: 1819791584579965613}
   Ability: {fileID: 11400000, guid: 19e6e59ed9649814fa5eb9432e1f7355, type: 2}
   CurrentAbilityState: 0
-  _secondsToEnableAbilityIfCharacterIsGrounded: 0.3
+  OnTriggerAbility:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1078947489}
+        m_TargetAssemblyTypeName: Cinemachine.CinemachineImpulseSource, Cinemachine
+        m_MethodName: GenerateImpulse
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1762695977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -400,8 +526,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _input: {fileID: 1819791584579965612}
   _dashHolder: {fileID: 1819791584579965619}
+  _transformHolder: {fileID: 1932446870547322379}
   _playerAbilities:
   - {fileID: 1819791584579965619}
+  - {fileID: 1932446870547322379}
 --- !u!70 &1478351172
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -418,3 +546,63 @@ CapsuleCollider2D:
   m_Offset: {x: 0.0686121, y: 0.009841174}
   m_Size: {x: 0.5519352, y: 0.98031765}
   m_Direction: 0
+--- !u!114 &2030011173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819791584579965610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_RawSignal: {fileID: 11400000, guid: 46965f9cbaf525742a6da4c2172a99cd, type: 2}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 10
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 1000
+    m_PropagationSpeed: 343
+--- !u!114 &1932446870547322379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819791584579965610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a07f7deb33f3daa47b6011f3057742c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Owner: {fileID: 1819791584579965613}
+  Ability: {fileID: 11400000, guid: 9d7dc61339087b444abc04602dd85602, type: 2}
+  CurrentAbilityState: 0
+  OnTriggerAbility:
+    m_PersistentCalls:
+      m_Calls: []

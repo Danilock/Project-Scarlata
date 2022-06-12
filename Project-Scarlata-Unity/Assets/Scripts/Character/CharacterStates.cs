@@ -15,6 +15,7 @@ namespace Rewriters
         WallClimbing,
         UsingSpell,
         Dashing,
-        InBubbles
+        InBubbles,
+        Transforming
     }
 }

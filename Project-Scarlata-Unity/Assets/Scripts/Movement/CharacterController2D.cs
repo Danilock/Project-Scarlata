@@ -567,6 +567,11 @@ namespace Rewriters
 			landEffect.transform.position = _landingPosition.position;
 		}
 
+		public void DisallowMovement() => CanMove = false;
+		public void AllowMovement() => CanMove = true;
+
+		public void StopVelocity() => Rigidbody.velocity = Vector2.zero;
+
 		private void OnDrawGizmos()
 		{
 			if (m_GroundCheck == null)

@@ -9,7 +9,7 @@ namespace Rewriters.Player
     {
         [SerializeField] private PlayerInput _input;
 
-        [SerializeField] private AbilityHolder _dashHolder;
+        [SerializeField] private AbilityHolder _dashHolder, _transformHolder;
 
         [SerializeField] private List<AbilityHolder> _playerAbilities;
 
@@ -24,6 +24,10 @@ namespace Rewriters.Player
             if (_input.Dash)
             {
                 _dashHolder.TriggerAbility();
+            }
+            if (_input.Transform)
+            {
+                _transformHolder.TriggerAbility();
             }
         }
 

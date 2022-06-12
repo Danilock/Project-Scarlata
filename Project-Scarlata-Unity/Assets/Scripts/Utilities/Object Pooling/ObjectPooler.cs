@@ -22,6 +22,8 @@ namespace ObjectPooling
 
         private void InitializePools()
         {
+            GameObject obj = new GameObject("Pool System");
+
             foreach (Pool currentPool in Pools.Values)
             {
                 GameObject parent = new GameObject($"{currentPool.ObjectToInstantiate.name} () Pool Objects");
@@ -34,6 +36,8 @@ namespace ObjectPooling
                 
                     currentPool.Instances.Add(instanceCreated);
                 }
+
+                parent.transform.SetParent(obj.transform);
             }
         }
 
