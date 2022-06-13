@@ -14,7 +14,7 @@ namespace Rewriters
 		#region Movement and Jump Fields
 
 		[SerializeField, FoldoutGroup("Movement and Jump Fields")] private float m_JumpForce = 400f;                            // Amount of force added when the player jumps.
-		[SerializeField] private bool m_isInAirDueToWallJump;
+		[SerializeField, FoldoutGroup("Movement and Jump Fields")] private bool m_isInAirDueToWallJump;
 		private Vector3 _lastScale;
 		private float CalculateJumpForceDirection
 		{
@@ -85,7 +85,7 @@ namespace Rewriters
 		}
 
 		[SerializeField, FoldoutGroup("Movement and Jump Fields")] private float k_GroundedRadius = .1f; // Radius of the overlap circle to determine if grounded
-		[SerializeField] private bool m_Grounded;            // Whether or not the player is grounded.
+		[SerializeField, FoldoutGroup("Movement and Jump Fields")] private bool m_Grounded;            // Whether or not the player is grounded.
 		public bool IsGrounded
 		{
 			get
@@ -114,13 +114,14 @@ namespace Rewriters
 		#region Other
 
 		// Radius of the overlap circle to determine if the player can stand up
-		public Rigidbody2D Rigidbody;
-		[SerializeField] private bool m_FacingRight = true;  // For determining which way the player is currently facing.
+		[HideInInspector] public Rigidbody2D Rigidbody;
+		[SerializeField, FoldoutGroup("Movement and Jump Fields")] private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 		public bool FacingRight { get => m_FacingRight; set => m_FacingRight = value; }
 
 		public Collider2D[] Colliders { get; private set; }
 
 		private bool _jumpCoroutineStarted;
+		private PlayerInput _inputManager;
 
 		#endregion
 
@@ -141,7 +142,7 @@ namespace Rewriters
 
 		[SerializeField, FoldoutGroup("Wall Check")] private float _gravityOnceDetectingWall = 7f;
 
-		[SerializeField, ReadOnly] private bool _isWallClimbing = false;
+		[SerializeField, FoldoutGroup("Wall Check"), ReadOnly] private bool _isWallClimbing = false;
 
 		[SerializeField, FoldoutGroup("Wall Check")] private Vector2 _wallJumpForce;
 
@@ -157,7 +158,7 @@ namespace Rewriters
 		#endregion
 
 		#region Animator
-		[SerializeField] private Animator _animator;
+		[SerializeField, FoldoutGroup("Animator")] private Animator _animator;
 
 		private static readonly int _hashSpeed = Animator.StringToHash("Speed");
 		private static readonly int _hashJump = Animator.StringToHash("Jump");
@@ -169,8 +170,6 @@ namespace Rewriters
 		private static readonly int _hashSprint = Animator.StringToHash("Sprint");
 		private static readonly int _hashWasGrounded = Animator.StringToHash("WasGrounded");
 		#endregion
-
-        private PlayerInput _inputManager;
 
 		#region Landing Effect
 		[SerializeField, FoldoutGroup("Land Effect")] private Transform _landingPosition;
@@ -210,8 +209,12 @@ namespace Rewriters
 		[SerializeField, FoldoutGroup("Character")] private Character _character;
 		#endregion
 
-		#region Unity Methods
-		private void Awake()
+		#region Flip
+		[FoldoutGroup("Flip"), SerializeField] private float _flipTime = .1f;
+        #endregion
+
+        #region Unity Methods
+        private void Awake()
 		{
 			Rigidbody = GetComponent<Rigidbody2D>();
 
@@ -229,15 +232,7 @@ namespace Rewriters
 			_lastScale = transform.localScale;
 			_initialSpeed = m_speed;
 		}
-        private void OnEnable()
-        {
-			//OnLandEvent.AddListener(InstantiateLandEffect);
-        }
-
-        private void OnDisable()
-        {
-			//OnLandEvent.RemoveListener(InstantiateLandEffect);
-        }
+    
         private void FixedUpdate()
 		{
 			_wasGrounded = m_Grounded;
@@ -470,14 +465,14 @@ namespace Rewriters
 				if (move > 0 && !m_FacingRight)
 				{
 					// ... flip the player.
-					Flip(0f);
+					Flip(_flipTime);
 				}
 				// Otherwise if the input is moving the player left and the player is facing right...
 				else if (move < 0 && m_FacingRight)
 				{
 					// ... flip the player.
 
-					Flip(0f);
+					Flip(_flipTime);
 				}
 			}
 		}

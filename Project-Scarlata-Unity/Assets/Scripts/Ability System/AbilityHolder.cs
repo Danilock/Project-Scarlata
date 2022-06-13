@@ -18,6 +18,11 @@ namespace Rewriters.AbilitySystem
 
         public UnityEvent OnTriggerAbility;
 
+        protected virtual void Awake()
+        {
+            if (Owner == null)
+                Owner = GetComponent<Character>();
+        }
 
         [ContextMenu("Trigger Ability")]
         public virtual void TriggerAbility()
