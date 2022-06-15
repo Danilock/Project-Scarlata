@@ -21,7 +21,7 @@ namespace Rewriters.Player
 
         private void Start()
         {
-            GenerateHolders();
+            GenerateAbilities();
         }
 
         // Update is called once per frame
@@ -53,7 +53,7 @@ namespace Rewriters.Player
             GetAbility<Dash>().SetAbilityState(newState);
         }
 
-        private void GenerateHolders()
+        private void GenerateAbilities()
         {
             foreach(BaseAbility ability in _abilities)
             {

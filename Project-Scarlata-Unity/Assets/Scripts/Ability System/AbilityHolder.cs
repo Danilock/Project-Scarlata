@@ -18,15 +18,25 @@ namespace Rewriters.AbilitySystem
 
         public UnityEvent OnTriggerAbility;
 
+        public ManaSource ManaSource;
+
         protected virtual void Awake()
         {
             if (Owner == null)
                 Owner = GetComponent<Character>();
         }
 
+        protected void Start()
+        {
+            ManaSource = GetComponent<ManaSource>();
+        }
+
         [ContextMenu("Trigger Ability")]
         public virtual void TriggerAbility()
         {
+            if (Ability.RequiresMana && ManaSource.GetAmount < Ability.ManaRequired)
+                return;
+
             if (CurrentAbilityState != AbilityStates.ReadyToUse)
                 return;
 
