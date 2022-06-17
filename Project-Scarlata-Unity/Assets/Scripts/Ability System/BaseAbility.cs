@@ -16,9 +16,17 @@ namespace Rewriters.AbilitySystem
 
         [FoldoutGroup("Mana")]
         public bool RequiresMana = false;
+
+        [FoldoutGroup("Mana"), ShowIf("@this.RequiresMana")]
         public float ManaRequired = 0f;
 
         [FoldoutGroup("Allowed States")] public List<CharacterStates> AllowedCharacterStates = new List<CharacterStates>() { CharacterStates.Idle };
+
+        /// <summary>
+        /// Sequences are used to determine if this ability has different sequences such as an attack.
+        /// </summary>
+        [FoldoutGroup("Sequence")] public bool HasSequence = false;
+        [FoldoutGroup("Sequence"), ShowIf("@this.HasSequence")] public int AmountOfSequences;
 
         public virtual void OnAbilityUpdate(AbilityHolder holder) { }
 

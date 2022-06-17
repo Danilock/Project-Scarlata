@@ -31,6 +31,10 @@ namespace Rewriters.Player
             {
                 GetAbility<Dash>().TriggerAbility();
             }
+            if (_input.Attack)
+            {
+                GetAbility<PlayerAttack>().TriggerAbility();
+            }
         }
 
         /// <summary>
@@ -57,7 +61,8 @@ namespace Rewriters.Player
         {
             foreach(BaseAbility ability in _abilities)
             {
-                AbilityHolder currentHolder = gameObject.AddComponent<AbilityHolder>();
+                AbilityHolder currentHolder = this.gameObject.AddComponent<AbilityHolder>();
+
                 currentHolder.Ability = ability;
 
                 _holders.Add(currentHolder);

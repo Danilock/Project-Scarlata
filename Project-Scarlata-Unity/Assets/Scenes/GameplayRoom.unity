@@ -1163,12 +1163,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1762695977, guid: ac084845a6d66b340bde3473b6164348, type: 3}
       propertyPath: _abilities.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1762695977, guid: ac084845a6d66b340bde3473b6164348, type: 3}
       propertyPath: _abilities.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: 19e6e59ed9649814fa5eb9432e1f7355, type: 2}
+    - target: {fileID: 1762695977, guid: ac084845a6d66b340bde3473b6164348, type: 3}
+      propertyPath: _abilities.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 30e684935da152b44b984539b2256072, type: 2}
     - target: {fileID: 1762695977, guid: ac084845a6d66b340bde3473b6164348, type: 3}
       propertyPath: _playerAbilities.Array.size
       value: 0
@@ -1181,6 +1185,10 @@ PrefabInstance:
       propertyPath: _playerAbilities.Array.data[1]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1762695977, guid: ac084845a6d66b340bde3473b6164348, type: 3}
+      propertyPath: _abilities.Array.data[0].Ability
+      value: 
+      objectReference: {fileID: 11400000, guid: 19e6e59ed9649814fa5eb9432e1f7355, type: 2}
     - target: {fileID: 1819791584579965610, guid: ac084845a6d66b340bde3473b6164348, type: 3}
       propertyPath: m_Name
       value: Player
@@ -2519,6 +2527,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _amount: 0
   _maxAmount: 100
+--- !u!114 &1185411484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185411482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acc01554630e80f46b788c9c868dd08e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _point: {fileID: 0}
+  IgnoreTargetInvulnerability: 0
+  DamageAmount: 15
+  Layers:
+    serializedVersion: 2
+    m_Bits: 1
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
+  Owner: {fileID: 0}
+  DamageAreaSize: {x: 0, y: 0}
+  _focusOn: 1
+  _offset: {x: 0, y: 0}
+  _gizmoColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &1185411486 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1762695977, guid: ac084845a6d66b340bde3473b6164348, type: 3}

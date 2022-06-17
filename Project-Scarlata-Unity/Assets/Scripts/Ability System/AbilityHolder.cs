@@ -12,13 +12,15 @@ namespace Rewriters.AbilitySystem
 
         public AbilityStates CurrentAbilityState = AbilityStates.ReadyToUse;
 
-        private IEnumerator _handleAbilityUsage;
+        private Coroutine _handleAbilityUsage;
 
         private static readonly int Hash_Ability = Animator.StringToHash("Ability");
 
         public UnityEvent OnTriggerAbility;
 
         public ManaSource ManaSource;
+
+        public int CurrentSequence;
 
         protected virtual void Awake()
         {
@@ -43,9 +45,7 @@ namespace Rewriters.AbilitySystem
             if (!CharacterIsOnAllowedState())
                 return;
 
-            _handleAbilityUsage = HandleAbilityUsage_CO();
-
-            StartCoroutine(_handleAbilityUsage);
+            _handleAbilityUsage = StartCoroutine(HandleAbilityUsage_CO());
         }
 
         protected virtual void Update()
@@ -60,9 +60,14 @@ namespace Rewriters.AbilitySystem
             yield return new WaitForSeconds(Ability.CastingTime);
 
             Ability.Activate(this);
+
             CurrentAbilityState = AbilityStates.Cooldown;
+
             Owner.Animator.SetTrigger(Hash_Ability);
+
             OnTriggerAbility?.Invoke();
+
+            HandleSequence();
 
             if(Ability.HasCooldown){
                 StartCoroutine(HandleCooldown_CO());
@@ -86,6 +91,14 @@ namespace Rewriters.AbilitySystem
         
         public virtual void SetAbilityState(int newState){
             CurrentAbilityState = (AbilityStates) newState;
+        }
+
+        protected virtual void HandleSequence()
+        {
+            if (!Ability.HasSequence)
+                return;
+
+            CurrentSequence = (CurrentSequence + 1) % Ability.AmountOfSequences;
         }
     }
 

@@ -14,6 +14,8 @@ namespace Rewriters.Player
 
         public bool Transform;
 
+        public bool Attack;
+
         private void Update()
         {
             Move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
@@ -21,6 +23,8 @@ namespace Rewriters.Player
             Jump = Input.GetButtonDown("Jump");
 
             Dash = Input.GetButtonDown("Dash");
+            
+            Attack = Input.GetButtonDown("Attack");
 
             Transform = Input.GetButtonDown("Transform");
         }

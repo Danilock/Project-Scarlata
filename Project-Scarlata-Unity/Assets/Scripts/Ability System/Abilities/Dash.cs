@@ -7,7 +7,7 @@ using ObjectPooling;
 
 namespace Rewriters.AbilitySystem
 {
-    [CreateAssetMenu(fileName = "Dash", menuName = "Abilities/Dash")]
+    [CreateAssetMenu(fileName = "Dash", menuName = "Abilities/Player/Dash")]
     public class Dash : BaseAbility
     {
         [SerializeField, FoldoutGroup("Force")] protected float Force;
