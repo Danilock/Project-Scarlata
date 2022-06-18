@@ -123,6 +123,8 @@ namespace Rewriters
 		private bool _jumpCoroutineStarted;
 		private PlayerInput _inputManager;
 
+		private PlayerAbilityHandler _abilityHandler;
+
 		#endregion
 
 		#region Wall Check
@@ -231,6 +233,7 @@ namespace Rewriters
 			_inputManager = GetComponent<PlayerInput>();
 			_lastScale = transform.localScale;
 			_initialSpeed = m_speed;
+			_abilityHandler = GetComponent<PlayerAbilityHandler>();
 		}
     
         private void FixedUpdate()
@@ -353,9 +356,10 @@ namespace Rewriters
 			_animator.SetBool(_hashWallClimb, m_hitWall && !m_Grounded);
 			//_animator.SetBool(_hashWasGrounded, _wasGrounded);
 		}
-		#endregion
+        #endregion
 
-		public void Move(float move, bool crouch, bool jump, bool sprint)
+        #region Movement Methods
+        public void Move(float move, bool crouch, bool jump, bool sprint)
 		{
 			if (!_canMove)
 				return;
@@ -477,6 +481,28 @@ namespace Rewriters
 			}
 		}
 
+
+		public void Flip(float flipDuration)
+		{
+			m_FacingRight = !m_FacingRight;
+
+			Vector3 theScale = _lastScale;
+			theScale.x *= -1;
+
+			_lastScale = theScale;
+
+			transform.DOScale(theScale, flipDuration);
+		}
+
+
+
+		public void DisallowMovement() => CanMove = false;
+		public void AllowMovement() => CanMove = true;
+
+		public void StopVelocity() => Rigidbody.velocity = Vector2.zero;
+		#endregion
+
+		#region Coroutines
 		private IEnumerator HandleWallJump()
 		{
 			_canMove = false;
@@ -522,17 +548,13 @@ namespace Rewriters
 			_canDoJumpOnGrounded = false;
         }
 
-		public void Flip(float flipDuration)
+		private IEnumerator HandleSpeedOnAir()
 		{
-			m_FacingRight = !m_FacingRight;
+			yield return new WaitForSeconds(_timeToWaitToSetAirSpeedAfterJump);
 
-			Vector3 theScale = _lastScale;
-			theScale.x *= -1;
-
-			_lastScale = theScale;
-
-			transform.DOScale(theScale, flipDuration);
+			m_speed = m_speedWhenNotGrounded;
 		}
+        #endregion
 
 		#region  Public Methods
 		public void Jump(Vector2 force)
@@ -547,25 +569,15 @@ namespace Rewriters
 
 			StartCoroutine(HandleSpeedOnAir());
 		}
-
-		private IEnumerator HandleSpeedOnAir()
-        {
-			yield return new WaitForSeconds(_timeToWaitToSetAirSpeedAfterJump);
-
-			m_speed = m_speedWhenNotGrounded;
-        }
 		#endregion
 
 		private void InstantiateLandEffect()
         {
-			var landEffect = ObjectPooler.Instance.GetObjectFromPool(_lightEffectPoolName);
+			string effectToChoose = _abilityHandler.TransformationMode == PlayerTransformationMode.LightMode ? _lightEffectPoolName : _darkEffectPoolName;
+			var landEffect = ObjectPooler.Instance.GetObjectFromPool(effectToChoose);
+			
 			landEffect.transform.position = _landingPosition.position;
 		}
-
-		public void DisallowMovement() => CanMove = false;
-		public void AllowMovement() => CanMove = true;
-
-		public void StopVelocity() => Rigidbody.velocity = Vector2.zero;
 
 		private void OnDrawGizmos()
 		{

@@ -6,10 +6,21 @@ namespace Rewriters.AbilitySystem
 {
     public class ManaSource : MonoBehaviour
     {
-        [SerializeField] protected float _amount;
+        [SerializeField] protected float _currentAmount;
 
-        public float GetAmount => _amount;
+        public float GetCurrentAmount => _currentAmount;
 
         [SerializeField] protected float _maxAmount;
+
+        public void AddMana(float amount)
+        {
+            if(amount + _currentAmount > _maxAmount)
+            {
+                _currentAmount = _maxAmount;
+                return;
+            }
+
+            _currentAmount += amount;
+        }
     }
 }

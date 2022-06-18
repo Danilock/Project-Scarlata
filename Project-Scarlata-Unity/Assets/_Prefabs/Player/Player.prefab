@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &23221731
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 23221732}
+  m_Layer: 6
+  m_Name: Attack Area
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &23221732
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23221731}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.938, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1819791584579965614}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1078947488
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,6 +310,9 @@ GameObject:
   - component: {fileID: 1819791584579965613}
   - component: {fileID: 1762695977}
   - component: {fileID: 2030011173}
+  - component: {fileID: 1185411483}
+  - component: {fileID: 1185411484}
+  - component: {fileID: 1185411495}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -303,6 +336,7 @@ Transform:
   - {fileID: 1819791584025535590}
   - {fileID: 1078947490}
   - {fileID: 1244404498}
+  - {fileID: 23221732}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -398,16 +432,16 @@ MonoBehaviour:
   OnLandEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Rewriters.AbilitySystem.AbilityHolder, Assembly-CSharp
-        m_MethodName: SetAbilityState
+      - m_Target: {fileID: 1762695977}
+        m_TargetAssemblyTypeName: Rewriters.Player.PlayerAbilityHandler, Assembly-CSharp
+        m_MethodName: SetDashState
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: s
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
   OnGroundEvent:
@@ -467,6 +501,7 @@ MonoBehaviour:
   Jump: 0
   Dash: 0
   Transform: 0
+  Attack: 0
 --- !u!114 &1819791584579965615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -510,11 +545,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _input: {fileID: 1819791584579965612}
-  _dashHolder: {fileID: 0}
-  _transformHolder: {fileID: 0}
-  _playerAbilities:
-  - {fileID: 0}
-  - {fileID: 0}
+  _abilities:
+  - {fileID: 11400000, guid: 19e6e59ed9649814fa5eb9432e1f7355, type: 2}
+  - {fileID: 11400000, guid: 30e684935da152b44b984539b2256072, type: 2}
+  - {fileID: 11400000, guid: bfee8314bceae874c900dc0bfe5ed495, type: 2}
+  TransformationMode: 0
 --- !u!114 &2030011173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -557,3 +592,74 @@ MonoBehaviour:
     m_DissipationMode: 2
     m_DissipationDistance: 1000
     m_PropagationSpeed: 343
+--- !u!114 &1185411483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819791584579965610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bbb317d59099314da6fe3e3ea16c5e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentAmount: 0
+  _maxAmount: 100
+--- !u!114 &1185411484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819791584579965610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acc01554630e80f46b788c9c868dd08e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _point: {fileID: 23221732}
+  IgnoreTargetInvulnerability: 0
+  DamageAmount: 15
+  Layers:
+    serializedVersion: 2
+    m_Bits: 512
+  OnHit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1185411483}
+        m_TargetAssemblyTypeName: Rewriters.AbilitySystem.ManaSource, Assembly-CSharp
+        m_MethodName: AddMana
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 5
+          m_StringArgument: Ss
+          m_BoolArgument: 0
+        m_CallState: 2
+  Owner: {fileID: 1185411495}
+  DamageAreaSize: {x: 1, y: 1}
+  _focusOn: 1
+  _offset: {x: 0, y: 0}
+  _gizmoColor: {r: 0, g: 0, b: 0, a: 1}
+--- !u!114 &1185411495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819791584579965610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9807a2d946a3a844ab33acbf94b7f42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startHealth: 1
+  _currentHealth: 1
+  Shield:
+    _shieldAmount: 0
+    _canBreak: 0
+    IsActive: 0
+  _invulnerable: 0

@@ -18,9 +18,14 @@ namespace Rewriters.Player
 
         public override void Activate(AbilityHolder holder)
         {
+            holder.Owner.Animator.ResetTrigger(Hash_Attack);
+
             holder.Owner.Animator.SetTrigger(Hash_Ability);
             holder.Owner.Animator.SetTrigger(Hash_Attack);
             holder.Owner.Animator.SetFloat(Hash_Index, holder.CurrentSequence);
+
+            MeleeAttack meleeAttack = holder.GetComponent<MeleeAttack>();
+            meleeAttack.DoAttack();
         }
     }
 }

@@ -49,10 +49,10 @@ namespace Rewriters.HealthSystem.Attacks
                 if(dmg == null)
                     return;
                 
-                dmg.DoDamage(new DamageInfo(Owner, DamageAmount, IgnoreTargetInvulnerability));
-                
                 if(!dmg.Invulnerable && !dmg.IsDead)
                     OnHit?.Invoke();
+
+                dmg.DoDamage(new DamageInfo(Owner, DamageAmount, IgnoreTargetInvulnerability));
             }
         }
 

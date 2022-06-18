@@ -36,7 +36,7 @@ namespace Rewriters.AbilitySystem
         [ContextMenu("Trigger Ability")]
         public virtual void TriggerAbility()
         {
-            if (Ability.RequiresMana && ManaSource.GetAmount < Ability.ManaRequired)
+            if (Ability.RequiresMana && ManaSource.GetCurrentAmount < Ability.ManaRequired)
                 return;
 
             if (CurrentAbilityState != AbilityStates.ReadyToUse)

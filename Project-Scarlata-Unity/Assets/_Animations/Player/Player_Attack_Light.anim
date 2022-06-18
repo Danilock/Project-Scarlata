@@ -20,20 +20,18 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 23e9f242c9ae6eb4f97f897cf8fe9b32, type: 3}
-    - time: 0.033333335
       value: {fileID: 21300000, guid: 8af84566fd5cab149ba693ffd7c5bba8, type: 3}
-    - time: 0.06666667
+    - time: 0.033333335
       value: {fileID: 21300000, guid: e278140b1c35e65489cef4528e6e30ff, type: 3}
-    - time: 0.083333336
+    - time: 0.05
       value: {fileID: 21300000, guid: 44f2bcb102b38fa40aead37b2ff31eaa, type: 3}
-    - time: 0.11666667
+    - time: 0.1
       value: {fileID: 21300000, guid: 2606e4fb54e67534db0a0c485902e542, type: 3}
-    - time: 0.15
+    - time: 0.13333334
       value: {fileID: 21300000, guid: 875140561ac252f43a0bc9e599cc798f, type: 3}
-    - time: 0.18333334
+    - time: 0.16666667
       value: {fileID: 21300000, guid: 2a8023bf9792af1479e207bd64e35f3c, type: 3}
-    - time: 0.21666667
+    - time: 0.2
       value: {fileID: 21300000, guid: 19b456137a214d849bbb94185ab1ef77, type: 3}
     - time: 0.23333333
       value: {fileID: 21300000, guid: 704780ccb88e2444e87ebb274800fca3, type: 3}
@@ -60,7 +58,6 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 23e9f242c9ae6eb4f97f897cf8fe9b32, type: 3}
     - {fileID: 21300000, guid: 8af84566fd5cab149ba693ffd7c5bba8, type: 3}
     - {fileID: 21300000, guid: e278140b1c35e65489cef4528e6e30ff, type: 3}
     - {fileID: 21300000, guid: 44f2bcb102b38fa40aead37b2ff31eaa, type: 3}
@@ -97,11 +94,32 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
+    functionName: StopVelocity
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0
     functionName: set_CurrentCharacterState
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 3
+    messageOptions: 0
+  - time: 0
+    functionName: DisallowMovement
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.3
+    functionName: AllowMovement
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
     messageOptions: 0
   - time: 0.3
     functionName: set_CurrentCharacterState
