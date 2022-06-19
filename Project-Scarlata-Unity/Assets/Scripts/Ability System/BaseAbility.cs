@@ -22,12 +22,6 @@ namespace Rewriters.AbilitySystem
 
         [FoldoutGroup("Allowed States")] public List<CharacterStates> AllowedCharacterStates = new List<CharacterStates>() { CharacterStates.Idle };
 
-        /// <summary>
-        /// Sequences are used to determine if this ability has different sequences such as an attack.
-        /// </summary>
-        [FoldoutGroup("Sequence")] public bool HasSequence = false;
-        [FoldoutGroup("Sequence"), ShowIf("@this.HasSequence")] public int AmountOfSequences;
-
         public virtual void OnAbilityUpdate(AbilityHolder holder) { }
 
         public abstract void Activate(AbilityHolder holder);

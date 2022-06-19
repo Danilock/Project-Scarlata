@@ -20,8 +20,6 @@ namespace Rewriters.AbilitySystem
 
         public ManaSource ManaSource;
 
-        public int CurrentSequence;
-
         protected virtual void Awake()
         {
             if (Owner == null)
@@ -67,8 +65,6 @@ namespace Rewriters.AbilitySystem
 
             OnTriggerAbility?.Invoke();
 
-            HandleSequence();
-
             if(Ability.HasCooldown){
                 StartCoroutine(HandleCooldown_CO());
             }
@@ -86,19 +82,24 @@ namespace Rewriters.AbilitySystem
         }
 
         public virtual void SetAbilityState(AbilityStates newState){
+            //Preventing the ability to be set to ready when it's LOCKED.
+            if (newState == AbilityStates.ReadyToUse && CurrentAbilityState == AbilityStates.Locked)
+                return;
+
             CurrentAbilityState = newState;
         }
         
         public virtual void SetAbilityState(int newState){
+            //Preventing the ability to be set to ready when it's LOCKED.
+            if (newState == (int)AbilityStates.ReadyToUse)
+                return;
+
             CurrentAbilityState = (AbilityStates) newState;
         }
 
-        protected virtual void HandleSequence()
+        public virtual void UnlockAbility()
         {
-            if (!Ability.HasSequence)
-                return;
-
-            CurrentSequence = (CurrentSequence + 1) % Ability.AmountOfSequences;
+            CurrentAbilityState = AbilityStates.ReadyToUse;
         }
     }
 
@@ -106,6 +107,7 @@ namespace Rewriters.AbilitySystem
     {
         ReadyToUse = 0,
         Casting = 1,
-        Cooldown = 2
+        Cooldown = 2,
+        Locked = 3
     }
 }

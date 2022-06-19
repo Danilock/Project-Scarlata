@@ -13,7 +13,7 @@ namespace Rewriters.Player
 
         private List<AbilityHolder> _holders = new List<AbilityHolder>();
 
-        [SerializeField] private List<BaseAbility> _abilities;
+        [SerializeField] private List<PlayerAbilityData> _abilities;
 
         public PlayerTransformationMode TransformationMode = PlayerTransformationMode.LightMode;
 
@@ -79,11 +79,12 @@ namespace Rewriters.Player
         /// </summary>
         private void GenerateAbilities()
         {
-            foreach(BaseAbility ability in _abilities)
+            foreach(PlayerAbilityData data in _abilities)
             {
                 AbilityHolder currentHolder = this.gameObject.AddComponent<AbilityHolder>();
 
-                currentHolder.Ability = ability;
+                currentHolder.Ability = data.Ability;
+                currentHolder.SetAbilityState(data.InitialState);
 
                 _holders.Add(currentHolder);
             }
@@ -117,6 +118,12 @@ namespace Rewriters.Player
         public void SetTransformAbilityState(AbilityStates newState) => GetAbility<PlayerTransformation>().SetAbilityState(newState);
     }
 
+    [System.Serializable]
+    public class PlayerAbilityData
+    {
+        public BaseAbility Ability;
+        public AbilityStates InitialState = AbilityStates.ReadyToUse;
+    }
 
     public enum PlayerTransformationMode
     {
