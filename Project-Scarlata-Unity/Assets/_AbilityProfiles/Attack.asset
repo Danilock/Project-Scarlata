@@ -18,6 +18,6 @@ MonoBehaviour:
   RequiresMana: 0
   ManaRequired: 0
   AllowedCharacterStates: 0000000001000000
-  _currentAttackIndex: 0
+  _currentAttackIndex: 1
   _maxAmountOfAttacks: 3
   Damage: 25

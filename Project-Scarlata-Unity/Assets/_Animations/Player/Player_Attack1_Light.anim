@@ -21,23 +21,23 @@ AnimationClip:
   - curve:
     - time: 0
       value: {fileID: 21300000, guid: cfe2a232a7d108246b12837c3dfdcfd4, type: 3}
-    - time: 0.033333335
+    - time: 0.083333336
       value: {fileID: 21300000, guid: d7b597f9c02608447a2de33d97c925e2, type: 3}
-    - time: 0.06666667
+    - time: 0.16666667
       value: {fileID: 21300000, guid: 56efcb8c4672f7047a2c7e2f369dd571, type: 3}
-    - time: 0.11666667
-      value: {fileID: 21300000, guid: 0229af171ff662e49a862913e3c187c3, type: 3}
-    - time: 0.15
-      value: {fileID: 21300000, guid: 5a59238b69e4b3141a08cb529f4e0673, type: 3}
-    - time: 0.18333334
-      value: {fileID: 21300000, guid: d2740fa360294ce4eaf7beae6de8eab4, type: 3}
-    - time: 0.21666667
-      value: {fileID: 21300000, guid: 3a0e1895a0170cc4c940d8400b442c82, type: 3}
-    - time: 0.26666668
-      value: {fileID: 21300000, guid: 5a43702bc90341b4eb216a23820e6119, type: 3}
     - time: 0.3
+      value: {fileID: 21300000, guid: 0229af171ff662e49a862913e3c187c3, type: 3}
+    - time: 0.36666667
+      value: {fileID: 21300000, guid: 5a59238b69e4b3141a08cb529f4e0673, type: 3}
+    - time: 0.46666667
+      value: {fileID: 21300000, guid: d2740fa360294ce4eaf7beae6de8eab4, type: 3}
+    - time: 0.53333336
+      value: {fileID: 21300000, guid: 3a0e1895a0170cc4c940d8400b442c82, type: 3}
+    - time: 0.6666667
+      value: {fileID: 21300000, guid: 5a43702bc90341b4eb216a23820e6119, type: 3}
+    - time: 0.75
       value: {fileID: 21300000, guid: 43e1b8d8828c96b45874bab6aa0fdd3e, type: 3}
-    - time: 0.33333334
+    - time: 0.8333333
       value: {fileID: 21300000, guid: 3401fb18c09dd174a8605db3cde054ac, type: 3}
     attribute: m_Sprite
     path: Body
@@ -73,7 +73,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.35000002
+    m_StopTime: 0.84999996
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -94,18 +94,18 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: set_CurrentCharacterState
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 3
-    messageOptions: 0
-  - time: 0
     functionName: StopVelocity
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
+    messageOptions: 0
+  - time: 0
+    functionName: set_CurrentCharacterState
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 3
     messageOptions: 0
   - time: 0
     functionName: DisallowMovement
@@ -114,14 +114,14 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.33333334
+  - time: 0.8333333
     functionName: set_CurrentCharacterState
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.33333334
+  - time: 0.8333333
     functionName: AllowMovement
     data: 
     objectReferenceParameter: {fileID: 0}

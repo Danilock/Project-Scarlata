@@ -21,23 +21,23 @@ AnimationClip:
   - curve:
     - time: 0
       value: {fileID: 21300000, guid: 302895e48d86a454ebe5b827f3faeeae, type: 3}
-    - time: 0.033333335
+    - time: 0.083333336
       value: {fileID: 21300000, guid: 119855b7e60d994419734dfe836b9427, type: 3}
-    - time: 0.06666667
+    - time: 0.16666667
       value: {fileID: 21300000, guid: 2f3285d1189d79d4aa7a38353927caab, type: 3}
-    - time: 0.11666667
-      value: {fileID: 21300000, guid: 20a342557bdef5b45af68d1e489e8e62, type: 3}
-    - time: 0.15
-      value: {fileID: 21300000, guid: 90ef773e708cd6d4593d0433c688fda1, type: 3}
-    - time: 0.18333334
-      value: {fileID: 21300000, guid: fe391c5d58eecbf4eb0166ba2e7c4781, type: 3}
-    - time: 0.21666667
-      value: {fileID: 21300000, guid: d5e43085574f7fe4fbb5634c6a025d26, type: 3}
-    - time: 0.26666668
-      value: {fileID: 21300000, guid: c5e5e257ad2abd44d8c98b7c77d29cc5, type: 3}
     - time: 0.3
+      value: {fileID: 21300000, guid: 20a342557bdef5b45af68d1e489e8e62, type: 3}
+    - time: 0.36666667
+      value: {fileID: 21300000, guid: 90ef773e708cd6d4593d0433c688fda1, type: 3}
+    - time: 0.46666667
+      value: {fileID: 21300000, guid: fe391c5d58eecbf4eb0166ba2e7c4781, type: 3}
+    - time: 0.53333336
+      value: {fileID: 21300000, guid: d5e43085574f7fe4fbb5634c6a025d26, type: 3}
+    - time: 0.6666667
+      value: {fileID: 21300000, guid: c5e5e257ad2abd44d8c98b7c77d29cc5, type: 3}
+    - time: 0.75
       value: {fileID: 21300000, guid: dd71d14beb5381444a979a8dfbfb0b28, type: 3}
-    - time: 0.33333334
+    - time: 0.8333333
       value: {fileID: 21300000, guid: 12670c07c78fb934f8a1682c1f4dbf15, type: 3}
     attribute: m_Sprite
     path: Body
@@ -73,7 +73,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.35000002
+    m_StopTime: 0.84999996
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -114,14 +114,14 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.33333334
+  - time: 0.8333333
     functionName: AllowMovement
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.33333334
+  - time: 0.8333333
     functionName: SetCharacterState
     data: 
     objectReferenceParameter: {fileID: 0}
