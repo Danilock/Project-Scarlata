@@ -91,7 +91,7 @@ namespace Rewriters.AbilitySystem
         
         public virtual void SetAbilityState(int newState){
             //Preventing the ability to be set to ready when it's LOCKED.
-            if (newState == (int)AbilityStates.ReadyToUse)
+            if (newState == (int)AbilityStates.ReadyToUse && CurrentAbilityState == AbilityStates.Locked)
                 return;
 
             CurrentAbilityState = (AbilityStates) newState;
