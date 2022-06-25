@@ -546,9 +546,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _input: {fileID: 1819791584579965612}
   _abilities:
-  - {fileID: 11400000, guid: 19e6e59ed9649814fa5eb9432e1f7355, type: 2}
-  - {fileID: 11400000, guid: 30e684935da152b44b984539b2256072, type: 2}
-  - {fileID: 11400000, guid: bfee8314bceae874c900dc0bfe5ed495, type: 2}
+  - Ability: {fileID: 11400000, guid: 19e6e59ed9649814fa5eb9432e1f7355, type: 2}
+    InitialState: 3
+  - Ability: {fileID: 11400000, guid: 30e684935da152b44b984539b2256072, type: 2}
+    InitialState: 0
+  - Ability: {fileID: 11400000, guid: bfee8314bceae874c900dc0bfe5ed495, type: 2}
+    InitialState: 3
   TransformationMode: 0
 --- !u!114 &2030011173
 MonoBehaviour:
@@ -663,3 +666,4 @@ MonoBehaviour:
     _canBreak: 0
     IsActive: 0
   _invulnerable: 0
+  _deathType: 2

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using System.Linq;
+using Sirenix.OdinInspector;
 
 namespace Rewriters.HealthSystem
 {
@@ -15,8 +16,8 @@ namespace Rewriters.HealthSystem
     {
         #region Protected/Private Fields
         //Health
-        [SerializeField] protected float _startHealth = 1;
-        [SerializeField] protected float _currentHealth = 1;
+        [SerializeField, FoldoutGroup("Health")] protected float _startHealth = 1;
+        [SerializeField, FoldoutGroup("Health")] protected float _currentHealth = 1;
 
         private Color GetColorBar
         {
@@ -27,8 +28,10 @@ namespace Rewriters.HealthSystem
             }
         }
         
-        public Shield Shield = new Shield();
-        [SerializeField] private bool _invulnerable = false;
+        [FoldoutGroup("Shield")] public Shield Shield = new Shield();
+        [SerializeField, FoldoutGroup("Invulnerable")] private bool _invulnerable = false;
+
+        [SerializeField, FoldoutGroup("Death Settings")] private DeathType _deathType = DeathType.None;
 
         public bool IsDead
         {
@@ -95,6 +98,7 @@ namespace Rewriters.HealthSystem
                 OnDeath?.Invoke(incomingDamage);
                 IsDead = true;
                 _currentHealth = 0;
+                HandleDeathType();
             }
             else
                 OnTakeDamage?.Invoke(incomingDamage);
@@ -112,6 +116,15 @@ namespace Rewriters.HealthSystem
             _currentHealth = value;
         }
 
+        protected virtual void HandleDeathType()
+        {
+            if (_deathType == DeathType.None)
+                return;
+
+            if(_deathType == DeathType.Disable) { gameObject.SetActive(false); return; }
+            if(_deathType == DeathType.Destroy) { Destroy(this.gameObject); }
+        }
+
         #region Invulnerability
         public virtual void SetInvulnerableForSeconds(float seconds) => StartCoroutine(SetInvulnerableForSeconds_CO(seconds));
 
@@ -127,5 +140,12 @@ namespace Rewriters.HealthSystem
         #endregion
 
         #endregion
+    }
+
+    public enum DeathType
+    {
+        Disable,
+        Destroy,
+        None
     }
 }
