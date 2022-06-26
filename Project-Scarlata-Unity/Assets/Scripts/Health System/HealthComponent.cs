@@ -96,9 +96,7 @@ namespace Rewriters.HealthSystem
             if (_currentHealth <= 0)
             {
                 OnDeath?.Invoke(incomingDamage);
-                IsDead = true;
-                _currentHealth = 0;
-                HandleDeathType();
+                Kill();
             }
             else
                 OnTakeDamage?.Invoke(incomingDamage);
@@ -116,7 +114,14 @@ namespace Rewriters.HealthSystem
             _currentHealth = value;
         }
 
-        protected virtual void HandleDeathType()
+        public virtual void Kill()
+        {
+            IsDead = true;
+            _currentHealth = 0;
+            HandleDeathType();
+        }
+
+        public virtual void HandleDeathType()
         {
             if (_deathType == DeathType.None)
                 return;

@@ -18,5 +18,3 @@ MonoBehaviour:
   RequiresMana: 1
   ManaRequired: 100
   AllowedCharacterStates: 0000000001000000
-  HasSequence: 0
-  AmountOfSequences: 0
