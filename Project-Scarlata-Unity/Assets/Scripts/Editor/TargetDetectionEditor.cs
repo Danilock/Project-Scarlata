@@ -1,0 +1,52 @@
+using UnityEditor;
+using UnityEditor.IMGUI.Controls;
+using UnityEngine;
+using Rewriters.AI;
+
+[CustomEditor(typeof(TargetDetection)), CanEditMultipleObjects]
+public class BoundsExampleEditor : Editor
+{
+    private BoxBoundsHandle _boundsHandle = new BoxBoundsHandle();
+    private SphereBoundsHandle _sphereHandle = new SphereBoundsHandle();
+
+    // the OnSceneGUI callback uses the Scene view camera for drawing handles by default
+    protected virtual void OnSceneGUI()
+    {
+        TargetDetection targetDetection = (TargetDetection)target;
+
+        // copy the target object's data to the handle
+        _boundsHandle.center = targetDetection.Bounds.center;
+        _boundsHandle.size = targetDetection.Bounds.size;
+
+        _sphereHandle.radius = targetDetection.Radius;
+        _sphereHandle.center = targetDetection.SphereCenter;
+
+        // draw the handle
+        EditorGUI.BeginChangeCheck();
+        if(targetDetection.Type == TargetDetectionType.Box)
+            _boundsHandle.DrawHandle();
+
+        if(targetDetection.Type == TargetDetectionType.Sphere)
+            _sphereHandle.DrawHandle();
+
+        Vector3 newTargetPosition = Handles.PositionHandle(targetDetection.TargetPosition, Quaternion.identity);
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            // record the target object before setting new values so changes can be undone/redone
+            Undo.RecordObject(targetDetection, "Process Target Detection-");
+
+
+            targetDetection.TargetPosition = newTargetPosition;
+            targetDetection.Update();
+
+            // copy the handle's updated data back to the target object
+            Bounds newBounds = new Bounds();
+            newBounds.center = newTargetPosition;
+            newBounds.size = _boundsHandle.size;
+
+            targetDetection.Bounds = newBounds;
+            targetDetection.Radius = _sphereHandle.radius;
+        }
+    }
+}
