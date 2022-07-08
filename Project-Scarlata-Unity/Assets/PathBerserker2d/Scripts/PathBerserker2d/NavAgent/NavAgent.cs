@@ -487,7 +487,7 @@ namespace PathBerserker2d
         /// <returns>True, if the at least 1 goal and the agents own position could be mapped. This does not mean, that a path towards a goal exists.</returns>
         public bool PathTo(Vector2 goal)
         {
-            Stop();
+            //Stop();
             return UpdatePath(goal);
         }
 
@@ -498,7 +498,7 @@ namespace PathBerserker2d
         /// <returns>True, the agents own position could be mapped. This does not mean, that a path towards the goal exists.</returns>
         private bool PathTo(IList<NavSegmentPositionPointer> goalPs)
         {
-            Stop();
+            //Stop();
             return UpdatePath(goalPs);
         }
 

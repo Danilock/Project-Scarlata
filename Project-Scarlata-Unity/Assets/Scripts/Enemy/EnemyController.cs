@@ -11,5 +11,11 @@ namespace Rewriters.Enemies
     {
         public NavAgent NavAgent;
         public EnemyHealth Health;
+
+        protected virtual void Awake()
+        {
+            NavAgent = GetComponent<NavAgent>();
+            Health = GetComponent<EnemyHealth>();
+        }
     }
 }

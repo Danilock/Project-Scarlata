@@ -8,7 +8,19 @@ namespace Rewriters.Enemies
     {
         public override void OnEnter(RedCubeController entity)
         {
-            
+            entity.NavAgent.PathTo(entity.TargetDetection.Target.position);
+        }
+
+        public override void OnUpdate(RedCubeController entity)
+        {
+            if (!entity.TargetDetection.IsDetectingATarget())
+            {
+                entity.NavAgent.ForceStop();
+                entity.StateMachine.SetState<RedCubeIdleState>();
+                return;
+            }
+
+            entity.NavAgent.PathTo(entity.TargetDetection.Target.position);
         }
     }
 }

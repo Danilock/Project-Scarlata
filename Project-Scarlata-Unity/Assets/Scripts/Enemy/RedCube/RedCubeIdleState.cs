@@ -8,12 +8,12 @@ namespace Rewriters.Enemies
     {
         public override void OnEnter(RedCubeController entity)
         {
-            Debug.Log("State Initialized");
+
         }
 
         public override void OnUpdate(RedCubeController entity)
         {
-            if (Input.GetKeyDown(KeyCode.B))
+            if (entity.TargetDetection.IsDetectingATarget())
             {
                 entity.StateMachine.SetState<RedCubeFollowState>();
             }
