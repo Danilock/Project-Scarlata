@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using PathBerserker2d;
 
 namespace Rewriters.AI
 {
-    [ExecuteInEditMode]
+    [RequireComponent(typeof(NavAgent))]
     public class TargetDetection : MonoBehaviour
     {
         #region Settings
@@ -13,6 +14,25 @@ namespace Rewriters.AI
         public TargetDetectionType Type => _type;
 
         [SerializeField] private LayerMask _targetsLayers;
+
+        [SerializeField] private bool _canMove;
+
+        public bool CanMove { get => _canMove; set => _canMove = value; }
+
+        [SerializeField] private NavAgent _navAgent;
+
+        public NavAgent NavAgent => _navAgent;
+
+        [SerializeField] private float _cooldown;
+
+        private Coroutine _handleCooldown;
+
+        [SerializeField] private bool _returnToInitialPositionWhenTargetIsOut = false;
+
+        public bool ReturnToInitialPosition => _returnToInitialPositionWhenTargetIsOut;
+
+        private Vector3 _initialPosition;
+        public Vector3 InitialPosition => _initialPosition;
         #endregion
 
         #region Box Bounds
@@ -39,10 +59,60 @@ namespace Rewriters.AI
         public Vector3 Offset;
         #endregion
 
+        #region
+        public StateMachine<TargetDetection> StateMachine;
+        #endregion
+
+        private void Awake()
+        {
+            _initialPosition = transform.position;
+
+            StateMachine = new StateMachine<TargetDetection>(this);
+            StateMachine.AddState<IdleState>();
+            StateMachine.AddState<FollowState>();
+            StateMachine.AddState<ReturningState>();
+
+            StateMachine.SetState<IdleState>();
+        }
+
+        private void Update()
+        {
+            StateMachine.CurrentState.OnUpdate(this);
+
+            Debug.Log(StateMachine.CurrentState.ToString());
+        }
+
+        public void MoveTo(Vector3 position)
+        {
+            if (!CanMove)
+                return;
+
+            NavAgent.PathTo(position);
+
+            _handleCooldown = StartCoroutine(HandleCooldown_CO());
+        }
+
+        private IEnumerator HandleCooldown_CO()
+        {
+            CanMove = false;
+
+            yield return new WaitForSeconds(_cooldown);
+
+            CanMove = true;
+        }
+
+        /// <summary>
+        /// Stops the coroutine handling the cooldown. By disabling it, the CanMove variable should be stablished manually.
+        /// </summary>
+        public void StopCooldownHandler()
+        {
+            StopCoroutine(_handleCooldown);
+        }
 
         public virtual bool IsDetectingATarget()
         {
             Collider2D col;
+            bool isDetectingTarget = false;
 
             if (Type == TargetDetectionType.Box)
             {
@@ -50,7 +120,7 @@ namespace Rewriters.AI
 
                 Target = col?.transform;
 
-                return col != null;
+                isDetectingTarget = col != null;
             }
 
             if (Type == TargetDetectionType.Sphere)
@@ -59,10 +129,10 @@ namespace Rewriters.AI
 
                 Target = col?.transform;
 
-                return col != null;
+                isDetectingTarget = col != null;
             }
 
-            return false;
+            return isDetectingTarget;
         }
     }
 
