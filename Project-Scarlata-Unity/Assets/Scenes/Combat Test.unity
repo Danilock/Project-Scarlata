@@ -307,8 +307,8 @@ MonoBehaviour:
   _cooldown: 0.4
   _returnToInitialPositionWhenTargetIsOut: 1
   _bounds:
-    m_Center: {x: 4.9124637, y: -2.7132459, z: 0}
-    m_Extent: {x: 7.569346, y: 4.042423, z: 0}
+    m_Center: {x: 4.9124637, y: -2.7145424, z: 0}
+    m_Extent: {x: 7.569346, y: 7.1461678, z: 0}
   _radius: 4.5361214
   _sphereCenter: {x: 4.9124637, y: -2.628802, z: 0}
   Offset: {x: -0.28753614, y: 1.4211981, z: 0}
@@ -369,36 +369,6 @@ MonoBehaviour:
   traversalAngle: 0
   horizontalSpeed: 1
   bezierControlPoint: {x: 0, y: 3}
---- !u!1 &952114787
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 952114788}
-  m_Layer: 0
-  m_Name: End Position
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &952114788
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 952114787}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.84, y: 0.15, z: -10.734779}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1027989990
 GameObject:
   m_ObjectHideFlags: 0

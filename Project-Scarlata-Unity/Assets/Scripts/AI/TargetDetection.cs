@@ -71,6 +71,7 @@ namespace Rewriters.AI
             StateMachine.AddState<IdleState>();
             StateMachine.AddState<FollowState>();
             StateMachine.AddState<ReturningState>();
+            StateMachine.AddState<StoppedState>();
 
             StateMachine.SetState<IdleState>();
         }
@@ -78,10 +79,12 @@ namespace Rewriters.AI
         private void Update()
         {
             StateMachine.CurrentState.OnUpdate(this);
-
-            Debug.Log(StateMachine.CurrentState.ToString());
         }
 
+        /// <summary>
+        /// Moves the target to the specified position.
+        /// </summary>
+        /// <param name="position"></param>
         public void MoveTo(Vector3 position)
         {
             if (!CanMove)
@@ -92,6 +95,10 @@ namespace Rewriters.AI
             _handleCooldown = StartCoroutine(HandleCooldown_CO());
         }
 
+        /// <summary>
+        /// Cooldown to repath and follow the target.
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator HandleCooldown_CO()
         {
             CanMove = false;
@@ -108,6 +115,11 @@ namespace Rewriters.AI
         {
             StopCoroutine(_handleCooldown);
         }
+
+        /// <summary>
+        /// Stops the agent on it's exact position.
+        /// </summary>
+        public void StopAgent() => StateMachine.SetState<StoppedState>();
 
         public virtual bool IsDetectingATarget()
         {
