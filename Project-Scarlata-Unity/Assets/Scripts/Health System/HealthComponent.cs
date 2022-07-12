@@ -56,7 +56,7 @@ namespace Rewriters.HealthSystem
         
         #region Events
 
-        public UnityAction<DamageInfo> OnTakeDamage, OnDeath;
+        public UnityAction<DamageInfo> OnTakeDamageEvent, OnDeathEvent;
 
         #endregion
 
@@ -82,7 +82,7 @@ namespace Rewriters.HealthSystem
             if (IsDead)
                 return;
 
-            if(_invulnerable && !incomingDamage.IgnoreInvulnerability)
+            if (_invulnerable && !incomingDamage.IgnoreInvulnerability)
                 return;
 
             if (Shield.ShieldAmount > 0)
@@ -95,11 +95,14 @@ namespace Rewriters.HealthSystem
 
             if (_currentHealth <= 0)
             {
-                OnDeath?.Invoke(incomingDamage);
-                Kill();
+                OnDeathEvent?.Invoke(incomingDamage);
+                OnDeath();
             }
             else
-                OnTakeDamage?.Invoke(incomingDamage);
+            {
+                OnTakeDamageEvent?.Invoke(incomingDamage);
+                OnTakeDamage(incomingDamage);
+            }
         }
 
         /// <summary>
@@ -114,7 +117,7 @@ namespace Rewriters.HealthSystem
             _currentHealth = value;
         }
 
-        public virtual void Kill()
+        public virtual void OnDeath()
         {
             IsDead = true;
             _currentHealth = 0;
@@ -129,6 +132,8 @@ namespace Rewriters.HealthSystem
             if(_deathType == DeathType.Disable) { gameObject.SetActive(false); return; }
             if(_deathType == DeathType.Destroy) { Destroy(this.gameObject); }
         }
+
+        protected virtual void OnTakeDamage(DamageInfo incomingDamage) { }
 
         #region Invulnerability
         public virtual void SetInvulnerableForSeconds(float seconds) => StartCoroutine(SetInvulnerableForSeconds_CO(seconds));

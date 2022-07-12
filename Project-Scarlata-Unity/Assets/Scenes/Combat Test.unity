@@ -133,11 +133,11 @@ GameObject:
   m_Component:
   - component: {fileID: 811626387}
   - component: {fileID: 811626385}
-  - component: {fileID: 811626388}
   - component: {fileID: 811626389}
   - component: {fileID: 811626384}
   - component: {fileID: 811626391}
-  - component: {fileID: 811626390}
+  - component: {fileID: 811626388}
+  - component: {fileID: 811626386}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Untagged
@@ -190,6 +190,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.9868047}
   m_EdgeRadius: 0
+--- !u!114 &811626386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811626383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c459c528103d99047b3b4261ba070702, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startHealth: 25
+  _currentHealth: 1
+  Shield:
+    _shieldAmount: 0
+    _canBreak: 1
+    IsActive: 1
+  _invulnerable: 0
+  _deathType: 1
+  StunOnGettingDamage: 1
+  SecondsStunned: 4
 --- !u!4 &811626387
 Transform:
   m_ObjectHideFlags: 0
@@ -214,17 +236,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 811626383}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9807a2d946a3a844ab33acbf94b7f42, type: 3}
+  m_Script: {fileID: 11500000, guid: e4b565d703f94b244a660542cde38318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startHealth: 25
-  _currentHealth: 1
-  Shield:
-    _shieldAmount: 0
-    _canBreak: 1
-    IsActive: 1
-  _invulnerable: 0
-  _deathType: 0
+  TargetDetection: {fileID: 811626391}
+  Health: {fileID: 811626386}
 --- !u!114 &811626389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,28 +280,6 @@ MonoBehaviour:
   - 1
   status: 0
   navTagMask: -1
---- !u!114 &811626390
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 811626383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c459c528103d99047b3b4261ba070702, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _startHealth: 1
-  _currentHealth: 1
-  Shield:
-    _shieldAmount: 0
-    _canBreak: 1
-    IsActive: 1
-  _invulnerable: 0
-  _deathType: 2
-  StunOnGettingDamage: 0
-  EnemyController: {fileID: 0}
 --- !u!114 &811626391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -304,7 +298,6 @@ MonoBehaviour:
     m_Bits: 64
   _canMove: 1
   _navAgent: {fileID: 811626389}
-  _cooldown: 0.4
   _returnToInitialPositionWhenTargetIsOut: 1
   _bounds:
     m_Center: {x: 4.9124637, y: -2.7145424, z: 0}
@@ -312,6 +305,7 @@ MonoBehaviour:
   _radius: 4.5361214
   _sphereCenter: {x: 4.9124637, y: -2.628802, z: 0}
   Offset: {x: -0.28753614, y: 1.4211981, z: 0}
+  _cooldown: 0.4
 --- !u!1 &843313148
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,6 +430,10 @@ PrefabInstance:
     - target: {fileID: 23221732, guid: ac084845a6d66b340bde3473b6164348, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1185411484, guid: ac084845a6d66b340bde3473b6164348, type: 3}
+      propertyPath: DamageAmount
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1185411484, guid: ac084845a6d66b340bde3473b6164348, type: 3}
       propertyPath: _gizmoColor.b

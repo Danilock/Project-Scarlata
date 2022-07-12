@@ -23,10 +23,6 @@ namespace Rewriters.AI
 
         public NavAgent NavAgent => _navAgent;
 
-        [SerializeField] private float _cooldown;
-
-        private Coroutine _handleCooldown;
-
         [SerializeField] private bool _returnToInitialPositionWhenTargetIsOut = false;
 
         public bool ReturnToInitialPosition => _returnToInitialPositionWhenTargetIsOut;
@@ -57,6 +53,16 @@ namespace Rewriters.AI
 
         #region Offset
         public Vector3 Offset;
+        #endregion
+
+        #region Stop Character
+        private Coroutine _handleStop;
+        #endregion
+
+        #region Cooldown
+        [SerializeField] private float _cooldown;
+
+        private Coroutine _handleCooldown;
         #endregion
 
         #region
@@ -120,6 +126,23 @@ namespace Rewriters.AI
         /// Stops the agent on it's exact position.
         /// </summary>
         public void StopAgent() => StateMachine.SetState<StoppedState>();
+
+        public virtual void StopAgent(float seconds)
+        {
+            if (_handleStop != null)
+                StopCoroutine(_handleStop);
+
+            _handleStop = StartCoroutine(StopAgent_CO(seconds));
+        }
+
+        protected virtual IEnumerator StopAgent_CO(float seconds)
+        {
+            StateMachine.SetState<StoppedState>();
+
+            yield return new WaitForSeconds(seconds);
+
+            StateMachine.SetState<IdleState>();
+        }
 
         public virtual bool IsDetectingATarget()
         {

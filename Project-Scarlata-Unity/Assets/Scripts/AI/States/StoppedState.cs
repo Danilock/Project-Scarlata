@@ -10,5 +10,10 @@ namespace Rewriters.AI {
             entity.StopCooldownHandler();
             entity.NavAgent.ForceStop();
         }
+
+        public override void OnExit(TargetDetection entity)
+        {
+            entity.CanMove = true;
+        }
     }
 }
