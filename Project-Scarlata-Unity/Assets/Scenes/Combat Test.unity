@@ -471,6 +471,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1819791584579965611, guid: ac084845a6d66b340bde3473b6164348, type: 3}
+      propertyPath: _flipTime
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 1819791584579965614, guid: ac084845a6d66b340bde3473b6164348, type: 3}
       propertyPath: m_RootOrder
       value: 1

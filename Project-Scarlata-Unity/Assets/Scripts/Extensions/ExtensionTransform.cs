@@ -13,4 +13,9 @@ public static class ExtensionTransform
     {
         tr.localScale = new Vector3(x, y, z);
     }
+
+    public static void SetXScale(this Transform tr, float newX)
+    {
+        tr.localScale = new Vector3(newX, tr.localScale.y);
+    }
 }

@@ -127,6 +127,10 @@ namespace Rewriters.AI
         /// </summary>
         public void StopAgent() => StateMachine.SetState<StoppedState>();
 
+        /// <summary>
+        /// Stops the agent for few seconds on it's exact position and then return to Idle State.
+        /// </summary>
+        /// <param name="seconds"></param>
         public virtual void StopAgent(float seconds)
         {
             if (_handleStop != null)
@@ -144,6 +148,10 @@ namespace Rewriters.AI
             StateMachine.SetState<IdleState>();
         }
 
+        /// <summary>
+        /// Checks if is detecting any target.
+        /// </summary>
+        /// <returns></returns>
         public virtual bool IsDetectingATarget()
         {
             Collider2D col;

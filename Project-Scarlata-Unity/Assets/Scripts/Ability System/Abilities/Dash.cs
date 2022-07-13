@@ -114,6 +114,8 @@ namespace Rewriters.AbilitySystem
         private Vector2 CalculateDirectionOfDash(AbilityHolder holder){
             Vector2 move = holder.GetComponent<PlayerInput>().Move;
 
+            holder.transform.SetXScale(move.x);
+
             if(move.x == 0 && move.y == 0)
             {
                 return new Vector2(Mathf.Sign(holder.transform.localScale.x) * Force, 0f);
