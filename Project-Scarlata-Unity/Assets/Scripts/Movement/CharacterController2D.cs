@@ -213,6 +213,7 @@ namespace Rewriters
 
 		#region Flip
 		[FoldoutGroup("Flip"), SerializeField] private float _flipTime = .1f;
+		public Tween FlipProcess;
         #endregion
 
         #region Unity Methods
@@ -491,7 +492,7 @@ namespace Rewriters
 
 			_lastScale = theScale;
 
-			transform.DOScale(theScale, flipDuration);
+			FlipProcess = transform.DOScale(theScale, flipDuration);
 		}
 
 

@@ -4,10 +4,11 @@ using UnityEngine;
 using Rewriters.AbilitySystem;
 using Sirenix.OdinInspector;
 using Cinemachine;
+using Rewriters.Rooms;
 
 namespace Rewriters.Player
 {
-    public class PlayerAbilityHandler : MonoBehaviour
+    public class PlayerAbilityHandler : MonoBehaviour, IEventListener<OnRoomChange>
     {
         [SerializeField] private PlayerInput _input;
 
@@ -35,6 +36,16 @@ namespace Rewriters.Player
         private void Start()
         {
             GenerateAbilities();
+        }
+
+        private void OnEnable()
+        {
+            this.StartListening<OnRoomChange>();
+        }
+
+        private void OnDisable()
+        {
+            this.StopListening<OnRoomChange>();
         }
 
         // Update is called once per frame
@@ -116,6 +127,11 @@ namespace Rewriters.Player
         public void GenerateCinemachineImpulse() => _impulseSource.GenerateImpulse();
 
         public void SetTransformAbilityState(AbilityStates newState) => GetAbility<PlayerTransformation>().SetAbilityState(newState);
+
+        public void OnTriggerEvent(OnRoomChange data)
+        {
+            SetDashState(0);
+        }
     }
 
     [System.Serializable]

@@ -100,7 +100,7 @@ namespace Rewriters.AbilitySystem
             if (!ch2D.IsInAirDueToWallJump)
                 ch2D.Rigidbody.velocity = Vector2.zero;
 
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(.25f);
 
             if (ch2D.IsGrounded)
                 holder.SetAbilityState(AbilityStates.ReadyToUse);
@@ -114,7 +114,8 @@ namespace Rewriters.AbilitySystem
         private Vector2 CalculateDirectionOfDash(AbilityHolder holder){
             Vector2 move = holder.GetComponent<PlayerInput>().Move;
 
-            holder.transform.SetXScale(move.x);
+            if(move.x != 0)
+                holder.transform.SetXScale(move.x);
 
             if(move.x == 0 && move.y == 0)
             {

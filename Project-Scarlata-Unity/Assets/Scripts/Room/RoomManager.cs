@@ -20,6 +20,8 @@ namespace Rewriters.Rooms
 
         public void ActivateRoom(Room roomToActivate)
         {
+            EventManager.TriggerEvent(new OnRoomChange(roomToActivate));
+
             StartCoroutine(HandleRoomChange_CO(roomToActivate));
         }
 
@@ -51,6 +53,15 @@ namespace Rewriters.Rooms
         public void FindAllRooms()
         {
             _allRoomsInScene = FindObjectsOfType<Room>().ToList();
+        }
+    }
+
+    public struct OnRoomChange
+    {
+        public Room Room;
+        public OnRoomChange(Room newRoom)
+        {
+            Room = newRoom;
         }
     }
 }

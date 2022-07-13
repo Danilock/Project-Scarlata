@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using System;
 
-namespace EventDriven
+namespace Rewriters
 {
     public static class EventManager
     {

@@ -21,6 +21,8 @@ namespace Rewriters.Items
         [SerializeField, FoldoutGroup("Bubble Settings")] private float _playerRotationSpeedInsideBubble;
         [SerializeField, FoldoutGroup("Bubble Settings")] private Vector2 _playerScaleOnBubble;
 
+        [SerializeField, FoldoutGroup("Effects")] private ParticleSystem _particleSystem;
+
         [SerializeField, FoldoutGroup("Cinemachine Impulse")] private CinemachineImpulseSource _impulseSource; 
 
         private Coroutine _stopBubbleAfterSeconds;
@@ -75,6 +77,9 @@ namespace Rewriters.Items
             _impulseSource.GenerateImpulse();
 
             _stopBubbleAfterSeconds = StartCoroutine(StopBubbleAfterSeconds_CO());
+
+            _particleSystem.gameObject.SetActive(true);
+            _particleSystem.Play();
         }
 
         private IEnumerator StopBubbleAfterSeconds_CO()
@@ -88,6 +93,7 @@ namespace Rewriters.Items
         {
             CharacterController2D ch2D = Owner.GetComponent<CharacterController2D>();
             ch2D.CanMove = false;
+            ch2D.FlipProcess.Kill();
 
             Rigidbody2D playerRGB = Owner.GetComponent<Rigidbody2D>();
             playerRGB.bodyType = RigidbodyType2D.Kinematic;
@@ -114,8 +120,14 @@ namespace Rewriters.Items
 
             transform.DOMove(_initialPosition, .5f).OnComplete(() =>
             {
+                OnReachInitialPosition();
+            });
+        }
+
+        protected virtual void OnReachInitialPosition()
+        {
             _currentState = ControllableBubbleStates.Idle;
-        });
+            _particleSystem.Stop();
         }
 
         private void ReanudatePlayerPhysics(bool jump)
