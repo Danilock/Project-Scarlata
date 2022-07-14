@@ -15,6 +15,8 @@ MonoBehaviour:
   HasCooldown: 0
   Cooldown: 1
   CastingTime: 0
+  RequiresMana: 0
+  ManaRequired: 0
   AllowedCharacterStates: 000000000100000004000000
   Force: 800
   ForceMode: 1
@@ -26,3 +28,5 @@ MonoBehaviour:
   - 0.3
   - 0.6
   - 1
+  StartLayer: Dasher
+  EndLayer: Player

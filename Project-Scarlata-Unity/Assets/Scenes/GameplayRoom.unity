@@ -3584,7 +3584,7 @@ MonoBehaviour:
   _type: 0
   _targetsLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 1088
   ConsiderObjectDirection: 0
   Body: {fileID: 1799130649}
   _bounds:
@@ -4008,7 +4008,7 @@ MonoBehaviour:
   _type: 0
   _targetsLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 1088
   ConsiderObjectDirection: 1
   Body: {fileID: 1799130649}
   _bounds:
