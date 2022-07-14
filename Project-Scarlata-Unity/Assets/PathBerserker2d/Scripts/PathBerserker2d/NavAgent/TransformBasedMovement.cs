@@ -248,6 +248,9 @@ namespace PathBerserker2d
         private void Jump(NavAgent agent)
         {
             Vector2 newPos = storedLinkStart + direction * timeOnLink * jumpSpeed;
+
+            LookAt(direction);
+            
             newPos.y += deltaDistance * 0.3f * Mathf.Sin(Mathf.PI * timeOnLink / timeToCompleteLink);
             agent.Position = newPos;
         }
@@ -357,7 +360,7 @@ namespace PathBerserker2d
             Vector2 dir = goal - pos;
             float distance = dir.magnitude;
 
-            transform.localScale = new Vector3(Mathf.Sign(dir.x) * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            LookAt(dir);
 
             if (distance <= amount)
             {
@@ -367,6 +370,11 @@ namespace PathBerserker2d
 
             newPos = pos + dir * amount / distance;
             return false;
+        }
+
+        private void LookAt(Vector3 reference)
+        {
+            transform.localScale = new Vector3(Mathf.Sign(reference.x) * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
     }
 }

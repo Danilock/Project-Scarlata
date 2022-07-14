@@ -212,7 +212,7 @@ MonoBehaviour:
   _invulnerable: 0
   _deathType: 1
   StunOnGettingDamage: 1
-  SecondsStunned: 0.35
+  SecondsStunned: 0.7
   Animator: {fileID: 0}
 --- !u!4 &811626387
 Transform:
@@ -320,15 +320,15 @@ MonoBehaviour:
   _canMove: 1
   _navAgent: {fileID: 811626389}
   _returnToInitialPositionWhenTargetIsOut: 1
+  _reachDistance: 0.93
   _bounds:
-    m_Center: {x: 4.9124637, y: -2.7145424, z: 0}
+    m_Center: {x: 4.9124637, y: -2.628802, z: 0}
     m_Extent: {x: 7.569346, y: 7.1461678, z: 0}
   _radius: 4.5361214
   _sphereCenter: {x: 4.9124637, y: -2.628802, z: 0}
   Offset: {x: -0.28753614, y: 1.4211981, z: 0}
   Animator: {fileID: 811626390}
   _cooldown: 0.1
-  _lastPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &843313148
 GameObject:
   m_ObjectHideFlags: 0
