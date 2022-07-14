@@ -6,6 +6,11 @@ namespace Rewriters.AI
 {
     public class FollowState : State<TargetDetection>
     {
+        public override void OnEnter(TargetDetection entity)
+        {
+            entity.Animator.SetBool("Run", true);
+        }
+
         public override void OnUpdate(TargetDetection entity)
         {
             entity.MoveTo(entity.Target.position);

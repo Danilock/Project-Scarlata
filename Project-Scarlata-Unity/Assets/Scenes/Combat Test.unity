@@ -138,6 +138,7 @@ GameObject:
   - component: {fileID: 811626391}
   - component: {fileID: 811626388}
   - component: {fileID: 811626386}
+  - component: {fileID: 811626390}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Untagged
@@ -211,7 +212,8 @@ MonoBehaviour:
   _invulnerable: 0
   _deathType: 1
   StunOnGettingDamage: 1
-  SecondsStunned: 4
+  SecondsStunned: 0.35
+  Animator: {fileID: 0}
 --- !u!4 &811626387
 Transform:
   m_ObjectHideFlags: 0
@@ -280,6 +282,25 @@ MonoBehaviour:
   - 1
   status: 0
   navTagMask: -1
+--- !u!95 &811626390
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811626383}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c9eecd019342a344081e89f90a2abf6e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &811626391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,7 +326,9 @@ MonoBehaviour:
   _radius: 4.5361214
   _sphereCenter: {x: 4.9124637, y: -2.628802, z: 0}
   Offset: {x: -0.28753614, y: 1.4211981, z: 0}
-  _cooldown: 0.4
+  Animator: {fileID: 811626390}
+  _cooldown: 0.1
+  _lastPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &843313148
 GameObject:
   m_ObjectHideFlags: 0
@@ -1493,7 +1516,7 @@ Transform:
   m_GameObject: {fileID: 1598804328}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_Children: []
   m_Father: {fileID: 811626387}
   m_RootOrder: 0
@@ -1538,8 +1561,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 5296944262663640658, guid: 712e6bbaa8833bc46b9744ea3d361b89, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

@@ -8,6 +8,7 @@ public class BoundsExampleEditor : Editor
 {
     private BoxBoundsHandle _boundsHandle = new BoxBoundsHandle();
     private SphereBoundsHandle _sphereHandle = new SphereBoundsHandle();
+    private SphereBoundsHandle _reachedDistanceSphere = new SphereBoundsHandle();
     private Vector3 _newTargetPosition;
 
     // the OnSceneGUI callback uses the Scene view camera for drawing handles by default
@@ -22,6 +23,9 @@ public class BoundsExampleEditor : Editor
         _sphereHandle.radius = targetDetection.Radius;
         _sphereHandle.center = targetDetection.transform.position + targetDetection.Offset;
 
+        _reachedDistanceSphere.center = targetDetection.transform.position;
+        _reachedDistanceSphere.radius = targetDetection.ReachDistance;
+
         // draw the handle
         EditorGUI.BeginChangeCheck();
 
@@ -30,6 +34,8 @@ public class BoundsExampleEditor : Editor
 
         if (targetDetection.Type == TargetDetectionType.Sphere)
             _sphereHandle.DrawHandle();
+
+        _reachedDistanceSphere.DrawHandle();
 
         _newTargetPosition = Handles.PositionHandle(targetDetection.Offset + targetDetection.transform.position, Quaternion.identity);
         _newTargetPosition -= targetDetection.transform.position;

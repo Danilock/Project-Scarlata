@@ -6,6 +6,11 @@ namespace Rewriters.AI
 {
     public class IdleState : State<TargetDetection>
     {
+        public override void OnEnter(TargetDetection entity)
+        {
+            entity.Animator.SetBool("Run", false);
+        }
+
         public override void OnUpdate(TargetDetection entity)
         {
             if (entity.IsDetectingATarget())

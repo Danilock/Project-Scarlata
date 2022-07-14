@@ -7,6 +7,7 @@ using PathBerserker2d;
 namespace Rewriters.AI
 {
     [RequireComponent(typeof(NavAgent))]
+    [RequireComponent(typeof(TransformBasedMovement))]
     public class TargetDetection : MonoBehaviour
     {
         #region Settings
@@ -29,6 +30,9 @@ namespace Rewriters.AI
 
         private Vector3 _initialPosition;
         public Vector3 InitialPosition => _initialPosition;
+
+        [SerializeField] private float _reachDistance = .5f;
+        public float ReachDistance => _reachDistance;
         #endregion
 
         #region Box Bounds
@@ -59,13 +63,17 @@ namespace Rewriters.AI
         private Coroutine _handleStop;
         #endregion
 
+        #region Animator
+        public Animator Animator;
+        #endregion
+
         #region Cooldown
         [SerializeField] private float _cooldown;
 
         private Coroutine _handleCooldown;
         #endregion
 
-        #region
+        #region StateMachine
         public StateMachine<TargetDetection> StateMachine;
         #endregion
 
@@ -93,6 +101,9 @@ namespace Rewriters.AI
         /// <param name="position"></param>
         public void MoveTo(Vector3 position)
         {
+            if (ReachedDistance(position))
+                return;
+
             if (!CanMove)
                 return;
 
@@ -176,6 +187,21 @@ namespace Rewriters.AI
             }
 
             return isDetectingTarget;
+        }
+
+        /// <summary>
+        /// Checks if reached the given distance.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public bool ReachedDistance(Vector3 position)
+        {
+            bool reachedDistance = Vector3.Distance(transform.position, position) < _reachDistance;
+
+            if (reachedDistance)
+                NavAgent.Stop();
+
+            return reachedDistance;
         }
     }
 

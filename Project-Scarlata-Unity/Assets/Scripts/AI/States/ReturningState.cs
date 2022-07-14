@@ -6,11 +6,16 @@ namespace Rewriters.AI
 {
     public class ReturningState : State<TargetDetection>
     {
+        public override void OnEnter(TargetDetection entity)
+        {
+            entity.Animator.SetBool("Run", true);
+        }
+
         public override void OnUpdate(TargetDetection entity)
         {
             entity.MoveTo(entity.InitialPosition);
 
-            if(Vector3.Distance(entity.transform.position, entity.InitialPosition) < .1f)
+            if(entity.ReachedDistance(entity.InitialPosition))
             {
                 entity.StateMachine.SetState<IdleState>();
             }

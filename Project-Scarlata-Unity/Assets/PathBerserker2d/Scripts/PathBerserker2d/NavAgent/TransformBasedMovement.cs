@@ -345,17 +345,20 @@ namespace PathBerserker2d
             agent.Position = agent.PathSubGoal;
         }
 
-        private static bool MoveAlongSegment(Vector2 pos, Vector2 goal, Vector2 segPoint, Vector2 segTangent, float amount, out Vector2 newPos)
+        private bool MoveAlongSegment(Vector2 pos, Vector2 goal, Vector2 segPoint, Vector2 segTangent, float amount, out Vector2 newPos)
         {
             pos = Geometry.ProjectPointOnLine(pos, segPoint, segTangent);
             goal = Geometry.ProjectPointOnLine(goal, segPoint, segTangent);
             return MoveTo(pos, goal, amount, out newPos);
         }
 
-        private static bool MoveTo(Vector2 pos, Vector2 goal, float amount, out Vector2 newPos)
+        private bool MoveTo(Vector2 pos, Vector2 goal, float amount, out Vector2 newPos)
         {
             Vector2 dir = goal - pos;
             float distance = dir.magnitude;
+
+            transform.localScale = new Vector3(Mathf.Sign(dir.x) * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+
             if (distance <= amount)
             {
                 newPos = goal;
