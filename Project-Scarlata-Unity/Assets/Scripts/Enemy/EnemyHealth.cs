@@ -10,6 +10,7 @@ namespace Rewriters.Enemies
     {
         [SerializeField] protected bool StunOnGettingDamage;
         [SerializeField, ShowIf("StunOnGettingDamage")] protected float SecondsStunned = 2f;
+        [SerializeField] EnemyAttack Attack;
         protected EnemyController EnemyController;
         public Animator Animator;
 
@@ -27,7 +28,8 @@ namespace Rewriters.Enemies
 
         protected override void OnTakeDamage(DamageInfo incomingDamage)
         {
-            EnemyController.TargetDetection.StopAgent(SecondsStunned);
+            EnemyController.AIAgent.StopAgent(SecondsStunned);
+            Attack.DisallowAttackForFewSeconds(SecondsStunned);
 
             Animator.SetTrigger("TakeDamage");
         }
@@ -36,7 +38,9 @@ namespace Rewriters.Enemies
         {
             base.OnDeath();
 
-            EnemyController.TargetDetection.StopAgent();
+            EnemyController.AIAgent.ForceStopAgent();
+
+            Animator.SetBool("Death", true);
         }
     }
 }

@@ -22,7 +22,12 @@ namespace Rewriters.HealthSystem.Attacks
             get
             {
                 if (_focusOn == FocusOn.Offset)
-                    return (Vector2)transform.position + _offset;
+                {
+                    Vector2 offsetDifference = _offset;
+                    offsetDifference.x = Mathf.Abs(offsetDifference.x) * Mathf.Sign(Owner.transform.localScale.x);
+
+                    return ((Vector2)transform.position + offsetDifference);
+                }
                 else
                 {
                     return Point.position;
@@ -36,7 +41,7 @@ namespace Rewriters.HealthSystem.Attacks
         /// <summary>
         /// Does an attack in a square area.
         /// </summary>
-        public override void DoAttack()
+        protected override void HandleAttack()
         {
             //Generates a collider looking for objects
             Collider2D[] damageableHit = Physics2D.OverlapBoxAll(_determinePoint, DamageAreaSize, 0f, Layers);

@@ -6,8 +6,6 @@ using PathBerserker2d;
 
 namespace Rewriters.AI
 {
-    [RequireComponent(typeof(NavAgent))]
-    [RequireComponent(typeof(TransformBasedMovement))]
     public class TargetDetection : MonoBehaviour
     {
         #region Settings
@@ -16,23 +14,26 @@ namespace Rewriters.AI
 
         [SerializeField] private LayerMask _targetsLayers;
 
-        [SerializeField] private bool _canMove;
+        // Checks the direction of the object.
+        public bool ConsiderObjectDirection;
 
-        public bool CanMove { get => _canMove; set => _canMove = value; }
+        public Transform Body;
 
-        [SerializeField] private NavAgent _navAgent;
+        public Vector3 GetPoint
+        {
+            get
+            {
+                if (Body == null)
+                    return transform.position + Offset;
 
-        public NavAgent NavAgent => _navAgent;
+                if (ConsiderObjectDirection)
+                    Offset.x = Mathf.Abs(Offset.x) * Mathf.Sign(Body.transform.localScale.x);
 
-        [SerializeField] private bool _returnToInitialPositionWhenTargetIsOut = false;
+                Vector3 point = Body.position + Offset;
 
-        public bool ReturnToInitialPosition => _returnToInitialPositionWhenTargetIsOut;
-
-        private Vector3 _initialPosition;
-        public Vector3 InitialPosition => _initialPosition;
-
-        [SerializeField] private float _reachDistance = .5f;
-        public float ReachDistance => _reachDistance;
+                return point;
+            }
+        }
         #endregion
 
         #region Box Bounds
@@ -59,106 +60,6 @@ namespace Rewriters.AI
         public Vector3 Offset;
         #endregion
 
-        #region Stop Character
-        private Coroutine _handleStop;
-        #endregion
-
-        #region Animator
-        public Animator Animator;
-        #endregion
-
-        #region Cooldown
-        [SerializeField] private float _cooldown;
-
-        private Coroutine _handleCooldown;
-        #endregion
-
-        #region StateMachine
-        public StateMachine<TargetDetection> StateMachine;
-        #endregion
-
-        private void Awake()
-        {
-            _initialPosition = transform.position;
-
-            StateMachine = new StateMachine<TargetDetection>(this);
-            StateMachine.AddState<IdleState>();
-            StateMachine.AddState<FollowState>();
-            StateMachine.AddState<ReturningState>();
-            StateMachine.AddState<StoppedState>();
-
-            StateMachine.SetState<IdleState>();
-        }
-
-        private void Update()
-        {
-            StateMachine.CurrentState.OnUpdate(this);
-        }
-
-        /// <summary>
-        /// Moves the target to the specified position.
-        /// </summary>
-        /// <param name="position"></param>
-        public void MoveTo(Vector3 position)
-        {
-            if (ReachedDistance(position))
-                return;
-
-            if (!CanMove)
-                return;
-
-            NavAgent.PathTo(position);
-
-            _handleCooldown = StartCoroutine(HandleCooldown_CO());
-        }
-
-        /// <summary>
-        /// Cooldown to repath and follow the target.
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator HandleCooldown_CO()
-        {
-            CanMove = false;
-
-            yield return new WaitForSeconds(_cooldown);
-
-            CanMove = true;
-        }
-
-        /// <summary>
-        /// Stops the coroutine handling the cooldown. By disabling it, the CanMove variable should be stablished manually.
-        /// </summary>
-        public void StopCooldownHandler()
-        {
-            StopCoroutine(_handleCooldown);
-        }
-
-        /// <summary>
-        /// Stops the agent on it's exact position.
-        /// </summary>
-        public void StopAgent() => StateMachine.SetState<StoppedState>();
-
-        /// <summary>
-        /// Stops the agent for few seconds on it's exact position and then return to Idle State.
-        /// </summary>
-        /// <param name="seconds"></param>
-        public virtual void StopAgent(float seconds)
-        {
-            if (_handleStop != null)
-                StopCoroutine(_handleStop);
-
-            _handleStop = StartCoroutine(StopAgent_CO(seconds));
-        }
-
-        protected virtual IEnumerator StopAgent_CO(float seconds)
-        {
-            StateMachine.SetState<StoppedState>();
-
-            yield return new WaitForSeconds(seconds);
-
-            StateMachine.SetState<IdleState>();
-        }
-
         /// <summary>
         /// Checks if is detecting any target.
         /// </summary>
@@ -170,7 +71,7 @@ namespace Rewriters.AI
 
             if (Type == TargetDetectionType.Box)
             {
-                col = Physics2D.OverlapBox(transform.position + Offset, Bounds.size, 0f, _targetsLayers);
+                col = Physics2D.OverlapBox(GetPoint, Bounds.size, 0f, _targetsLayers);
 
                 Target = col?.transform;
 
@@ -179,7 +80,7 @@ namespace Rewriters.AI
 
             if (Type == TargetDetectionType.Sphere)
             {
-                col = Physics2D.OverlapCircle(transform.position + Offset, _radius, _targetsLayers);
+                col = Physics2D.OverlapCircle(GetPoint, _radius, _targetsLayers);
 
                 Target = col?.transform;
 
@@ -187,21 +88,6 @@ namespace Rewriters.AI
             }
 
             return isDetectingTarget;
-        }
-
-        /// <summary>
-        /// Checks if reached the given distance.
-        /// </summary>
-        /// <param name="position"></param>
-        /// <returns></returns>
-        public bool ReachedDistance(Vector3 position)
-        {
-            bool reachedDistance = Vector3.Distance(transform.position, position) < _reachDistance;
-
-            if (reachedDistance)
-                NavAgent.Stop();
-
-            return reachedDistance;
         }
     }
 

@@ -4,16 +4,17 @@ using UnityEngine;
 
 namespace Rewriters.AI
 {
-    public class IdleState : State<TargetDetection>
+    public class IdleState : State<AIAgent>
     {
-        public override void OnEnter(TargetDetection entity)
+        public override void OnEnter(AIAgent entity)
         {
             entity.Animator.SetBool("Run", false);
+            entity.CanMove = true;
         }
 
-        public override void OnUpdate(TargetDetection entity)
+        public override void OnUpdate(AIAgent entity)
         {
-            if (entity.IsDetectingATarget())
+            if (entity.TargetDetection.IsDetectingATarget())
             {
                 entity.StateMachine.SetState<FollowState>();
             }

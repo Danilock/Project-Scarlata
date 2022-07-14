@@ -27,7 +27,7 @@ namespace Rewriters.Player
             holder.Owner.Animator.SetTrigger(Hash_Attack);
 
             MeleeAttack meleeAttack = holder.GetComponent<MeleeAttack>();
-            meleeAttack.DoAttack();
+            meleeAttack.StartAttackProcess();
 
             _currentAttackIndex = (_currentAttackIndex + 1) % (_maxAmountOfAttacks);
             holder.Owner.Animator.SetFloat(Hash_Index, _currentAttackIndex);

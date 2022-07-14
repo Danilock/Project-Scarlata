@@ -19,6 +19,9 @@ namespace Rewriters.AbilitySystem
         [SerializeField, FoldoutGroup("Fade")] protected int AmountOfFades = 4;
         [SerializeField, FoldoutGroup("Fade")] protected float[] GeneralAlphaEffectAmount;
 
+        [SerializeField, FoldoutGroup("Layers")] protected string StartLayer;
+        [SerializeField, FoldoutGroup("Layers")] protected string EndLayer;
+
         private Coroutine _CharacterGravityCoroutine;
 
         public override void Activate(AbilityHolder holder)
@@ -26,6 +29,9 @@ namespace Rewriters.AbilitySystem
             //Preveting the character controller movement while dashing.
             holder.Owner.GetComponent<CharacterController2D>().CanMove = false;
             holder.Owner.GetComponent<CharacterController2D>().IsInAirDueToWallJump = false;
+
+            //Set new layer to player to avoid enemy collisions.
+            holder.gameObject.layer = LayerMask.NameToLayer(StartLayer);
 
             //Tells the animator set the dash.
             holder.Owner.Animator.SetBool("Dash", true);
@@ -92,6 +98,9 @@ namespace Rewriters.AbilitySystem
             
             //Allowing the character to move again
             ch2D.CanMove = true;
+
+            //Set the layer back to normal
+            holder.gameObject.layer = LayerMask.NameToLayer(EndLayer);
 
             //Set animation to false/
             holder.Owner.Animator.SetBool("Dash", false);

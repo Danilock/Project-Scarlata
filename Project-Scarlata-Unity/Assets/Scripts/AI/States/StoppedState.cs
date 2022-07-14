@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Rewriters.AI {
-    public class StoppedState : State<TargetDetection>
+    public class StoppedState : State<AIAgent>
     {
-        public override void OnEnter(TargetDetection entity)
+        public override void OnEnter(AIAgent entity)
         {
             entity.StopCooldownHandler();
             entity.NavAgent.ForceStop();
         }
 
-        public override void OnExit(TargetDetection entity)
+        public override void OnExit(AIAgent entity)
         {
             entity.CanMove = true;
         }

@@ -56,7 +56,8 @@ namespace Rewriters.HealthSystem
         
         #region Events
 
-        public UnityAction<DamageInfo> OnTakeDamageEvent, OnDeathEvent;
+        [FoldoutGroup("Events")]
+        public UnityEvent<DamageInfo> OnTakeDamageEvent, OnDeathEvent;
 
         #endregion
 

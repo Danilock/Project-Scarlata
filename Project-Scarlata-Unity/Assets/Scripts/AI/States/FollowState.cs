@@ -4,18 +4,18 @@ using UnityEngine;
 
 namespace Rewriters.AI
 {
-    public class FollowState : State<TargetDetection>
+    public class FollowState : State<AIAgent>
     {
-        public override void OnEnter(TargetDetection entity)
+        public override void OnEnter(AIAgent entity)
         {
             entity.Animator.SetBool("Run", true);
         }
 
-        public override void OnUpdate(TargetDetection entity)
+        public override void OnUpdate(AIAgent entity)
         {
-            entity.MoveTo(entity.Target.position);
+            entity.MoveTo(entity.TargetDetection.Target.position);
 
-            if (!entity.IsDetectingATarget())
+            if (!entity.TargetDetection.IsDetectingATarget())
             {
                 if (entity.ReturnToInitialPosition)
                 {

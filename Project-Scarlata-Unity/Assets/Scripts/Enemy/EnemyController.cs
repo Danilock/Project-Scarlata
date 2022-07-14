@@ -12,11 +12,13 @@ namespace Rewriters.Enemies
     {
         public TargetDetection TargetDetection;
         public EnemyHealth Health;
+        public AIAgent AIAgent;
 
         protected virtual void Awake()
         {
             TargetDetection = GetComponent<TargetDetection>();
             Health = GetComponent<EnemyHealth>();
+            AIAgent = GetComponent<AIAgent>();
         }
     }
 }
