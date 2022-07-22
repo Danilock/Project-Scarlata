@@ -15,7 +15,8 @@ namespace Rewriters.AbilitySystem
         [SerializeField] protected float Duration;
         [SerializeField, Tooltip("Force reduced while doing a diagonal dash.")] protected float DashReduction = 1.5f;
 
-        [SerializeField, FoldoutGroup("Fade")] protected string FadePoolName = "Player_Fade";
+        [SerializeField, FoldoutGroup("Fade")] protected string LightModeFadePool = "Player_Fade_Light";
+        [SerializeField, FoldoutGroup("Fade")] protected string DarkModeFadePool = "Player_Fade_Dark";
         [SerializeField, FoldoutGroup("Fade")] protected int AmountOfFades = 4;
         [SerializeField, FoldoutGroup("Fade")] protected float[] GeneralAlphaEffectAmount;
 
@@ -60,7 +61,7 @@ namespace Rewriters.AbilitySystem
 
             while(i < AmountOfFades)
             {
-                GameObject gm = ObjectPooler.Instance.GetObjectFromPool(FadePoolName);
+                GameObject gm = ObjectPooler.Instance.GetObjectFromPool(DecideFadePool(holder));
 
                 gm.transform.localScale = holder.transform.localScale;
                 gm.transform.position = holder.transform.position;
@@ -147,6 +148,18 @@ namespace Rewriters.AbilitySystem
             endDirection.y = (move.y * Force) / DashReduction;
 
             return endDirection;
+        }
+
+        /// <summary>
+        /// Determines which fade to instantiate depending on player's transformation state(Dark or Light).
+        /// </summary>
+        /// <param name="holder"></param>
+        /// <returns></returns>
+        private string DecideFadePool(AbilityHolder holder)
+        {
+            PlayerAbilityHandler handler = holder.GetComponent<PlayerAbilityHandler>();
+
+            return handler.TransformationMode == PlayerTransformationMode.LightMode ? LightModeFadePool : DarkModeFadePool;
         }
     }
 }

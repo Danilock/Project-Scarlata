@@ -22,7 +22,8 @@ MonoBehaviour:
   ForceMode: 1
   Duration: 0.3
   DashReduction: 1.5
-  FadePoolName: Player_Fade
+  LightModeFadePool: Player_Fade_Light
+  DarkModeFadePool: Player_Fade_Dark
   AmountOfFades: 3
   GeneralAlphaEffectAmount:
   - 0.3
