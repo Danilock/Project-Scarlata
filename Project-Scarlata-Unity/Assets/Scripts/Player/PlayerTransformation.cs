@@ -17,6 +17,7 @@ namespace Rewriters.Player
 
             holder.Owner.Animator.SetTrigger(Hash_Transform);
             holder.Owner.Animator.SetFloat(Hash_DarkMode, (float) handler.TransformationMode);
+            handler.TriggerTransformationVFXAnimation();
         }
     }
 }

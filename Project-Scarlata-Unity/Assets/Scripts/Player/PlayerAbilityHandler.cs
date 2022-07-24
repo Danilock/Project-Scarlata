@@ -18,6 +18,12 @@ namespace Rewriters.Player
 
         public PlayerTransformationMode TransformationMode = PlayerTransformationMode.LightMode;
 
+        #region VFX
+        [SerializeField, FoldoutGroup("Transformation VFX")] private GameObject _transformationVFX;
+        [SerializeField, FoldoutGroup("Transformation VFX")] private Animator _transformationAnimator;
+        private readonly int Hash_transformationVFX = Animator.StringToHash("Transformation");
+        #endregion
+
         #region Dependencies
         private Character _owner;
 
@@ -131,6 +137,12 @@ namespace Rewriters.Player
         public void OnTriggerEvent(OnRoomChange data)
         {
             SetDashState(0);
+        }
+
+        public void TriggerTransformationVFXAnimation()
+        {
+            _transformationAnimator.SetFloat(Hash_DarkMode, (float)TransformationMode);
+            _transformationAnimator.SetTrigger(Hash_transformationVFX);
         }
     }
 

@@ -21,7 +21,7 @@ namespace Rewriters.Player
 
         public override void Activate(AbilityHolder holder)
         {
-            holder.Owner.Animator.ResetTrigger(Hash_Attack);
+            //holder.Owner.Animator.ResetTrigger(Hash_Attack);
 
             holder.Owner.Animator.SetFloat(Hash_Index, _currentAttackIndex);
             holder.Owner.Animator.SetTrigger(Hash_Attack);
