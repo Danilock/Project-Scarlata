@@ -26,6 +26,11 @@ namespace Rewriters
             get => _currentCharacterState;
             private set => _currentCharacterState = value;
         }
+
+        private void Update()
+        {
+            Debug.Log(CurrentCharacterState);
+        }
         public void SetCharacterState(CharacterStates newState) => CurrentCharacterState = newState;
     }
 }

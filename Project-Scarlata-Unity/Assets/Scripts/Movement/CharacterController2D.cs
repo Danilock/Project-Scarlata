@@ -309,6 +309,9 @@ namespace Rewriters
 
 		private void Update()
 		{
+			if (_character.CurrentCharacterState == CharacterStates.Transforming)
+				return;
+
 			if (m_hitWall && !m_Grounded)
 			{
 				Rigidbody.gravityScale = _gravityOnceDetectingWall;
@@ -362,7 +365,7 @@ namespace Rewriters
         #region Movement Methods
         public void Move(float move, bool crouch, bool jump, bool sprint)
 		{
-			if (!_canMove)
+			if (!_canMove || _character.CurrentCharacterState == CharacterStates.Transforming)
 				return;
 
             //if (m_isInAirDueToWallJump)
