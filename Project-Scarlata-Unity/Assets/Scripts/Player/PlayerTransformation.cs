@@ -14,7 +14,6 @@ namespace Rewriters.Player
         public override void Activate(AbilityHolder holder)
         {
             PlayerAbilityHandler handler = holder.GetComponent<PlayerAbilityHandler>();
-            CharacterController2D ch2D = holder.GetComponent<CharacterController2D>();
 
             holder.Owner.Animator.SetTrigger(Hash_Transform);
             holder.Owner.Animator.SetFloat(Hash_DarkMode, (float) handler.TransformationMode);
