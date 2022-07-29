@@ -18,3 +18,8 @@ MonoBehaviour:
   RequiresMana: 1
   ManaRequired: 100
   AllowedCharacterStates: 0000000001000000
+  _castTimeToTriggerScreenFade: 1.15
+  _fadeTime: 0.5
+  _lightModeFadeColor: {r: 1, g: 0, b: 0, a: 1}
+  _darkModeFadeColor: {r: 1, g: 0, b: 0.76596737, a: 1}
+  _initialFadeAlpha: 0.4

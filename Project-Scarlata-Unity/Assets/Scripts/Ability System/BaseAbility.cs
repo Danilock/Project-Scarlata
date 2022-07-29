@@ -10,8 +10,8 @@ namespace Rewriters.AbilitySystem
     /// </summary>
     public abstract class BaseAbility : ScriptableObject
     {
-        [FoldoutGroup("Cooldown And Casting Time")]public bool HasCooldown = true;
-        [FoldoutGroup("Cooldown And Casting Time")] public float Cooldown = 1f;
+        [FoldoutGroup("Cooldown And Casting Time")] public bool HasCooldown = true;
+        [FoldoutGroup("Cooldown And Casting Time"), ShowIf("HasCooldown")] public float Cooldown = 1f;
         [FoldoutGroup("Cooldown And Casting Time")] public float CastingTime = 0f;
 
         [FoldoutGroup("Mana")]

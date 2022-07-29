@@ -11,22 +11,27 @@ namespace Rewriters.Items
     [RequireComponent(typeof(Rigidbody2D))]
     public class ControllableBubble : Pickeable
     {
+        #region Fields
         [SerializeField, ReadOnly, FoldoutGroup("Bubble Settings")] private Vector2 _initialPosition;
         [SerializeField] private ControllableBubbleStates _currentState = ControllableBubbleStates.Idle;
         public ControllableBubbleStates CurrentState => _currentState;
         [SerializeField, FoldoutGroup("Bubble Settings")] private float _bubbleLifeTime = 2f;
         [SerializeField, FoldoutGroup("Bubble Settings")] private float _jumpForce = 25f;
+        [SerializeField, FoldoutGroup("Bubble Settings")] private float _bubbleSpeedMultiplier = 10f;
         [SerializeField, FoldoutGroup("Bubble Settings")] private float _secondsToStartMovingAfterPicked = 1f;
                                                        
         [SerializeField, FoldoutGroup("Bubble Settings")] private float _playerRotationSpeedInsideBubble;
         [SerializeField, FoldoutGroup("Bubble Settings")] private Vector2 _playerScaleOnBubble;
+
+        [InfoBox("Direction of the bubble in case the player is not holding any key.")]
+        [SerializeField, FoldoutGroup("Bubble Settings")] private Vector2 _bubbleDirection;
 
         [SerializeField, FoldoutGroup("Effects")] private ParticleSystem _particleSystem;
 
         [SerializeField, FoldoutGroup("Cinemachine Impulse")] private CinemachineImpulseSource _impulseSource; 
 
         private Coroutine _stopBubbleAfterSeconds;
-
+        #endregion
         protected override void Awake()
         {
             base.Awake();
@@ -72,7 +77,7 @@ namespace Rewriters.Items
             yield return new WaitForSeconds(_secondsToStartMovingAfterPicked);
             _currentState = ControllableBubbleStates.OnUse;
 
-            Rigidbody.velocity = PlayerInput.Instance.Move * 10f;
+            MoveBubble();
 
             _impulseSource.GenerateImpulse();
 
@@ -87,6 +92,17 @@ namespace Rewriters.Items
             yield return new WaitForSeconds(_bubbleLifeTime);
 
             ReanudatePlayerPhysics(false);
+        }
+
+        private void MoveBubble()
+        {
+            if (PlayerInput.Instance.Move.x != 0f && PlayerInput.Instance.Move.y != 0f)
+            {
+                Rigidbody.velocity = PlayerInput.Instance.Move * _bubbleSpeedMultiplier;
+                return;
+            }
+
+            Rigidbody.velocity = _bubbleDirection * _bubbleSpeedMultiplier;
         }
 
         private void StopPlayerPhysics()
