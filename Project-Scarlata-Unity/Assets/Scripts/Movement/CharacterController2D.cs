@@ -266,8 +266,9 @@ namespace Rewriters
 
 						if (_canDoJumpOnGrounded)
                         {
-							Move(_inputManager.Move.x, false, true, false);
-                        }
+							//Move(_inputManager.Move.x, false, true, false);
+							StartCoroutine(HandleJump_CO());
+						}
 						
 						_animator.SetBool(_hashJump, false);
 					}
@@ -349,7 +350,7 @@ namespace Rewriters
 				_character.SetCharacterState(CharacterStates.Idle);
             }
 
-			if(m_Grounded && Rigidbody.velocity.y == 0f)
+			if(m_Grounded && Rigidbody.velocity.y <= 0f)
             {
 				_animator.SetBool(_hashJump, false);
             }
@@ -389,7 +390,7 @@ namespace Rewriters
 						StopCoroutine(_jumpBeforeGettingGroundedCoroutine);
 					}
 
-					_jumpBeforeGettingGroundedCoroutine = StartCoroutine(HandleOnGroundeJump_CO());
+					_jumpBeforeGettingGroundedCoroutine = StartCoroutine(HandleOnGroundJump_CO());
 				}
 			}
 
@@ -545,7 +546,7 @@ namespace Rewriters
 
 		}
 
-		private IEnumerator HandleOnGroundeJump_CO()
+		private IEnumerator HandleOnGroundJump_CO()
         {
 			_canDoJumpOnGrounded = true;
 			yield return new WaitForSeconds(_jumpOnGroundWaitTime);
