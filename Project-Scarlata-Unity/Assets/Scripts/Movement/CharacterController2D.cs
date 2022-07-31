@@ -266,8 +266,7 @@ namespace Rewriters
 
 						if (_canDoJumpOnGrounded)
                         {
-							//Move(_inputManager.Move.x, false, true, false);
-							StartCoroutine(HandleJump_CO());
+							Move(_inputManager.Move.x, false, true, false);
 						}
 						
 						_animator.SetBool(_hashJump, false);
