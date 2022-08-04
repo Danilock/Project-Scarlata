@@ -4758,7 +4758,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5093,9 +5093,11 @@ MonoBehaviour:
   _currentState: 3
   _bubbleLifeTime: 0.35
   _jumpForce: 15
+  _bubbleSpeedMultiplier: 10
   _secondsToStartMovingAfterPicked: 1
   _playerRotationSpeedInsideBubble: 700
   _playerScaleOnBubble: {x: 0.4, y: 0.4}
+  _bubbleDirection: {x: 0, y: 0}
   _particleSystem: {fileID: 1520921993}
   _impulseSource: {fileID: 3432561519572467040}
 --- !u!114 &1022588453

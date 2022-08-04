@@ -44,9 +44,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Environment
+    uniqueID: 2271016627
+    locked: 0
+  - name: Decorations
+    uniqueID: 990800595
+    locked: 0
   - name: Characters
     uniqueID: 193532759
     locked: 0
-  - name: Environment Over Characters
+  - name: Environment OC
     uniqueID: 869988903
+    locked: 0
+  - name: Decorations OC/OE
+    uniqueID: 1274342445
     locked: 0

@@ -14,8 +14,10 @@ namespace Rewriters
 		#region Movement and Jump Fields
 
 		[SerializeField, FoldoutGroup("Movement and Jump Fields")] private float m_JumpForce = 400f;                            // Amount of force added when the player jumps.
-		[SerializeField, FoldoutGroup("Movement and Jump Fields")] private bool m_isInAirDueToWallJump;
+		[SerializeField, FoldoutGroup("Movement and Jump Fields/Jump")] private bool m_isInAirDueToWallJump;
 		private Vector3 _lastScale;
+
+		[SerializeField, FoldoutGroup("Movement and Jump Fields/Jump")] private bool _jump = false;
 		private float CalculateJumpForceDirection
 		{
 			get
@@ -44,7 +46,7 @@ namespace Rewriters
 		private float _initialSpeed;
 		[SerializeField, Range(0, 1), FoldoutGroup("Movement and Jump Fields")] private float m_speedWhenNotGrounded;
 		[SerializeField, Range(0, 1), FoldoutGroup("Movement and Jump Fields")] private float _timeToWaitToSetAirSpeedAfterJump = .2f;
-		[SerializeField, Range(0, 10), FoldoutGroup("Movement and Jump Fields")] private float _jumpOnGroundWaitTime = .2f;
+		[SerializeField, Range(0, 10), FoldoutGroup("Movement and Jump Fields/Jump")] private float _jumpOnGroundWaitTime = .2f;
 
 		private Coroutine _apexJumpCoroutine, _jumpBeforeGettingGroundedCoroutine;
 		private bool _canDoApexJump, _canDoJumpOnGrounded;
@@ -214,7 +216,9 @@ namespace Rewriters
 		#region Flip
 		[FoldoutGroup("Flip"), SerializeField] private float _flipTime = .1f;
 		public Tween FlipProcess;
-        #endregion
+		#endregion
+
+		private bool _canCheckGroundState = false;
 
         #region Unity Methods
         private void Awake()
@@ -260,7 +264,7 @@ namespace Rewriters
 					m_isInAirDueToWallJump = false;
 					_isWallClimbing = false;
 					OnGroundEvent.Invoke();
-					if (!_wasGrounded && (Rigidbody.velocity.y < 0 || Rigidbody.velocity.y == 0f))
+					if (!_wasGrounded && Rigidbody.velocity.y <= 0f)
 					{
 						OnLandEvent.Invoke();
 
@@ -349,7 +353,7 @@ namespace Rewriters
 				_character.SetCharacterState(CharacterStates.Idle);
             }
 
-			if(m_Grounded && Rigidbody.velocity.y <= 0f)
+			if(m_Grounded && Mathf.Round(Rigidbody.velocity.y) <= 0f)
             {
 				_animator.SetBool(_hashJump, false);
             }
@@ -368,8 +372,8 @@ namespace Rewriters
 			if (!_canMove || _character.CurrentCharacterState == CharacterStates.Transforming)
 				return;
 
-            //if (m_isInAirDueToWallJump)
-            //return;
+			//if (m_isInAirDueToWallJump)
+			//return;
 
 
             // If the player should jump...

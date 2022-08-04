@@ -19,7 +19,7 @@ namespace Rewriters.Items
         [SerializeField, FoldoutGroup("Bubble Settings")] private float _jumpForce = 25f;
         [SerializeField, FoldoutGroup("Bubble Settings")] private float _bubbleSpeedMultiplier = 10f;
         [SerializeField, FoldoutGroup("Bubble Settings")] private float _secondsToStartMovingAfterPicked = 1f;
-                                                       
+
         [SerializeField, FoldoutGroup("Bubble Settings")] private float _playerRotationSpeedInsideBubble;
         [SerializeField, FoldoutGroup("Bubble Settings")] private Vector2 _playerScaleOnBubble;
 
@@ -28,7 +28,7 @@ namespace Rewriters.Items
 
         [SerializeField, FoldoutGroup("Effects")] private ParticleSystem _particleSystem;
 
-        [SerializeField, FoldoutGroup("Cinemachine Impulse")] private CinemachineImpulseSource _impulseSource; 
+        [SerializeField, FoldoutGroup("Cinemachine Impulse")] private CinemachineImpulseSource _impulseSource;
 
         private Coroutine _stopBubbleAfterSeconds;
         #endregion
@@ -96,7 +96,7 @@ namespace Rewriters.Items
 
         private void MoveBubble()
         {
-            if (PlayerInput.Instance.Move.x != 0f && PlayerInput.Instance.Move.y != 0f)
+            if (PlayerInput.Instance.Move.x != 0f || PlayerInput.Instance.Move.y != 0f)
             {
                 Rigidbody.velocity = PlayerInput.Instance.Move * _bubbleSpeedMultiplier;
                 return;

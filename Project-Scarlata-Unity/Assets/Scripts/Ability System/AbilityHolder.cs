@@ -57,9 +57,9 @@ namespace Rewriters.AbilitySystem
 
             yield return new WaitForSeconds(Ability.CastingTime);
 
-            Ability.Activate(this);
-
             CurrentAbilityState = AbilityStates.Cooldown;
+
+            Ability.Activate(this);
 
             Owner.Animator.SetTrigger(Hash_Ability);
 

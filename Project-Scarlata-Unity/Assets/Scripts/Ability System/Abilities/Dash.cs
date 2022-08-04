@@ -113,7 +113,10 @@ namespace Rewriters.AbilitySystem
             yield return new WaitForSeconds(.25f);
 
             if (ch2D.IsGrounded)
+            {
                 holder.SetAbilityState(AbilityStates.ReadyToUse);
+                Debug.Log("Ready to use dash");
+            }
         }
 
         /// <summary>
