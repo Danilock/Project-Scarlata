@@ -5,6 +5,7 @@ using Sirenix.OdinInspector;
 using Rewriters.Player;
 using DG.Tweening;
 using Cinemachine;
+using Rewriters.AbilitySystem;
 
 namespace Rewriters.Items
 {
@@ -29,6 +30,8 @@ namespace Rewriters.Items
         [SerializeField, FoldoutGroup("Effects")] private ParticleSystem _particleSystem;
 
         [SerializeField, FoldoutGroup("Cinemachine Impulse")] private CinemachineImpulseSource _impulseSource;
+
+        [SerializeField, FoldoutGroup("Rotation")] private bool _canRotatePlayer = true;
 
         private Coroutine _stopBubbleAfterSeconds;
         #endregion
@@ -63,13 +66,18 @@ namespace Rewriters.Items
 
             if (PlayerInput.Instance.Jump)
             {
-                if (_stopBubbleAfterSeconds != null)
-                    StopCoroutine(_stopBubbleAfterSeconds);
-
-                ReanudatePlayerPhysics(true);
+                HandleJump();
             }
 
-            Owner.transform.Rotate(new Vector3(0f, 0f, _playerRotationSpeedInsideBubble * Time.deltaTime));
+            if (PlayerInput.Instance.Dash)
+            {
+                _canRotatePlayer = false;
+
+                HandleDash();
+            }
+
+            if(_canRotatePlayer)
+                Owner.transform.Rotate(new Vector3(0f, 0f, _playerRotationSpeedInsideBubble * Time.deltaTime));
         }
 
         private IEnumerator HandleBubbleBeforeStart_CO()
@@ -133,6 +141,7 @@ namespace Rewriters.Items
             _currentState = ControllableBubbleStates.Returning;
 
             Rigidbody.bodyType = RigidbodyType2D.Static;
+            Collider.isTrigger = true;
 
             transform.DOMove(_initialPosition, .5f).OnComplete(() =>
             {
@@ -143,7 +152,29 @@ namespace Rewriters.Items
         protected virtual void OnReachInitialPosition()
         {
             _currentState = ControllableBubbleStates.Idle;
+            Collider.isTrigger = false;
+            _canRotatePlayer = true;
             _particleSystem.Stop();
+        }
+
+        protected virtual void HandleDash()
+        {
+            PlayerAbilityHandler abilityHandler = Owner.GetComponent<PlayerAbilityHandler>();
+            AbilityHolder dashHolder = abilityHandler.GetAbility<Dash>();
+
+            if (dashHolder.CurrentAbilityState != AbilityStates.ReadyToUse) return;
+
+            if (_stopBubbleAfterSeconds != null) StopCoroutine(_stopBubbleAfterSeconds);
+
+            ReanudatePlayerPhysics(false);
+        }
+
+        protected virtual void HandleJump()
+        {
+            if (_stopBubbleAfterSeconds != null)
+                StopCoroutine(_stopBubbleAfterSeconds);
+
+            ReanudatePlayerPhysics(true);
         }
 
         private void ReanudatePlayerPhysics(bool jump)
@@ -187,13 +218,14 @@ namespace Rewriters.Items
 
                 ControllableBubble ctrBubble = collision.gameObject.GetComponent<ControllableBubble>();
 
-                if(ctrBubble != null && ctrBubble.CurrentState == ControllableBubbleStates.Idle)
+                //In case we collide with another bubble.
+                if (ctrBubble != null && ctrBubble.CurrentState == ControllableBubbleStates.Idle)
                 {
                     ctrBubble.Pick(Owner);
 
                     this.ResetBubble();
                 }
-                else if(ctrBubble == null)
+                else if (ctrBubble == null)
                 {
                     ReanudatePlayerPhysics(false);
                 }

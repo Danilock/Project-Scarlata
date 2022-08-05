@@ -31,6 +31,9 @@ namespace Rewriters.AbilitySystem
             holder.Owner.GetComponent<CharacterController2D>().CanMove = false;
             holder.Owner.GetComponent<CharacterController2D>().IsInAirDueToWallJump = false;
 
+            //Sets the owner to Dash state.
+            holder.Owner.SetCharacterState(CharacterStates.Dashing);
+
             //Set new layer to player to avoid enemy collisions.
             holder.gameObject.layer = LayerMask.NameToLayer(StartLayer);
 
@@ -91,6 +94,8 @@ namespace Rewriters.AbilitySystem
             holder.Owner.Rigidbody.velocity = Vector2.zero;
 
             yield return new WaitForSeconds(Duration);
+
+            holder.Owner.SetCharacterState(CharacterStates.Idle);
 
             // If the character isn't wall climbing we set the Gravity as how it should be.
             // Note: In this condition, we should add all states that will change RGB's Gravity.

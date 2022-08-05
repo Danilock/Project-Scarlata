@@ -6,6 +6,7 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using Rewriters.Player;
 using ObjectPooling;
+using System.Linq;
 
 namespace Rewriters
 {
@@ -218,7 +219,19 @@ namespace Rewriters
 		public Tween FlipProcess;
 		#endregion
 
-		private bool _canCheckGroundState = false;
+		#region
+		[SerializeField, FoldoutGroup("States")] private CharacterStates[] _statesToPreventMovement;
+
+		private bool IsInDisallowedState
+        {
+            get
+            {
+				return _statesToPreventMovement.Contains(_character.CurrentCharacterState);
+            }
+        }
+        #endregion
+
+        private bool _canCheckGroundState = false;
 
         #region Unity Methods
         private void Awake()
@@ -313,7 +326,7 @@ namespace Rewriters
 
 		private void Update()
 		{
-			if (_character.CurrentCharacterState == CharacterStates.Transforming)
+			if (IsInDisallowedState)
 				return;
 
 			if (m_hitWall && !m_Grounded)
@@ -369,7 +382,7 @@ namespace Rewriters
         #region Movement Methods
         public void Move(float move, bool crouch, bool jump, bool sprint)
 		{
-			if (!_canMove || _character.CurrentCharacterState == CharacterStates.Transforming)
+			if (!_canMove || IsInDisallowedState)
 				return;
 
 			//if (m_isInAirDueToWallJump)
