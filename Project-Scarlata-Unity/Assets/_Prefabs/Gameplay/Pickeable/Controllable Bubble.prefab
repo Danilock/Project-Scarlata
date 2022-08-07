@@ -4999,7 +4999,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: cc460e5b1c6c0bd498b44195a0c3da99, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5100,6 +5100,7 @@ MonoBehaviour:
   _bubbleDirection: {x: 0, y: 0}
   _particleSystem: {fileID: 1520921993}
   _impulseSource: {fileID: 3432561519572467040}
+  _canRotatePlayer: 1
 --- !u!114 &1022588453
 MonoBehaviour:
   m_ObjectHideFlags: 0

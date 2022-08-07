@@ -34,6 +34,17 @@ namespace Rewriters.Items
         [SerializeField, FoldoutGroup("Rotation")] private bool _canRotatePlayer = true;
 
         private Coroutine _stopBubbleAfterSeconds;
+
+        private Vector3 GetPosition
+        {
+            get
+            {
+                if (Application.isPlaying)
+                    return _initialPosition;
+
+                return transform.position;
+            }
+        }
         #endregion
         protected override void Awake()
         {
@@ -232,6 +243,34 @@ namespace Rewriters.Items
             }
 
             base.OnCollisionEnter2D(collision);
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            float distance = _bubbleLifeTime * _bubbleSpeedMultiplier;
+
+            Gizmos.color = Color.red;
+
+            //Draws a line on the Up-Direction.
+            Vector3 upDirection = GetPosition;
+            upDirection.y += distance;
+            Gizmos.DrawLine(GetPosition, upDirection);
+
+            //Draws a line on the Down-Direction.
+            Vector3 downDirection = GetPosition;
+            downDirection.y -= distance;
+            Gizmos.DrawLine(GetPosition, downDirection);
+
+            //Draws a line on the Right-Direction.
+            Vector3 rightDirection = GetPosition;
+            rightDirection.x += distance;
+            Gizmos.DrawLine(GetPosition, rightDirection);
+            
+            //Draws a line on the Left-Direction.
+            Vector3 leftDirection = GetPosition;
+            leftDirection.x -= distance;
+            Gizmos.DrawLine(GetPosition, leftDirection);
+
         }
     }
 
