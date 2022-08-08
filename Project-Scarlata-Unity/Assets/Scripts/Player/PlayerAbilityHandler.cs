@@ -10,13 +10,15 @@ namespace Rewriters.Player
 {
     public class PlayerAbilityHandler : MonoBehaviour, IEventListener<OnRoomChange>
     {
-        [SerializeField] private PlayerInput _input;
+        #region Fields
+        [SerializeField, FoldoutGroup("Player Input")] private PlayerInput _input;
 
         private List<AbilityHolder> _holders = new List<AbilityHolder>();
 
-        [SerializeField] private List<PlayerAbilityData> _abilities;
+        [SerializeField, FoldoutGroup("Abilities")] private List<PlayerAbilityData> _abilities;
 
         public PlayerTransformationMode TransformationMode = PlayerTransformationMode.LightMode;
+        #endregion
 
         #region VFX
         [SerializeField, FoldoutGroup("Transformation VFX")] private GameObject _transformationVFX;
@@ -59,16 +61,21 @@ namespace Rewriters.Player
         {
             if (_input.Dash)
             {
-                GetAbility<Dash>().TriggerAbility();
+                TriggerPlayerAbility<Dash>();
             }
             if (_input.Attack)
             {
-                GetAbility<PlayerAttack>().TriggerAbility();
+                TriggerPlayerAbility<PlayerAttack>();
             }
             if (_input.Transform)
             {
-                GetAbility<PlayerTransformation>().TriggerAbility();
+                TriggerPlayerAbility<PlayerTransformation>();
             }
+        }
+
+        private void TriggerPlayerAbility<T>() where T : BaseAbility
+        {
+            GetAbility<T>().TriggerAbility();
         }
 
         /// <summary>

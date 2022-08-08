@@ -12,7 +12,8 @@ namespace Rewriters.AbilitySystem
     {
         [FoldoutGroup("Cooldown And Casting Time")] public bool HasCooldown = true;
         [FoldoutGroup("Cooldown And Casting Time"), ShowIf("HasCooldown")] public float Cooldown = 1f;
-        [FoldoutGroup("Cooldown And Casting Time")] public float CastingTime = 0f;
+        [FoldoutGroup("Cooldown And Casting Time")] public bool HasCastingTime = false;
+        [FoldoutGroup("Cooldown And Casting Time"), ShowIf("HasCastingTime")] public float CastingTime = 0f;
 
         [FoldoutGroup("Mana")]
         public bool RequiresMana = false;

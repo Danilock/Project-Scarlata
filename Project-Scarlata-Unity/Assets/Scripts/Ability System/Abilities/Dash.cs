@@ -95,7 +95,8 @@ namespace Rewriters.AbilitySystem
 
             yield return new WaitForSeconds(Duration);
 
-            holder.Owner.SetCharacterState(CharacterStates.Idle);
+            holder.Owner.SetCharacterState(ch2D.IsGrounded ? CharacterStates.Idle : CharacterStates.Jumping);
+
 
             // If the character isn't wall climbing we set the Gravity as how it should be.
             // Note: In this condition, we should add all states that will change RGB's Gravity.
@@ -120,7 +121,6 @@ namespace Rewriters.AbilitySystem
             if (ch2D.IsGrounded)
             {
                 holder.SetAbilityState(AbilityStates.ReadyToUse);
-                Debug.Log("Ready to use dash");
             }
         }
 

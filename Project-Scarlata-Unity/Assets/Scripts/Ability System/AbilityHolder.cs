@@ -55,7 +55,8 @@ namespace Rewriters.AbilitySystem
         {
             CurrentAbilityState = AbilityStates.Casting;
 
-            yield return new WaitForSeconds(Ability.CastingTime);
+            if(Ability.HasCastingTime)
+                yield return new WaitForSeconds(Ability.CastingTime);
 
             CurrentAbilityState = AbilityStates.Cooldown;
 
