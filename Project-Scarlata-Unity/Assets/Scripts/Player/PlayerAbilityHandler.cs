@@ -95,7 +95,11 @@ namespace Rewriters.Player
         
         public void SetDashState(int newState)
         {
-            GetAbility<Dash>().SetAbilityState(newState);
+            AbilityHolder holder = GetAbility<Dash>();
+
+            if (holder == null) return;
+
+            holder.SetAbilityState(newState);
         }
 
         /// <summary>
