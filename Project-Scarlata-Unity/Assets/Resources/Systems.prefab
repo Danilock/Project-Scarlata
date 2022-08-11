@@ -408,6 +408,8 @@ MonoBehaviour:
   LiveAcrossScenes: 0
   _frameRate: 60
   _timeScale: 1
+  _screenFadeTimeOnSceneLoading: 1
+  _sceneToLoad: 
 --- !u!1 &297404036013757115
 GameObject:
   m_ObjectHideFlags: 0
@@ -602,6 +604,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LiveAcrossScenes: 0
   _screenFadeImage: {fileID: 6477472955003158063}
+  _capture: {fileID: 218044787}
 --- !u!1 &8271610508009495638
 GameObject:
   m_ObjectHideFlags: 0

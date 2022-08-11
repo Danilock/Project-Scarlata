@@ -94,16 +94,18 @@ namespace Rewriters.Items
         private IEnumerator HandleBubbleBeforeStart_CO()
         {
             yield return new WaitForSeconds(_secondsToStartMovingAfterPicked);
+
             _currentState = ControllableBubbleStates.OnUse;
 
             MoveBubble();
 
-            _impulseSource.GenerateImpulse();
+            CaptureScreen();
+
+            GenerateCinemachineImpulse();
 
             _stopBubbleAfterSeconds = StartCoroutine(StopBubbleAfterSeconds_CO());
 
-            _particleSystem.gameObject.SetActive(true);
-            _particleSystem.Play();
+            EnableParticles();
         }
 
         private IEnumerator StopBubbleAfterSeconds_CO()
@@ -111,6 +113,17 @@ namespace Rewriters.Items
             yield return new WaitForSeconds(_bubbleLifeTime);
 
             ReanudatePlayerPhysics(false);
+        }
+
+        public virtual void EnableParticles()
+        {
+            _particleSystem.gameObject.SetActive(true);
+            _particleSystem.Play();
+        }
+
+        public virtual void GenerateCinemachineImpulse()
+        {
+            _impulseSource.GenerateImpulse();
         }
 
         private void MoveBubble()
@@ -147,7 +160,12 @@ namespace Rewriters.Items
             Owner.transform.DOPunchScale(new Vector3(_playerScaleOnBubble.x, _playerScaleOnBubble.y, 0f), _secondsToStartMovingAfterPicked, 10, 1f);
         }
 
-        private void ResetBubble()
+        protected virtual void CaptureScreen()
+        {
+            UIManager.Instance.Screenshot();
+        }
+
+        protected virtual void ResetBubble()
         {
             _currentState = ControllableBubbleStates.Returning;
 

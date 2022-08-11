@@ -33,7 +33,7 @@ namespace Rewriters.Player
         {
             yield return new WaitForSeconds(_castTimeToTriggerScreenFade);
 
-            UIManager.Instance.DoScreenFade(DetermineColorBasedOnPlayerTransformationMode(handler), _fadeTime, _initialFadeAlpha);
+            UIManager.Instance.DoScreenFade(DetermineColorBasedOnPlayerTransformationMode(handler), 1f, _fadeTime, null, true);
         }
 
         private Color DetermineColorBasedOnPlayerTransformationMode(PlayerAbilityHandler handler)

@@ -15,13 +15,15 @@ namespace Rewriters
         [SerializeField] private Image _image;
         [SerializeField] private Color _flashLightColor = Color.white;
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.U) && _canTakeScreenshot)
-            {
-                StartCoroutine(TakeScreenshot_CO());
-            }
+            if (_canTakeScreenshot && Input.GetKeyDown(KeyCode.U))
+                TakeScreenshot();
+        }
+
+        public void TakeScreenshot()
+        {
+            StartCoroutine(TakeScreenshot_CO());
         }
 
         private IEnumerator TakeScreenshot_CO()
@@ -36,7 +38,7 @@ namespace Rewriters
             var screenshot = ScreenCapture.CaptureScreenshotAsTexture();
             var sprite = Sprite.Create(screenshot, new Rect(0.0f, 0.0f, screenshot.width, screenshot.height), new Vector2(0.5f, 0.5f), 100.0f);
 
-            UIManager.Instance.DoScreenFade(_flashLightColor, _captureTimeOnScreen / 2f);
+            UIManager.Instance.DoScreenFade(_flashLightColor, 0f, _captureTimeOnScreen / 2f);
 
             _image.sprite = sprite;
             _image.SetImageAlpha(1f);

@@ -2630,6 +2630,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6908453575655191855, guid: 32da15c28428b584fb83868fecb0cbc9, type: 3}
+      propertyPath: field of view
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 6908453575655191855, guid: 32da15c28428b584fb83868fecb0cbc9, type: 3}
       propertyPath: orthographic size
       value: 9.01
       objectReference: {fileID: 0}
