@@ -259,7 +259,6 @@ namespace Rewriters
 			_wasGrounded = m_Grounded;
 			m_wasOnWall = m_hitWall;
 
-			m_Grounded = false;
 			m_hitWall = false;
 
 			// The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
@@ -268,6 +267,9 @@ namespace Rewriters
 			if (m_GroundCheck == null)
 				return;
 			Colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
+
+			if (Colliders.Length == 0 || (Colliders.Length == 1 && Colliders[0].gameObject == this.gameObject))
+				m_Grounded = false;
 
 			for (int i = 0; i < Colliders.Length; i++)
 			{
@@ -395,7 +397,6 @@ namespace Rewriters
 				if ((m_Grounded || _canDoApexJump) && jump && !m_isInAirDueToWallJump && !_jumpCoroutineStarted)
 				{
 					// Add a vertical force to the player.
-					m_Grounded = false;
 					_jumpCoroutineStarted = true;
 					StartCoroutine(HandleJump_CO());
 				}
