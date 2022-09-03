@@ -60,7 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canTakeScreenshot: 1
   _cooldown: 2
-  _captureTimeOnScreen: 2
+  _captureTimeOnScreen: 0.5
   _image: {fileID: 886680606}
   _flashLightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &886680604

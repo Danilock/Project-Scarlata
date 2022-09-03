@@ -61,5 +61,10 @@ namespace Rewriters
         {
             _capture.TakeScreenshot();
         }
+
+        public void CustomScreenshot(float captureTimeOnScreen)
+        {
+            _capture.TakeCustomScreenshot(captureTimeOnScreen);
+        }
     }
 }

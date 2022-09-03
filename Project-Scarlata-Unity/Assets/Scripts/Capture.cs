@@ -23,10 +23,15 @@ namespace Rewriters
 
         public void TakeScreenshot()
         {
-            StartCoroutine(TakeScreenshot_CO());
+            StartCoroutine(TakeScreenshot_CO(_captureTimeOnScreen));
         }
 
-        private IEnumerator TakeScreenshot_CO()
+        public void TakeCustomScreenshot(float captureTimeOnScreen)
+        {
+            StartCoroutine(TakeScreenshot_CO(captureTimeOnScreen));
+        }
+
+        private IEnumerator TakeScreenshot_CO(float captureTimeOnScreen)
         {
             _canTakeScreenshot = false;
 
@@ -38,11 +43,11 @@ namespace Rewriters
             var screenshot = ScreenCapture.CaptureScreenshotAsTexture();
             var sprite = Sprite.Create(screenshot, new Rect(0.0f, 0.0f, screenshot.width, screenshot.height), new Vector2(0.5f, 0.5f), 100.0f);
 
-            UIManager.Instance.DoScreenFade(_flashLightColor, 0f, _captureTimeOnScreen / 2f);
+            UIManager.Instance.DoScreenFade(_flashLightColor, 0f, captureTimeOnScreen / 2f);
 
             _image.sprite = sprite;
             _image.SetImageAlpha(1f);
-            _image.DOFade(0f, _captureTimeOnScreen).OnComplete(() => _image.sprite = null);
+            _image.DOFade(0f, captureTimeOnScreen).OnComplete(() => _image.sprite = null);
 
             yield return new WaitForSeconds(_cooldown);
 
