@@ -72,6 +72,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -424,6 +425,19 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      B_witch_death_0: 4545668489846933406
+      B_witch_death_5: -7483011833674210154
+      B_witch_death_3: -5773514330907110222
+      B_witch_death_2: -6064796078805686643
+      B_witch_death_11: -2366958028293365849
+      B_witch_death_15: 4166737117223001909
+      B_witch_death_13: -329793286456903573
+      B_witch_death_14: -2895147877577544860
+      B_witch_death_9: -427197810452132958
+      B_witch_death_7: -6624602416153922895
+      B_witch_death_12: -2710578488253582394
+      B_witch_death_1: -1838697749395032867
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
