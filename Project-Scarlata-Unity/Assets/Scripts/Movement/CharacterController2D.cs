@@ -231,8 +231,6 @@ namespace Rewriters
         }
         #endregion
 
-        private bool _canCheckGroundState = false;
-
         #region Unity Methods
         private void Awake()
 		{
